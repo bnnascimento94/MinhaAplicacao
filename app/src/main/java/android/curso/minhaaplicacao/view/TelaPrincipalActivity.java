@@ -6,10 +6,12 @@ import android.curso.minhaaplicacao.view.adapters.ExpandableAdapter;
 import android.curso.minhaaplicacao.view.fragments.CadastroCliente;
 import android.curso.minhaaplicacao.view.fragments.CadastroClienteListagem;
 import android.curso.minhaaplicacao.view.fragments.CadastroProdutoListagem;
+import android.curso.minhaaplicacao.view.fragments.CondicaoPagamento;
 import android.curso.minhaaplicacao.view.fragments.Graficos;
 import android.curso.minhaaplicacao.view.fragments.PedidosListagem;
 import android.curso.minhaaplicacao.view.fragments.CadastroProduto;
 import android.curso.minhaaplicacao.view.fragments.ClientesPedidoListagem;
+import android.curso.minhaaplicacao.view.fragments.PrazoPagamento;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -144,6 +146,21 @@ public class TelaPrincipalActivity extends AppCompatActivity {
                     case 2:
                         switch (childPosition) {
                             case 0:
+                                fragmentManager = getSupportFragmentManager();
+                                fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content_fragment, new CondicaoPagamento()).commit();
+                                setTitle("Condição Pagamento");
+                                break;
+                            case 1:
+                                fragmentManager = getSupportFragmentManager();
+                                fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content_fragment, new PrazoPagamento()).commit();
+                                setTitle("Prazo Pagamento");
+
+                                break;
+                        }
+                        break;
+                    case 3:
+                        switch (childPosition) {
+                            case 0:
                                 ControleItemCarrinho controleItemCarrinho = new ControleItemCarrinho(TelaPrincipalActivity.this);
                                 controleItemCarrinho.deletarAllItemCarinho();
                                 fragmentManager = getSupportFragmentManager();
@@ -215,7 +232,7 @@ public class TelaPrincipalActivity extends AppCompatActivity {
         if (getFragmentManager().getBackStackEntryCount() > 0 ){
             getFragmentManager().popBackStack();
         } else {
-            setTitle("Vullpes");
+           // setTitle("Vullpes");
             super.onBackPressed();
         }
         //getFragmentManager().popBackStack();
@@ -253,6 +270,7 @@ public class TelaPrincipalActivity extends AppCompatActivity {
         // GROUP
         listGroup.add("Clientes");
         listGroup.add("Produtos");
+        listGroup.add("Financeiro");
         listGroup.add("Pedidos");
 
         // CHILDREN
@@ -267,9 +285,14 @@ public class TelaPrincipalActivity extends AppCompatActivity {
         listData.put(listGroup.get(1), auxList);
 
         auxList = new ArrayList<String>();
+        auxList.add("Condição de Pagamento");
+        auxList.add("Prazo Pagamento");
+        listData.put(listGroup.get(2), auxList);
+
+        auxList = new ArrayList<String>();
         auxList.add("Cadastrar Pedidos");
         auxList.add("Listar Pedidos");
-        listData.put(listGroup.get(2), auxList);
+        listData.put(listGroup.get(3), auxList);
 
     }
 

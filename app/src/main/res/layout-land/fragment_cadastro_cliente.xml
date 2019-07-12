@@ -19,7 +19,7 @@
         tools:src="@mipmap/ic_launcher" />
 
     <EditText
-        android:id="@+id/txtNomeCondicao"
+        android:id="@+id/txtNomeCondicaoPagamento"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="86dp"

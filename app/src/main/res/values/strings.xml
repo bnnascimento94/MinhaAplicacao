@@ -47,4 +47,5 @@
     <string name="prazoPagamentoInserirDias">Datas</string>
     <string name="prazoDiasNome">Dias:</string>
     <string name="prazoDiasPorcentagem">Porcentagem</string>
+    <string name="condicaoPagamentoNome">Nome</string>
 </resources>
