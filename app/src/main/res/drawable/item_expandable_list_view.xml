@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/flecha_baixo" android:state_empty="true"/>
+    <item android:drawable="@drawable/flecha_cima" android:state_expanded="true"/>
+    <item
+        android:state_pressed="true"
+        android:state_selected="true"
+        android:state_hovered="true"
+        android:state_enabled="true"
+        android:drawable="@drawable/item_expandable_list_view_pressed"/>
+</selector>

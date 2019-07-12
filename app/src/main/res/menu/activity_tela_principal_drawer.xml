@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/clientes"
+            android:icon="@drawable/cliente"
+            android:title="Clientes"
+            >
+            <menu>
+                <item android:id="@+id/cadastro_clientes"
+                    android:title="    Cadastro de Clientes">
+                </item>
+                <item android:id="@+id/listar_clientes"
+                    android:title="    Listar Clientes">
+
+                </item>
+            </menu>
+        </item>
+
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/produto"
+            android:title="Produtos">
+
+            <menu>
+                <item android:id="@+id/cadastrar_produtos"
+                    android:title="    Cadastro de Produtos">
+                </item>
+                <item android:id="@+id/listar_produtos"
+                    android:title="    Listar Produtos">
+
+                </item>
+            </menu>
+
+
+        </item>
+        <item
+            android:id="@+id/nav_slideshow"
+            android:icon="@drawable/pedidos"
+            android:title="Pedidos">
+            <menu>
+                <item android:id="@+id/cadastro_pedidos"
+                    android:title="    Cadastro de Pedidos">
+                </item>
+                <item android:id="@+id/listar_pedidos"
+                    android:title="    Listar Pedidos">
+
+                </item>
+            </menu>
+
+
+        </item>
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/relatorios"
+            android:title="Relatórios">
+
+        </item>
+    </group>
+
+    <item
+        android:id="@+id/clientees"
+        android:icon="@drawable/cliente"
+        android:title="Clientes"
+        >
+        <menu>
+            <item android:id="@+id/cadastro_clientees"
+                android:title="    Cadastro de Clientes">
+            </item>
+            <item android:id="@+id/listar_clienteeses"
+                android:title="    Listar Clientes">
+
+            </item>
+        </menu>
+    </item>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+        </menu>
+    </item>
+
+</menu>

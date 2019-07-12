@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">Vullpes</string>
+    <string name="LoginText">Logar no Sistema</string>
+    <string name="LoginUser">Usuário:</string>
+    <string name="LoginPassword">Senha:</string>
+    <string name="LoginLogOut">Sair</string>
+    <string name="LoginGetIn">Entrar</string>
+    <string name="title_activity_tela_principal">Vullpes</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Vullpes</string>
+    <string name="nav_header_subtitle">Controle Financeiro do Revendedor</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Sair</string>
+    <string name="splashDescription">Logo da Empresa que Realizou o Projeto</string>
+    <string name="logoEmpresa">Logo da Empresa</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cadastroClienteNome">Nome do Cliente</string>
+    <string name="cadastroClienteEmail">Digite o E-mail</string>
+    <string name="cadastroClienteTelefone">Telefone Cliente</string>
+    <string name="cadastroClienteEndereco">Digite o Endereço</string>
+    <string name="cadastroProdutoCusto">Custo:</string>
+    <string name="cadastroProdutoNomeProduto">Nome:</string>
+    <string name="cadastroProdutoPreco">Preço:</string>
+    <string name="cadastroPedidosSelecionarProduto">Adicione o Produto:</string>
+    <string name="cadastroPedidoQuantidade">Quantidade:</string>
+    <string name="cadastroPedidoCliente">Selecione o Cliente</string>
+    <string name="cadastroProdutoQuantidade">Quantidade:</string>
+    <string name="cadastroPedidoValorParcial">Valor</string>
+    <string name="cadastroProdutoValorTotal">Total da Venda</string>
+    <string name="pedidoProduto">Finalizar Pedido</string>
+    <string name="textview">TextView</string>
+    <string name="nomeClienteFinalizarPedido">Cliente:</string>
+    <string name="valorTotalPedido">Total:</string>
+    <string name="tituloFinalizarPedido">Finalizar Pedido</string>
+    <string name="finalizarPedido">Confirmar Pedido</string>
+    <string name="pedidoListagem">Produtos</string>
+    <string name="search_hint">valor</string>
+    <string name="cancelarPedidos">Cancelar</string>
+    <string name="emitirRecibo">Emitir Recibo</string>
+    <string name="produtoValorUnitario">Valor Unitário:</string>
+    <string name="produtoPedidoFinalizado">Produtos</string>
+    <string name="nomePrazoPagamento">Prazo:</string>
+    <string name="prazoPagamentoCancelar">Cancelar</string>
+    <string name="prazoPagamentoInserirDias">Datas</string>
+    <string name="prazoDiasNome">Dias:</string>
+    <string name="prazoDiasPorcentagem">Porcentagem</string>
+</resources>
