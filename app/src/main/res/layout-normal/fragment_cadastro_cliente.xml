@@ -9,7 +9,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="111dp">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/contraintInterno"
@@ -18,46 +20,40 @@
 
             <EditText
                 android:id="@+id/txtEndereco"
-                android:layout_width="0dp"
+                android:layout_width="297dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginStart="57dp"
-                android:layout_marginEnd="57dp"
-                android:layout_marginBottom="15dp"
                 android:ems="10"
                 android:inputType="textPersonName"
                 app:layout_constraintBottom_toTopOf="@+id/btnSalvar"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
             <EditText
                 android:id="@+id/txtTelefone"
-                android:layout_width="0dp"
+                android:layout_width="297dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginStart="57dp"
-                android:layout_marginEnd="57dp"
-                android:layout_marginBottom="13dp"
                 android:ems="10"
                 android:inputType="numberDecimal"
-                app:layout_constraintBottom_toTopOf="@+id/textView19"
+                app:layout_constraintBottom_toTopOf="@+id/textView17"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
             <EditText
                 android:id="@+id/txtEmail"
-                android:layout_width="0dp"
+                android:layout_width="297dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginStart="57dp"
-                android:layout_marginEnd="57dp"
-                android:layout_marginBottom="12dp"
                 android:ems="10"
                 android:inputType="textEmailAddress"
-                app:layout_constraintBottom_toTopOf="@+id/textView18"
+                app:layout_constraintBottom_toTopOf="@+id/textView19"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
@@ -65,11 +61,9 @@
                 android:id="@+id/relativeLayout4"
                 android:layout_width="131dp"
                 android:layout_height="95dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="48dp"
                 app:layout_constraintBottom_toTopOf="@+id/textView15"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -100,26 +94,23 @@
 
             <Button
                 android:id="@+id/btnSalvar"
-                android:layout_width="0dp"
+                android:layout_width="293dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="59dp"
-                android:layout_marginEnd="59dp"
-                android:layout_marginBottom="50dp"
+                android:layout_marginTop="541dp"
                 android:background="@drawable/btn_customizado"
                 android:text="Salvar"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtEndereco" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="56dp"
-                android:layout_marginBottom="13dp"
+                android:layout_marginStart="54dp"
                 android:text="@string/cadastroClienteNome"
-                app:layout_constraintBottom_toTopOf="@+id/txtNomeCondicao"
+                app:layout_constraintBottom_toTopOf="@+id/txtNome"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/relativeLayout4" />
 
@@ -127,32 +118,31 @@
                 android:id="@+id/textView17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="57dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginStart="54dp"
                 android:text="@string/cadastroClienteEmail"
                 app:layout_constraintBottom_toTopOf="@+id/txtEmail"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtNomeCondicao" />
+                app:layout_constraintTop_toBottomOf="@+id/txtTelefone" />
 
             <TextView
                 android:id="@+id/textView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="11dp"
+                android:layout_marginStart="54dp"
                 android:text="@string/cadastroClienteTelefone"
                 app:layout_constraintBottom_toTopOf="@+id/txtTelefone"
-                app:layout_constraintStart_toStartOf="@+id/txtTelefone"
-                app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtNome" />
 
             <TextView
                 android:id="@+id/textView19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginStart="54dp"
                 android:text="@string/cadastroClienteEndereco"
                 app:layout_constraintBottom_toTopOf="@+id/txtEndereco"
-                app:layout_constraintStart_toStartOf="@+id/txtTelefone"
-                app:layout_constraintTop_toBottomOf="@+id/txtTelefone" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
 
             <android.support.constraint.Barrier
                 android:id="@+id/barrier"
@@ -162,16 +152,14 @@
                 tools:layout_editor_absoluteY="602dp" />
 
             <EditText
-                android:id="@+id/txtNomeCondicaoPagamento"
-                android:layout_width="0dp"
+                android:id="@+id/txtNome"
+                android:layout_width="297dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="57dp"
-                android:layout_marginEnd="57dp"
-                android:layout_marginBottom="11dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                app:layout_constraintBottom_toTopOf="@+id/textView17"
+                app:layout_constraintBottom_toTopOf="@+id/textView18"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView15" />
 

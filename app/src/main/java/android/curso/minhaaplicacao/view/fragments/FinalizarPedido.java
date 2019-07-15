@@ -4,10 +4,12 @@ package android.curso.minhaaplicacao.view.fragments;
 import android.curso.minhaaplicacao.controller.ControleItemCarrinho;
 import android.curso.minhaaplicacao.controller.ControlePedidos;
 import android.curso.minhaaplicacao.model.Cliente;
+import android.curso.minhaaplicacao.model.CondicoesPagamento;
 import android.curso.minhaaplicacao.model.ItemCarrinho;
 import android.curso.minhaaplicacao.model.ItemPedido;
 import android.curso.minhaaplicacao.model.Pedidos;
 
+import android.curso.minhaaplicacao.model.PrazosPagamento;
 import android.curso.minhaaplicacao.view.adapters.ProdutosPedidoCarrinhoAdapter;
 
 import android.os.Bundle;
@@ -32,9 +34,9 @@ import java.util.Date;
 import java.util.List;
 
 public class FinalizarPedido extends Fragment {
-    //ControlePedidos controlePedido;
-    ArrayList<ItemPedido> itemPedidos;
     ArrayList<Cliente> cliente;
+    CondicoesPagamento condicaoPagamentos;
+    PrazosPagamento prazosPagamento;
     View view;
     TextView nomeCliente;
     public TextView valorTotal;
@@ -53,8 +55,9 @@ public class FinalizarPedido extends Fragment {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            //itemPedidos =(ArrayList<ItemPedido>) bundle.getSerializable("itemPedido");
             cliente =(ArrayList<Cliente>) bundle.getSerializable("cliente");
+            condicaoPagamentos = (CondicoesPagamento) bundle.getSerializable("condicaoPagamento") ;
+            prazosPagamento = (PrazosPagamento) bundle.getSerializable("prazoPagamento");
         }
 
     }
@@ -67,7 +70,7 @@ public class FinalizarPedido extends Fragment {
         final List<ItemCarrinho> itens = controleItemCarrinho.getAllItens();
         if(itens.size()>0){
             view = inflater.inflate(R.layout.fragment_finalizar_pedido, container, false);
-            nomeCliente = view.findViewById(R.id.txtNomeCondicao);
+            nomeCliente = view.findViewById(R.id.txtNome);
             valorTotal = view.findViewById(R.id.txtValorTotal);
             btnFinalizarPedido = view.findViewById(R.id.btnConfirmarPedido);
 
@@ -103,6 +106,8 @@ public class FinalizarPedido extends Fragment {
                     String preco = valorPedido.replaceAll("[R$ ]","");
                     pedidos.setValorTotal(Double.parseDouble(preco));
                     pedidos.setData(new Date());
+                    pedidos.setCondicoesPagamento(condicaoPagamentos);
+                    pedidos.setPrazosPagamento(prazosPagamento);
 
                     if(controlePedido.salvar(pedidos)){
                         ControleItemCarrinho controleItemCarrinho = new ControleItemCarrinho(getContext());

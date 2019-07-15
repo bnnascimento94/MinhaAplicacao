@@ -10,6 +10,8 @@ public class Pedidos implements Serializable {
     private ArrayList<ItemPedido> itensPedido;
     private double valorTotal;
     private Date data;
+    private CondicoesPagamento condicoesPagamento;
+    private PrazosPagamento prazosPagamento;
     public Pedidos(){}
 
 
@@ -53,5 +55,21 @@ public class Pedidos implements Serializable {
 
     public void setItensPedido(ArrayList<ItemPedido> itensPedido) {
         this.itensPedido = itensPedido;
+    }
+
+    public CondicoesPagamento getCondicoesPagamento() {
+        return condicoesPagamento;
+    }
+
+    public void setCondicoesPagamento(CondicoesPagamento condicoesPagamento) {
+        this.condicoesPagamento = condicoesPagamento;
+    }
+
+    public PrazosPagamento getPrazosPagamento() {
+        return prazosPagamento;
+    }
+
+    public void setPrazosPagamento(PrazosPagamento prazosPagamento) {
+        this.prazosPagamento = prazosPagamento;
     }
 }

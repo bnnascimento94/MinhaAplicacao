@@ -3,6 +3,7 @@ package android.curso.minhaaplicacao.dataSource;
 import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Context;
+import android.curso.minhaaplicacao.controller.ControlePrazo;
 import android.curso.minhaaplicacao.dataModel.ClienteDataModel;
 import android.curso.minhaaplicacao.dataModel.CondicoesPagamentoDataModel;
 import android.curso.minhaaplicacao.dataModel.ItemCarrinhoDataModel;
@@ -58,6 +59,9 @@ public class DataSource extends SQLiteOpenHelper {
             db.execSQL(PedidoDataModel.criarTabela());
             db.execSQL(ItemPedidoDataModel.criarTabela());
             db.execSQL(ItemCarrinhoDataModel.criarTabela());
+            db.execSQL(CondicoesPagamentoDataModel.criarTabela());
+            db.execSQL(PrazosPagamentoDataModel.criarTabela());
+            db.execSQL(PrazoDiasPagamentoDataModel.criarTabela());
         }
         catch(Exception e){
             Log.e("media","DB ---> ERRO: "+e.getMessage());
@@ -145,7 +149,6 @@ public class DataSource extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
-
 
     public List<Cliente> getAllClientes(){
         Cliente obj;
@@ -404,11 +407,17 @@ public class DataSource extends SQLiteOpenHelper {
                     obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(PedidoDataModel.getData()))));
                     int idCliente = cursor.getInt(cursor.getColumnIndex(PedidoDataModel.getIdCliente()));
                     int idPedido =cursor.getInt(cursor.getColumnIndex(PedidoDataModel.getid()));
+                    int idPrazoPagamento = cursor.getInt(cursor.getColumnIndex(PedidoDataModel.getIdNomePrazoPagamento()));
+                    int idCondicaoPagamento =cursor.getInt(cursor.getColumnIndex(PedidoDataModel.getIdCondicaoPagamento()));
                     List<Cliente> cliente = getAllClientesById(idCliente);
                     List<ItemPedido> itens = getAllItemPedidoByIdPedido(idPedido);
+                    List<PrazosPagamento> prazosPagamentos = getPrazosPagamentoById(idPrazoPagamento);
+                    List<CondicoesPagamento> condicoesPagamentos = getCondicoesPagamentoById(idCondicaoPagamento);
+
                     if(cliente.size() >0) obj.setCliente(cliente.get(0));
                     if(itens.size() >0) obj.setItensPedido((ArrayList<ItemPedido>) itens);
-
+                    if(prazosPagamentos.size() >0) obj.setPrazosPagamento(prazosPagamentos.get(0));
+                    if(condicoesPagamentos.size() >0) obj.setCondicoesPagamento(condicoesPagamentos.get(0));
 
                     lista.add(obj);
                 }catch (ParseException p){
@@ -421,7 +430,6 @@ public class DataSource extends SQLiteOpenHelper {
         }
         cursor.close();
         return lista;
-
     }
 
     public List<ItemCarrinho> getAllItensCarrinhos(){
@@ -563,7 +571,7 @@ public class DataSource extends SQLiteOpenHelper {
 
     }
 
-    public List<PrazosPagamento> getAllPrazosPagamento(){
+    public List<PrazosPagamento> getPrazosPagamento(){
         PrazosPagamento obj;
 
         List<PrazosPagamento> lista = new ArrayList<>();
@@ -588,7 +596,61 @@ public class DataSource extends SQLiteOpenHelper {
 
 
     }
-    public List<PrazosPagamento> getPrazosPagamentoById(int idPrazoPagamento){
+    public List<PrazosPagamento> getPrazosPagamentoById(int idPrazo){
+        PrazosPagamento obj;
+
+        List<PrazosPagamento> lista = new ArrayList<>();
+
+        String sql ="SELECT * FROM "+ PrazosPagamentoDataModel.getTabela()+
+                " WHERE "+PrazosPagamentoDataModel.getIdPrazo() +" = ?"+" ORDER BY id" ;
+
+        Cursor cursor = db.rawQuery(sql,new String[]{String.valueOf(idPrazo)});
+
+        if(cursor.moveToFirst()){
+            do{
+                obj = new PrazosPagamento();
+                obj.setIdPrazoPagamento(cursor.getInt(cursor.getColumnIndex(PrazosPagamentoDataModel.getIdPrazo())));
+                obj.setNomePrazoPagamento(cursor.getString(cursor.getColumnIndex(PrazosPagamentoDataModel.getNomePrazo())));
+                List<PrazoDiasPagamento> prazoDias = getPrazoDiaPagamentoById(cursor.getInt(cursor.getColumnIndex(PrazosPagamentoDataModel.getIdPrazo())));
+                if(prazoDias.size() >0) obj.setPrazosDiasPagamento(prazoDias);
+                lista.add(obj);
+            }while(cursor.moveToNext());
+
+        }
+        cursor.close();
+        return lista;
+
+
+    }
+    public List<PrazosPagamento> getPrazosPagamentoWithDates(){
+        PrazosPagamento obj;
+
+        List<PrazosPagamento> lista = new ArrayList<>();
+
+        String sql ="SELECT * FROM "+ PrazosPagamentoDataModel.getTabela()+ " a INNER JOIN "
+                +PrazoDiasPagamentoDataModel.getTabela()+" b ON "+"a." + PrazosPagamentoDataModel.getIdPrazo() +" = "+
+                "b."+PrazoDiasPagamentoDataModel.getIdPrazo() + " GROUP BY a."+PrazosPagamentoDataModel.getNomePrazo();
+
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                obj = new PrazosPagamento();
+                obj.setIdPrazoPagamento(cursor.getInt(cursor.getColumnIndex(PrazosPagamentoDataModel.getIdPrazo())));
+                obj.setNomePrazoPagamento(cursor.getString(cursor.getColumnIndex(PrazosPagamentoDataModel.getNomePrazo())));
+                List<PrazoDiasPagamento> prazoDias = getPrazoDiaPagamentoById(cursor.getInt(cursor.getColumnIndex(PrazosPagamentoDataModel.getIdPrazo())));
+                if(prazoDias.size() >0) obj.setPrazosDiasPagamento(prazoDias);
+                lista.add(obj);
+            }while(cursor.moveToNext());
+
+        }
+        cursor.close();
+        return lista;
+
+
+    }
+
+    public List<PrazosPagamento> getPrazoPagamentoById(int idPrazoPagamento){
         PrazosPagamento obj;
 
         List<PrazosPagamento> lista = new ArrayList<>();
@@ -611,7 +673,7 @@ public class DataSource extends SQLiteOpenHelper {
         return lista;
 
     }
-    public List<PrazosPagamento> getPrazosPagamentoByName(String namePrazoPagamento){
+    public List<PrazosPagamento> getPrazoPagamentoByName(String namePrazoPagamento){
         PrazosPagamento obj;
 
         List<PrazosPagamento> lista = new ArrayList<>();

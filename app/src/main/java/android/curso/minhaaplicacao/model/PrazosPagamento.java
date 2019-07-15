@@ -1,9 +1,10 @@
 package android.curso.minhaaplicacao.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrazosPagamento {
+public class PrazosPagamento implements Serializable {
 
     private int idPrazoPagamento;
     private String nomePrazoPagamento;

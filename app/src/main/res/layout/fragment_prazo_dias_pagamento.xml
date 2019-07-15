@@ -28,7 +28,7 @@
 
 
             <EditText
-                android:id="@+id/txtNomeCondicao2"
+                android:id="@+id/txtDias"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -36,8 +36,7 @@
                 android:layout_marginEnd="28dp"
                 android:layout_marginBottom="402dp"
                 android:ems="10"
-                android:inputType="numberDecimal"
-                android:text="Name"
+                android:inputType="number"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -74,7 +73,7 @@
                 app:layout_constraintVertical_bias="0.358" />
 
             <Button
-                android:id="@+id/btnConfirmarPedido"
+                android:id="@+id/btnInserirPrazos"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="44dp"
@@ -92,7 +91,7 @@
                 tools:layout_conversion_wrapWidth="869" />
 
             <EditText
-                android:id="@+id/txtNomeCondicaoPagamento"
+                android:id="@+id/txtPorcentagem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -100,8 +99,7 @@
                 android:layout_marginEnd="28dp"
                 android:layout_marginBottom="402dp"
                 android:ems="10"
-                android:inputType="number"
-                android:text="Name"
+                android:inputType="numberDecimal"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

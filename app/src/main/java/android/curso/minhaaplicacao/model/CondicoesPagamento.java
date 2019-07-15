@@ -1,6 +1,8 @@
 package android.curso.minhaaplicacao.model;
 
-public class CondicoesPagamento {
+import java.io.Serializable;
+
+public class CondicoesPagamento implements Serializable {
 
     private int idCondicaoPagamento;
     private String nomeCondiçãoPagamento;

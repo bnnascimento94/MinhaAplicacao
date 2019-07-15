@@ -65,7 +65,6 @@ public class ProdutosPedidoListagem extends Fragment {
         rv.setLayoutManager(llm);
         setHasOptionsMenu(true);
 
-
         ControleProdutos controle = new ControleProdutos(this.getContext());
         adapter = new ProdutoPedidoAdapter(controle.listar());
         rv.setAdapter(adapter);
@@ -75,14 +74,13 @@ public class ProdutosPedidoListagem extends Fragment {
             public void onClick(View v) {
                 ControleItemCarrinho controleItemCarrinho = new ControleItemCarrinho(getContext());
                if(controleItemCarrinho.temRegistro()){
-                   FinalizarPedido finalizarPedido = new FinalizarPedido();
+                   CondicaoPagamentoPedidoListagem condicaoPagamentoPedidoListagem = new CondicaoPagamentoPedidoListagem();
                    Bundle bundle = new Bundle();
-                   bundle.putSerializable("itemPedido",adapter.itensPedido);
                    bundle.putSerializable("cliente",cliente);
-                   finalizarPedido.setArguments(bundle);
+                   condicaoPagamentoPedidoListagem.setArguments(bundle);
 
                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                   fragmentManager.beginTransaction().replace(R.id.content_fragment, finalizarPedido).commit();
+                   fragmentManager.beginTransaction().replace(R.id.content_fragment, condicaoPagamentoPedidoListagem).commit();
 
                }else{
                    Toast.makeText(getActivity().getApplicationContext(),"Selecione os produtos!", Toast.LENGTH_SHORT).show();

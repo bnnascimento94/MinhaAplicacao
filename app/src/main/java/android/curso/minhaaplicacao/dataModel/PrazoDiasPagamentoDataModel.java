@@ -1,7 +1,7 @@
 package android.curso.minhaaplicacao.dataModel;
 
 public class PrazoDiasPagamentoDataModel {
-    private final static String  tabela = "tb_prazos_pagamento";
+    private final static String  tabela = "tb_prazo_dias_pagamento";
     private final static String idPrazoDias = "id";
     private final static String idPrazo = "id_prazo";
     private final static String numeroDias = "numero_dias";

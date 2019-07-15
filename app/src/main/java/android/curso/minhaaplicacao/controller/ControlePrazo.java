@@ -58,15 +58,19 @@ public class ControlePrazo extends DataSource {
 
 
     public List<PrazosPagamento> getAllPrazosPagamento(){
-        return getAllPrazosPagamento();
+        return  getPrazosPagamento();
     }
     public List<PrazosPagamento> getPrazosPagamentoByName(String nome){
-        return getPrazosPagamentoByName(nome);
+        return getPrazoPagamentoByName(nome);
     }
     public List<PrazosPagamento> getPrazosPagamentoById(int id){
-        return getPrazosPagamentoById(id);
+        return getPrazoPagamentoById(id);
     }
 
+    public List<PrazosPagamento> getPrazosByDates(){
+        return  getPrazosPagamentoWithDates();
+
+    }
 
 
 

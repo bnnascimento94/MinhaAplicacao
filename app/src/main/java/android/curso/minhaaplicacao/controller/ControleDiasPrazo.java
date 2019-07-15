@@ -20,7 +20,7 @@ public class ControleDiasPrazo extends DataSource {
     public boolean salvar(PrazoDiasPagamento obj){
         boolean sucesso = false;
         double somaPorcentagem = getTotalPorcentagemPrazo(obj.getIdPrazo());
-        if(somaPorcentagem<100){ //consulta se há algum cliente já cadastrado
+        if((somaPorcentagem+obj.getPorcentagem())<=100){ //consulta se há algum cliente já cadastrado
             dados = new ContentValues();
             dados.put(PrazoDiasPagamentoDataModel.getIdPrazo(),obj.getIdPrazo());
             dados.put(PrazoDiasPagamentoDataModel.getNumeroDias(),obj.getNumeroDias());
@@ -37,14 +37,18 @@ public class ControleDiasPrazo extends DataSource {
     }
 
     public boolean alterar(PrazoDiasPagamento obj){
-        boolean sucesso = true;
-        dados = new ContentValues();
-        dados.put(PrazoDiasPagamentoDataModel.getIdPrazoDias(),obj.getIdPrazoDias());
-        dados.put(PrazoDiasPagamentoDataModel.getIdPrazo(),obj.getIdPrazo());
-        dados.put(PrazoDiasPagamentoDataModel.getNumeroDias(),obj.getNumeroDias());
-        dados.put(PrazoDiasPagamentoDataModel.getPorcentagem(),obj.getPorcentagem());
-        sucesso = alterar(PrazoDiasPagamentoDataModel.getTabela(),dados);
-        return true;
+        boolean sucesso = false;
+        double somaPorcentagem = getTotalPorcentagemPrazo(obj.getIdPrazo());
+        if((somaPorcentagem+ obj.getPorcentagem())<=100){
+            dados = new ContentValues();
+            dados.put(PrazoDiasPagamentoDataModel.getIdPrazoDias(),obj.getIdPrazoDias());
+            dados.put(PrazoDiasPagamentoDataModel.getIdPrazo(),obj.getIdPrazo());
+            dados.put(PrazoDiasPagamentoDataModel.getNumeroDias(),obj.getNumeroDias());
+            dados.put(PrazoDiasPagamentoDataModel.getPorcentagem(),obj.getPorcentagem());
+            sucesso = alterar(PrazoDiasPagamentoDataModel.getTabela(),dados);
+        }
+
+        return sucesso;
     }
 
     private double getTotalPorcentagemPrazo(int idPrazo) {

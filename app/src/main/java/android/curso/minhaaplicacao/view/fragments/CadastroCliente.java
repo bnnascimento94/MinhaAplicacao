@@ -75,7 +75,7 @@ public class CadastroCliente extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_cadastro_cliente, container, false);
-        nomeCliente = view.findViewById(R.id.txtNomeCondicao);
+        nomeCliente = view.findViewById(R.id.txtNome);
         email = view.findViewById(R.id.txtEmail);
         telefone = view.findViewById(R.id.txtTelefone);
         endereco = view.findViewById(R.id.txtEndereco);

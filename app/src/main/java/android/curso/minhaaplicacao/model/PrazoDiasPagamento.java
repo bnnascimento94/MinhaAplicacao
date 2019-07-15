@@ -1,6 +1,8 @@
 package android.curso.minhaaplicacao.model;
 
-public class PrazoDiasPagamento {
+import java.io.Serializable;
+
+public class PrazoDiasPagamento implements Serializable {
 
     private int idPrazoDias;
     private int idPrazo;
