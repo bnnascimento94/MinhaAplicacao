@@ -6,6 +6,7 @@ import android.content.Context;
 import android.curso.minhaaplicacao.controller.ControlePrazo;
 import android.curso.minhaaplicacao.dataModel.ClienteDataModel;
 import android.curso.minhaaplicacao.dataModel.CondicoesPagamentoDataModel;
+import android.curso.minhaaplicacao.dataModel.ContaAReceberDataModel;
 import android.curso.minhaaplicacao.dataModel.ItemCarrinhoDataModel;
 import android.curso.minhaaplicacao.dataModel.ItemPedidoDataModel;
 import android.curso.minhaaplicacao.dataModel.PedidoDataModel;
@@ -14,6 +15,7 @@ import android.curso.minhaaplicacao.dataModel.PrazosPagamentoDataModel;
 import android.curso.minhaaplicacao.dataModel.ProdutoDataModel;
 import android.curso.minhaaplicacao.model.Cliente;
 import android.curso.minhaaplicacao.model.CondicoesPagamento;
+import android.curso.minhaaplicacao.model.ContasReceber;
 import android.curso.minhaaplicacao.model.ItemCarrinho;
 import android.curso.minhaaplicacao.model.ItemPedido;
 import android.curso.minhaaplicacao.model.Pedidos;
@@ -431,6 +433,51 @@ public class DataSource extends SQLiteOpenHelper {
         cursor.close();
         return lista;
     }
+    public List<Pedidos> getPedidoById(int id)  {
+        Pedidos obj;
+
+        List<Pedidos> lista = new ArrayList<>();
+
+        String sql ="SELECT * FROM "+ PedidoDataModel.getTabela() + " where "+PedidoDataModel.getid()+ " = ?" ;
+
+        Cursor cursor = db.rawQuery(sql,new String[]{Integer.toString(id)});
+
+        if(cursor.moveToFirst()){
+            do{
+                obj = new Pedidos();
+
+                try{
+                    obj.setIdPedido(cursor.getInt(cursor.getColumnIndex(PedidoDataModel.getid())));
+                    obj.setValorTotal(cursor.getDouble(cursor.getColumnIndex(PedidoDataModel.getValorTotal())));
+                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+
+                    obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(PedidoDataModel.getData()))));
+                    int idCliente = cursor.getInt(cursor.getColumnIndex(PedidoDataModel.getIdCliente()));
+                    int idPedido =cursor.getInt(cursor.getColumnIndex(PedidoDataModel.getid()));
+                    int idPrazoPagamento = cursor.getInt(cursor.getColumnIndex(PedidoDataModel.getIdNomePrazoPagamento()));
+                    int idCondicaoPagamento =cursor.getInt(cursor.getColumnIndex(PedidoDataModel.getIdCondicaoPagamento()));
+                    List<Cliente> cliente = getAllClientesById(idCliente);
+                    List<ItemPedido> itens = getAllItemPedidoByIdPedido(idPedido);
+                    List<PrazosPagamento> prazosPagamentos = getPrazosPagamentoById(idPrazoPagamento);
+                    List<CondicoesPagamento> condicoesPagamentos = getCondicoesPagamentoById(idCondicaoPagamento);
+
+                    if(cliente.size() >0) obj.setCliente(cliente.get(0));
+                    if(itens.size() >0) obj.setItensPedido((ArrayList<ItemPedido>) itens);
+                    if(prazosPagamentos.size() >0) obj.setPrazosPagamento(prazosPagamentos.get(0));
+                    if(condicoesPagamentos.size() >0) obj.setCondicoesPagamento(condicoesPagamentos.get(0));
+
+                    lista.add(obj);
+                }catch (ParseException p){
+                    String errp = p.getMessage();
+                }
+
+
+            }while(cursor.moveToNext());
+
+        }
+        cursor.close();
+        return lista;
+    }
 
     public List<ItemCarrinho> getAllItensCarrinhos(){
         ItemCarrinho obj;
@@ -649,7 +696,6 @@ public class DataSource extends SQLiteOpenHelper {
 
 
     }
-
     public List<PrazosPagamento> getPrazoPagamentoById(int idPrazoPagamento){
         PrazosPagamento obj;
 
@@ -697,7 +743,6 @@ public class DataSource extends SQLiteOpenHelper {
         return lista;
 
     }
-
     public List<PrazoDiasPagamento> getPrazoDiaPagamentoById(int idPrazoPagamento){
         PrazoDiasPagamento obj;
 
@@ -746,4 +791,135 @@ public class DataSource extends SQLiteOpenHelper {
 
     }
 
+    //TODO DESENVOLVER ESTE METODO
+    public List<ContasReceber> getContasAReceberBetweenDatas(){
+        ContasReceber obj;
+        List<ContasReceber> lista = new ArrayList<>();
+        String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " ORDER BY id" ;
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                try{
+                    obj = new ContasReceber();
+                    obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
+                    Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
+                    obj.setPedido(pedido);
+                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+
+                    obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(PedidoDataModel.getData()))));
+                    obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
+                    obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
+                    lista.add(obj);
+
+                }catch(Exception e){
+                    Log.i("ERRO AO SETAR->"," "+e);
+                }
+
+            }while(cursor.moveToNext());
+
+        }
+        cursor.close();
+        return lista;
+    }
+
+    //TODO DESENVOLVER ESTE METODO
+    public List<ContasReceber> getContasAReceberByData(){
+        ContasReceber obj;
+        List<ContasReceber> lista = new ArrayList<>();
+        String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " ORDER BY id" ;
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                try{
+                    obj = new ContasReceber();
+                    obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
+                    Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
+                    obj.setPedido(pedido);
+                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+
+                    obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(PedidoDataModel.getData()))));
+                    obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
+                    obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
+                    lista.add(obj);
+
+                }catch(Exception e){
+                    Log.i("ERRO AO SETAR->"," "+e);
+                }
+
+            }while(cursor.moveToNext());
+
+        }
+        cursor.close();
+        return lista;
+    }
+
+
+
+    public List<ContasReceber> getAllContasReceber(){
+        ContasReceber obj;
+        List<ContasReceber> lista = new ArrayList<>();
+        String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " ORDER BY id" ;
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                try{
+                    obj = new ContasReceber();
+                    obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
+                    Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
+                    obj.setPedido(pedido);
+                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+
+                    obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(PedidoDataModel.getData()))));
+                    obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
+                    obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
+                    lista.add(obj);
+
+                }catch(Exception e){
+                    Log.i("ERRO AO SETAR->"," "+e);
+                }
+
+            }while(cursor.moveToNext());
+
+        }
+        cursor.close();
+        return lista;
+    }
+
+    public List<ContasReceber> getAllContasReceberByCliente(String nomeCliente){
+        ContasReceber obj;
+        List<ContasReceber> lista = new ArrayList<>();
+        String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " a INNER JOIN "+PedidoDataModel.getTabela()+
+                " b ON a."+ContaAReceberDataModel.getIdPedido()+" = b."+PedidoDataModel.getid()+" WHERE b."+PedidoDataModel.getIdCliente()+
+                " IN (SELECT "+ClienteDataModel.getid()+" WHERE "+ClienteDataModel.getNomeCliente()+" = ?)";
+
+        Cursor cursor = db.rawQuery(sql,new String[]{nomeCliente});
+
+        if(cursor.moveToFirst()){
+
+            do{
+                try{
+                    obj = new ContasReceber();
+                    obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
+                    Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
+                    obj.setPedido(pedido);
+                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                    obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(PedidoDataModel.getData()))));
+                    obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
+                    obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
+                    lista.add(obj);
+
+                }catch(Exception e){
+                    Log.i("ERRO AO SETAR->"," "+e);
+                }
+
+            }while(cursor.moveToNext());
+
+        }
+
+        cursor.close();
+        return lista;
+    }
 }
