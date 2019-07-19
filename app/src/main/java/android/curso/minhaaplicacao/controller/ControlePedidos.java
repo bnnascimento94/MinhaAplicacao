@@ -33,6 +33,7 @@ public class ControlePedidos extends DataSource {
         dados.put(PedidoDataModel.getIdCondicaoPagamento(),obj.getCondicoesPagamento().getIdCondicaoPagamento());
         dados.put(PedidoDataModel.getIdNomePrazoPagamento(),obj.getPrazosPagamento().getIdPrazoPagamento());
         dados.put(PedidoDataModel.getValorTotal(),obj.getValorTotal());
+
         SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
         dados.put(PedidoDataModel.getData(),dataFormatada.format(obj.getData()));
 

@@ -108,40 +108,36 @@
                 android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="54dp"
                 android:text="@string/cadastroClienteNome"
                 app:layout_constraintBottom_toTopOf="@+id/txtNome"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txtNome"
                 app:layout_constraintTop_toBottomOf="@+id/relativeLayout4" />
 
             <TextView
                 android:id="@+id/textView17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="54dp"
                 android:text="@string/cadastroClienteEmail"
                 app:layout_constraintBottom_toTopOf="@+id/txtEmail"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txtEmail"
                 app:layout_constraintTop_toBottomOf="@+id/txtTelefone" />
 
             <TextView
                 android:id="@+id/textView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="54dp"
                 android:text="@string/cadastroClienteTelefone"
                 app:layout_constraintBottom_toTopOf="@+id/txtTelefone"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txtTelefone"
                 app:layout_constraintTop_toBottomOf="@+id/txtNome" />
 
             <TextView
                 android:id="@+id/textView19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="54dp"
                 android:text="@string/cadastroClienteEndereco"
                 app:layout_constraintBottom_toTopOf="@+id/txtEndereco"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txtEndereco"
                 app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
 
             <android.support.constraint.Barrier

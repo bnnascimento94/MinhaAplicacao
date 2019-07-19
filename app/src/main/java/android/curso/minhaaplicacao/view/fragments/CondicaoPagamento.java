@@ -85,7 +85,6 @@ public class CondicaoPagamento extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
         rv.setAdapter(getAdapter());
-
         return view;
     }
 

@@ -56,8 +56,6 @@ public class ControleCondicaoPagamento extends DataSource {
         return sucesso;
     }
 
-
-
     public List<CondicoesPagamento> getAllCondicaoPagamento(){
         return getAllCondicoesPagamento();
     }

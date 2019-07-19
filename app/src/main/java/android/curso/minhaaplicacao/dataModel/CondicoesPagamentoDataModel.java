@@ -11,10 +11,10 @@ public class CondicoesPagamentoDataModel {
 
     public static String criarTabela(){
         setQueryCriarTabela("create table "+ getTabela());
-        setQueryCriarTabela(getQueryCriarTabela() + " (");
-        setQueryCriarTabela(getQueryCriarTabela() + getIdCondicao() +" INTEGER PRIMARY KEY AUTOINCREMENT, ");
-        setQueryCriarTabela(getQueryCriarTabela() + getNomeCondicao() +" TEXT ");
-        setQueryCriarTabela(getQueryCriarTabela() + " )");
+        setQueryCriarTabela( queryCriarTabela + " (");
+        setQueryCriarTabela( queryCriarTabela + idCondicao +" INTEGER PRIMARY KEY AUTOINCREMENT, ");
+        setQueryCriarTabela( queryCriarTabela + nomeCondicao +" TEXT ");
+        setQueryCriarTabela( queryCriarTabela + " )");
         return getQueryCriarTabela();
     }
 

@@ -48,4 +48,10 @@
     <string name="prazoDiasNome">Dias:</string>
     <string name="prazoDiasPorcentagem">Porcentagem</string>
     <string name="condicaoPagamentoNome">Nome</string>
+    <string name="ContaReceberValor">Valor</string>
+    <string name="ContaReceberValorLiquidado">Liquidado</string>
+    <string name="contaReceberNomeCliente">Cliente</string>
+    <string name="contaReceberData">Data</string>
+    <string name="contaReceberQuitar">Quitar</string>
+    <string name="contaReceberDelete">Deletar</string>
 </resources>

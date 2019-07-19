@@ -36,6 +36,7 @@ import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DataSource extends SQLiteOpenHelper {
@@ -64,6 +65,7 @@ public class DataSource extends SQLiteOpenHelper {
             db.execSQL(CondicoesPagamentoDataModel.criarTabela());
             db.execSQL(PrazosPagamentoDataModel.criarTabela());
             db.execSQL(PrazoDiasPagamentoDataModel.criarTabela());
+            db.execSQL(ContaAReceberDataModel.criarTabela());
         }
         catch(Exception e){
             Log.e("media","DB ---> ERRO: "+e.getMessage());
@@ -553,7 +555,7 @@ public class DataSource extends SQLiteOpenHelper {
 
         List<CondicoesPagamento> lista = new ArrayList<>();
 
-        String sql ="SELECT * FROM "+ CondicoesPagamentoDataModel.getTabela()+ " ORDER BY id" ;
+        String sql ="SELECT * FROM "+ CondicoesPagamentoDataModel.getTabela() +" ORDER BY "+CondicoesPagamentoDataModel.getIdCondicao() ;
 
         Cursor cursor = db.rawQuery(sql,null);
 
@@ -685,7 +687,7 @@ public class DataSource extends SQLiteOpenHelper {
                 obj = new PrazosPagamento();
                 obj.setIdPrazoPagamento(cursor.getInt(cursor.getColumnIndex(PrazosPagamentoDataModel.getIdPrazo())));
                 obj.setNomePrazoPagamento(cursor.getString(cursor.getColumnIndex(PrazosPagamentoDataModel.getNomePrazo())));
-                List<PrazoDiasPagamento> prazoDias = getPrazoDiaPagamentoById(cursor.getInt(cursor.getColumnIndex(PrazosPagamentoDataModel.getIdPrazo())));
+                List<PrazoDiasPagamento> prazoDias = getPrazoDiaPagamentoById(cursor.getInt(cursor.getColumnIndex(PrazoDiasPagamentoDataModel.getIdPrazo())));
                 if(prazoDias.size() >0) obj.setPrazosDiasPagamento(prazoDias);
                 lista.add(obj);
             }while(cursor.moveToNext());
@@ -824,39 +826,44 @@ public class DataSource extends SQLiteOpenHelper {
     }
 
     //TODO DESENVOLVER ESTE METODO
-    public List<ContasReceber> getContasAReceberByData(){
-        ContasReceber obj;
+    public List<ContasReceber> getContasAReceberByData(String sdata){
+        Date data;
         List<ContasReceber> lista = new ArrayList<>();
-        String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " ORDER BY id" ;
-        Cursor cursor = db.rawQuery(sql,null);
+        String dataParaBanco = "";
+        ContasReceber obj;
+        try{
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+            data = formato.parse(sdata);
+            dataParaBanco = new SimpleDateFormat("yyyy-MM-dd").format(data);
 
-        if(cursor.moveToFirst()){
-            do{
-                try{
-                    obj = new ContasReceber();
-                    obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
-                    Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
-                    obj.setPedido(pedido);
-                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-
-                    obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(PedidoDataModel.getData()))));
-                    obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
-                    obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
-                    lista.add(obj);
-
-                }catch(Exception e){
-                    Log.i("ERRO AO SETAR->"," "+e);
-                }
-
-            }while(cursor.moveToNext());
-
+            String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " where "+ContaAReceberDataModel.getDataContaReceber()+ "= date(?) ORDER BY id" ;
+            Cursor cursor = db.rawQuery(sql,new String[]{dataParaBanco});
+            if(cursor.moveToFirst()){
+                do{
+                    try{
+                        obj = new ContasReceber();
+                        obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
+                        Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
+                        obj.setPedido(pedido);
+                        formato = new SimpleDateFormat("dd/MM/yyyy");
+                        obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(PedidoDataModel.getData()))));
+                        obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
+                        obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
+                        lista.add(obj);
+                    }
+                    catch(Exception e){
+                        Log.i("ERRO AO SETAR->"," "+e);
+                    }
+                }while(cursor.moveToNext());
+            }
+            cursor.close();
         }
-        cursor.close();
+        catch(Exception e){
+            Log.i("Erro ao Setar ->"," "+e);
+        }
+
         return lista;
     }
-
-
-
     public List<ContasReceber> getAllContasReceber(){
         ContasReceber obj;
         List<ContasReceber> lista = new ArrayList<>();
@@ -872,7 +879,7 @@ public class DataSource extends SQLiteOpenHelper {
                     obj.setPedido(pedido);
                     SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 
-                    obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(PedidoDataModel.getData()))));
+                    obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
                     obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
                     obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
                     lista.add(obj);
@@ -887,15 +894,14 @@ public class DataSource extends SQLiteOpenHelper {
         cursor.close();
         return lista;
     }
-
     public List<ContasReceber> getAllContasReceberByCliente(String nomeCliente){
         ContasReceber obj;
         List<ContasReceber> lista = new ArrayList<>();
         String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " a INNER JOIN "+PedidoDataModel.getTabela()+
                 " b ON a."+ContaAReceberDataModel.getIdPedido()+" = b."+PedidoDataModel.getid()+" WHERE b."+PedidoDataModel.getIdCliente()+
-                " IN (SELECT "+ClienteDataModel.getid()+" WHERE "+ClienteDataModel.getNomeCliente()+" = ?)";
+                " IN (SELECT "+ClienteDataModel.getid()+" FROM "+ ClienteDataModel.getTabela() +" WHERE "+ClienteDataModel.getNomeCliente()+" like ?)";
 
-        Cursor cursor = db.rawQuery(sql,new String[]{nomeCliente});
+        Cursor cursor = db.rawQuery(sql,new String[]{'%'+nomeCliente+'%'});
 
         if(cursor.moveToFirst()){
 

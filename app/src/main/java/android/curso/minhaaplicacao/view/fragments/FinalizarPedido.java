@@ -1,10 +1,12 @@
 package android.curso.minhaaplicacao.view.fragments;
 
 
+import android.curso.minhaaplicacao.controller.ControleContasReceber;
 import android.curso.minhaaplicacao.controller.ControleItemCarrinho;
 import android.curso.minhaaplicacao.controller.ControlePedidos;
 import android.curso.minhaaplicacao.model.Cliente;
 import android.curso.minhaaplicacao.model.CondicoesPagamento;
+import android.curso.minhaaplicacao.model.ContasReceber;
 import android.curso.minhaaplicacao.model.ItemCarrinho;
 import android.curso.minhaaplicacao.model.ItemPedido;
 import android.curso.minhaaplicacao.model.Pedidos;
@@ -29,7 +31,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -109,7 +113,26 @@ public class FinalizarPedido extends Fragment {
                     pedidos.setCondicoesPagamento(condicaoPagamentos);
                     pedidos.setPrazosPagamento(prazosPagamento);
 
+
                     if(controlePedido.salvar(pedidos)){
+
+                        for(android.curso.minhaaplicacao.model.PrazoDiasPagamento prazoDiasPagamento:prazosPagamento.getPrazosDiasPagamento() )
+                        {
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(new Date());
+                            c.add(Calendar.DATE, +prazoDiasPagamento.getNumeroDias());
+
+                            Date dataDoUsuario = c.getTime();
+                            ContasReceber contasReceber = new ContasReceber();
+                            contasReceber.setPedido(controlePedido.getLastPedido());
+                            contasReceber.setData(dataDoUsuario);
+                            contasReceber.setValor(converterDoubleDoisDecimais(pedidos.getValorTotal()*(prazoDiasPagamento.getPorcentagem()/100)));
+                            contasReceber.setValorLiquidado(0.00);
+
+                            ControleContasReceber controleContasReceber = new ControleContasReceber(getContext());
+                            controleContasReceber.salvar(contasReceber);
+                        }
+
                         ControleItemCarrinho controleItemCarrinho = new ControleItemCarrinho(getContext());
                         controleItemCarrinho.deletarAllItemCarinho();
                         Toast.makeText(getActivity().getApplicationContext(),"Salvo com sucesso", Toast.LENGTH_LONG).show();
@@ -122,7 +145,8 @@ public class FinalizarPedido extends Fragment {
                         transaction.addToBackStack(null); // essa linha é responsável por adicionar o fragment ao stack
                         transaction.replace(R.id.content_fragment, recibo);
                         transaction.commit();
-                    }else{
+                    }
+                    else{
                         Toast.makeText(getActivity().getApplicationContext(),"Não foi possível salvar", Toast.LENGTH_LONG).show();
                     }
 
@@ -147,6 +171,15 @@ public class FinalizarPedido extends Fragment {
     public void onRestoreInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);//Restaura o Activity
 
+    }
+
+    public static double converterDoubleDoisDecimais(double precoDouble) {
+        DecimalFormat fmt = new DecimalFormat("0.00");
+        String string = fmt.format(precoDouble);
+        String[] part = string.split("[,]");
+        String string2 = part[0]+"."+part[1];
+        double preco = Double.parseDouble(string2);
+        return preco;
     }
 
     @Override

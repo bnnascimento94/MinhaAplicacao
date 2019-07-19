@@ -7,6 +7,7 @@ import android.curso.minhaaplicacao.view.fragments.CadastroCliente;
 import android.curso.minhaaplicacao.view.fragments.CadastroClienteListagem;
 import android.curso.minhaaplicacao.view.fragments.CadastroProdutoListagem;
 import android.curso.minhaaplicacao.view.fragments.CondicaoPagamento;
+import android.curso.minhaaplicacao.view.fragments.ContasReceber;
 import android.curso.minhaaplicacao.view.fragments.Graficos;
 import android.curso.minhaaplicacao.view.fragments.PedidosListagem;
 import android.curso.minhaaplicacao.view.fragments.CadastroProduto;
@@ -174,6 +175,15 @@ public class TelaPrincipalActivity extends AppCompatActivity {
                                 break;
                         }
                         break;
+                    case 4:
+                        switch (childPosition) {
+                            case 0:
+                                fragmentManager = getSupportFragmentManager();
+                                fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content_fragment, new ContasReceber()).commit();
+                                setTitle("Contas a Receber");
+                                break;
+                        }
+                        break;
                 }
                 return false;
             }
@@ -272,6 +282,7 @@ public class TelaPrincipalActivity extends AppCompatActivity {
         listGroup.add("Produtos");
         listGroup.add("Financeiro");
         listGroup.add("Pedidos");
+        listGroup.add("Contas a Receber");
 
         // CHILDREN
         List<String> auxList = new ArrayList<String>();
@@ -293,6 +304,10 @@ public class TelaPrincipalActivity extends AppCompatActivity {
         auxList.add("Cadastrar Pedidos");
         auxList.add("Listar Pedidos");
         listData.put(listGroup.get(3), auxList);
+
+        auxList = new ArrayList<String>();
+        auxList.add("Contas a Receber");
+        listData.put(listGroup.get(4), auxList);
 
     }
 
