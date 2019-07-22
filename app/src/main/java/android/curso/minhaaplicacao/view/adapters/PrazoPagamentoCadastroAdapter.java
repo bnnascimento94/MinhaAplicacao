@@ -3,7 +3,9 @@ package android.curso.minhaaplicacao.view.adapters;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.curso.minhaaplicacao.R;
+import android.curso.minhaaplicacao.controller.ControleCondicaoPagamento;
 import android.curso.minhaaplicacao.controller.ControlePrazo;
+import android.curso.minhaaplicacao.model.CondicoesPagamento;
 import android.curso.minhaaplicacao.model.PrazosPagamento;
 import android.curso.minhaaplicacao.view.fragments.PrazoDiasPagamento;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -86,9 +89,52 @@ public class PrazoPagamentoCadastroAdapter extends RecyclerView.Adapter<PrazoPag
                 bundle.putSerializable("prazos", (Serializable) prazoFiltrado.get(i).getPrazosDiasPagamento());
                 prazoDiasPagamento.setArguments(bundle);
 
-
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment,prazoDiasPagamento).addToBackStack(null).commit();
+            }
+        });
+
+        prazoViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                LayoutInflater inflater = (LayoutInflater) v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View alertLayout = inflater.inflate(R.layout.financeiro_prazo_pagamento, null);
+                final EditText nomePrazoPagamento = alertLayout.findViewById(R.id.txtNomePrazo);
+                nomePrazoPagamento.setText(prazoFiltrado.get(i).getNomePrazoPagamento());
+                AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
+                alert.setTitle("Cadastro Nome Prazo de Pagamento");
+                alert.setView(alertLayout);
+                alert.setCancelable(false);
+                alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alert.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        boolean dadosValidados = true;
+                        if(!(nomePrazoPagamento.getText().length()>0)){
+                            nomePrazoPagamento.setError("*");
+                            nomePrazoPagamento.requestFocus();
+                            dadosValidados = false;
+                        }
+
+                        if(dadosValidados){
+                            PrazosPagamento prazosPagamento = new PrazosPagamento();
+                            prazosPagamento.setIdPrazoPagamento(prazoFiltrado.get(i).getIdPrazoPagamento());
+                            prazosPagamento.setNomePrazoPagamento(nomePrazoPagamento.getText().toString());
+                            prazosPagamento.setPrazosDiasPagamento(prazoFiltrado.get(i).getPrazosDiasPagamento());
+                            ControlePrazo controlePrazo = new ControlePrazo(v.getContext());
+                            if(controlePrazo.alterar(prazosPagamento)){
+                                Toast.makeText(v.getContext(),"Alteração Realizada com Sucesso", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                });
+                AlertDialog dialog = alert.create();
+                dialog.show();
             }
         });
 

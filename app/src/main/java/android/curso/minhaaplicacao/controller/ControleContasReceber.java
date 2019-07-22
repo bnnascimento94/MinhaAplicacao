@@ -28,7 +28,7 @@ public class ControleContasReceber extends DataSource {
 
             dados = new ContentValues();
             dados.put(ContaAReceberDataModel.getIdPedido(),obj.getPedido().getIdPedido());
-            SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat dataFormatada = new SimpleDateFormat("yyyy-MM-dd");
             dados.put(ContaAReceberDataModel.getDataContaReceber(),dataFormatada.format(obj.getData()));
             dados.put(ContaAReceberDataModel.getValor(),obj.getValor());
             dados.put(ContaAReceberDataModel.getValorLiquidado(),obj.getValorLiquidado());
@@ -48,7 +48,7 @@ public class ControleContasReceber extends DataSource {
             dados = new ContentValues();
             dados.put(ContaAReceberDataModel.getIdContaReceber(),obj.getIdContaReceber());
             dados.put(ContaAReceberDataModel.getIdPedido(),obj.getPedido().getIdPedido());
-            SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat dataFormatada = new SimpleDateFormat("yyyy-MM-dd");
             dados.put(ContaAReceberDataModel.getDataContaReceber(),dataFormatada.format(obj.getData()));
             dados.put(ContaAReceberDataModel.getValor(),obj.getValor());
             dados.put(ContaAReceberDataModel.getValorLiquidado(),obj.getValorLiquidado());

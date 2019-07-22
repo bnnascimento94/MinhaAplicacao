@@ -73,6 +73,7 @@ public class CadastroProdutoListagem extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.tela_principal, menu);
+        menu.add("Produto Listagem bb");
         MenuItem item = menu.findItem(R.id.action_search);
         SearchView searchView = new SearchView(((TelaPrincipalActivity) getContext()).getSupportActionBar().getThemedContext());
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);

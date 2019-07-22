@@ -24,7 +24,7 @@
                 android:id="@+id/txtNomeProdutoSelecionado"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:layout_marginStart="128dp"
+                android:layout_marginStart="100dp"
                 android:layout_marginTop="10dp"
                 android:text="TextView"
                 android:textSize="20dp"
@@ -35,7 +35,7 @@
                 android:id="@+id/txtValorUnitarioProdutoSelecionado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="235dp"
+                android:layout_marginStart="200dp"
                 android:layout_marginTop="40dp"
                 android:text="TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -47,7 +47,7 @@
                 android:id="@+id/txtValorVendaProdutoSelecionado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="235dp"
+                android:layout_marginStart="200dp"
                 android:layout_marginTop="66dp"
                 android:text="TextView"
                 app:layout_constraintStart_toStartOf="parent"
@@ -57,8 +57,8 @@
                 android:id="@+id/imageProdutoSelecionado"
                 android:layout_width="74dp"
                 android:layout_height="74dp"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="9dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="8dp"
                 android:src="@drawable/produto"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -67,7 +67,7 @@
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="128dp"
+                android:layout_marginStart="100dp"
                 android:layout_marginTop="40dp"
                 android:text="Valor Unitário:"
                 app:layout_constraintStart_toStartOf="parent"
@@ -77,10 +77,30 @@
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="128dp"
+                android:layout_marginStart="100dp"
                 android:layout_marginTop="66dp"
                 android:text="Valor Venda:"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="40dp"
+                android:text="Qtde:"
+                app:layout_constraintStart_toEndOf="@+id/txtValorUnitarioProdutoSelecionado"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtQtde"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="40dp"
+                android:text="TextView"
+                app:layout_constraintStart_toEndOf="@+id/textView23"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.constraint.ConstraintLayout>

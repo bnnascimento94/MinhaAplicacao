@@ -41,12 +41,14 @@ public class ProdutosPedidoSelecionadoAdapter extends RecyclerView.Adapter<Produ
         TextView nomeProduto;
         TextView valorUnitario;
         TextView valorTotal;
+        TextView txtQtde;
         ProdutoViewHolder(final View itemView) {
             super(itemView);
             fotoID = itemView.findViewById(R.id.imageProdutoSelecionado);
             nomeProduto = itemView.findViewById(R.id.txtNomeProdutoSelecionado);
             valorUnitario = itemView.findViewById(R.id.txtValorUnitarioProdutoSelecionado);
             valorTotal = itemView.findViewById(R.id.txtValorVendaProdutoSelecionado);
+            txtQtde = itemView.findViewById(R.id.txtQtde);
         }
 
     }
@@ -62,6 +64,7 @@ public class ProdutosPedidoSelecionadoAdapter extends RecyclerView.Adapter<Produ
         produtoViewHolder.nomeProduto.setText(produtos.get(i).getProduto().getNomeProduto());
         produtoViewHolder.valorUnitario.setText("R$ "+String.valueOf(produtos.get(i).getProduto().getValorUnitario()));
         produtoViewHolder.valorTotal.setText("R$ "+String.valueOf(produtos.get(i).getItemValorVenda()));
+        produtoViewHolder.txtQtde.setText(String.valueOf(produtos.get(i).getQtde()));
 
         Bitmap bitmap = new ImageSaver(produtoViewHolder.itemView.getContext()).
                 setFileName(produtos.get(i).getProduto().getNomeArquivo()).

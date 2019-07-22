@@ -1,5 +1,6 @@
 package android.curso.minhaaplicacao.view.adapters;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.curso.minhaaplicacao.R;
 import android.curso.minhaaplicacao.classes.ImageSaver;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,20 +38,14 @@ public class CondicaoPagamentoCadastroAdapter extends RecyclerView.Adapter<Condi
 
     }
 
-
-
     public static class ProdutoViewHolder extends RecyclerView.ViewHolder {
-
         TextView condicaoPagamento;
         Button excluirCondicaoPagamento;
         ProdutoViewHolder(final View itemView) {
             super(itemView);
             condicaoPagamento = itemView.findViewById(R.id.txtCondicaoPagamento);
             excluirCondicaoPagamento = itemView.findViewById(R.id.btnExcluirCondicao);
-
-
         }
-
     }
 
     public ProdutoViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -60,11 +56,9 @@ public class CondicaoPagamentoCadastroAdapter extends RecyclerView.Adapter<Condi
 
     @Override
     public void onBindViewHolder(@NonNull final ProdutoViewHolder produtoViewHolder,final int i) {
-
         produtoViewHolder.condicaoPagamento.setText(condicaoPagamentos.get(i).getNomeCondiçãoPagamento());
 
-
-        produtoViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        produtoViewHolder.excluirCondicaoPagamento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
@@ -124,8 +118,54 @@ public class CondicaoPagamentoCadastroAdapter extends RecyclerView.Adapter<Condi
                 alerta.show();
             }
         });
+        produtoViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
 
-        }
+                LayoutInflater inflater = (LayoutInflater) v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View alertLayout = inflater.inflate(R.layout.financeiro_condicao_pagamento, null);
+                final EditText condicaoPagamento = alertLayout.findViewById(R.id.txtNomeCondicaoPagamento);
+                condicaoPagamento.setText(condicaoPagamentos.get(i).getNomeCondiçãoPagamento());
+                AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
+                alert.setTitle("Cadastro Condição Pagamento");
+                alert.setView(alertLayout);
+                alert.setCancelable(false);
+                alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alert.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        boolean dadosValidados = true;
+                        if(!(condicaoPagamento.getText().length()>0)){
+                            condicaoPagamento.setError("*");
+                            condicaoPagamento.requestFocus();
+                            dadosValidados = false;
+                        }
+
+                        if(dadosValidados){
+                            CondicoesPagamento condicoesPagamento = new CondicoesPagamento();
+                            condicoesPagamento.setIdCondicaoPagamento(condicaoPagamentos.get(i).getIdCondicaoPagamento());
+                            condicoesPagamento.setNomeCondiçãoPagamento(condicaoPagamento.getText().toString());
+                            ControleCondicaoPagamento controleCondicaoPagamento = new ControleCondicaoPagamento(v.getContext());
+
+                            if(controleCondicaoPagamento.alterar(condicoesPagamento)){
+                               Toast.makeText(v.getContext(),"Alteração Realizada com Sucesso", Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    }
+                });
+                AlertDialog dialog = alert.create();
+                dialog.show();
+
+            }
+        });
+
+    }
 
 
 

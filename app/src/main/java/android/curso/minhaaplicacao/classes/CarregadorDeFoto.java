@@ -16,14 +16,21 @@ public class CarregadorDeFoto {
         int codigoOrientacao = Integer.parseInt(orientacao);
 
         switch (codigoOrientacao) {
+            case 0:
+                foto = abreFotoERotaciona(caminhoFoto, 0);
+                break;
             case ExifInterface.ORIENTATION_NORMAL:
                 foto = abreFotoERotaciona(caminhoFoto, 0);
+                break;
             case ExifInterface.ORIENTATION_ROTATE_90:
                 foto = abreFotoERotaciona(caminhoFoto, 90);
+                break;
             case ExifInterface.ORIENTATION_ROTATE_180:
                 foto = abreFotoERotaciona(caminhoFoto, 180);
+                break;
             case ExifInterface.ORIENTATION_ROTATE_270:
                 foto = abreFotoERotaciona(caminhoFoto, 270);
+                break;
         }
         return foto;
     }

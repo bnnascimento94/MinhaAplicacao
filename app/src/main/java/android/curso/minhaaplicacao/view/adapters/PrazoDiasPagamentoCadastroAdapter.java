@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +24,6 @@ public class PrazoDiasPagamentoCadastroAdapter extends RecyclerView.Adapter<Praz
     List<android.curso.minhaaplicacao.model.PrazoDiasPagamento> prazoFiltrado;
     View v;
     private AlertDialog alerta;
-    boolean excluir = false;
     public PrazoDiasPagamentoCadastroAdapter(List<android.curso.minhaaplicacao.model.PrazoDiasPagamento> prazo){
         this.prazo = prazo;
         this.prazoFiltrado = prazo;
@@ -69,6 +69,61 @@ public class PrazoDiasPagamentoCadastroAdapter extends RecyclerView.Adapter<Praz
                 });
                 alerta = builder.create();
                 alerta.show();
+            }
+        });
+
+        prazoViewHolder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                LayoutInflater inflater = (LayoutInflater) v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View alertLayout = inflater.inflate(R.layout.financeiro_prazo_dias_pagamento, null);
+                final EditText txtDias = alertLayout.findViewById(R.id.txtDias);
+                final EditText txtPorcentagem = alertLayout.findViewById(R.id.txtPorcentagem);
+                AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
+                alert.setTitle("Cadastro Prazo Dias Pagamento");
+                // this is set the view from XML inside AlertDialog
+                alert.setView(alertLayout);
+                // disallow cancel of AlertDialog on click of back button and outside touch
+                alert.setCancelable(false);
+                alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alert.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        boolean dadosValidados = true;
+                        if(!(txtDias.getText().length()>0)){
+                            txtDias.setError("*");
+                            txtDias.requestFocus();
+                            dadosValidados = false;
+                        }
+                        else if(!(txtPorcentagem.getText().length()>0)){
+                            txtPorcentagem.setError("*");
+                            txtPorcentagem.requestFocus();
+                            dadosValidados = false;
+                        }
+
+                        if(dadosValidados){
+                            android.curso.minhaaplicacao.model.PrazoDiasPagamento prazoDiasPagamento = new android.curso.minhaaplicacao.model.PrazoDiasPagamento();
+                            prazoDiasPagamento.setIdPrazo(prazoFiltrado.get(i).getIdPrazoDias());
+                            prazoDiasPagamento.setIdPrazo(prazoFiltrado.get(i).getIdPrazo());
+                            prazoDiasPagamento.setNumeroDias(Integer.valueOf(txtDias.getText().toString()));
+                            prazoDiasPagamento.setPorcentagem(Double.valueOf(txtPorcentagem.getText().toString()));
+                            ControleDiasPrazo controleDiasPrazo = new ControleDiasPrazo(v.getContext());
+                            if(controleDiasPrazo.alterar(prazoDiasPagamento)){
+                                Toast.makeText(v.getContext(),"Não foi possível alterar, porcentagem total maior que 100%", Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(v.getContext(),"Não foi possível alterar, porcentagem total maior que 100%", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                });
+                AlertDialog dialog = alert.create();
+                dialog.show();
+
             }
         });
 

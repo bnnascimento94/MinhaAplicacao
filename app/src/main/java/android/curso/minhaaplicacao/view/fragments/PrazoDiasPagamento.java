@@ -1,9 +1,15 @@
 package android.curso.minhaaplicacao.view.fragments;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.curso.minhaaplicacao.controller.ControleDiasPrazo;
+import android.curso.minhaaplicacao.controller.ControlePrazo;
+import android.curso.minhaaplicacao.model.PrazosPagamento;
 import android.curso.minhaaplicacao.view.adapters.PrazoDiasPagamentoCadastroAdapter;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +18,7 @@ import android.view.ViewGroup;
 
 import android.curso.minhaaplicacao.R;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,21 +30,15 @@ Integer idprazo;
 List<android.curso.minhaaplicacao.model.PrazoDiasPagamento> diasPagamentos;
 View view;
 RecyclerView rv;
-TextView dias, porcentagem;
-Button btnInserirPrazos;
-
+TextView porcentagem;
 
     public PrazoDiasPagamento() {
         // Required empty public constructor
     }
-
-
     // TODO: Rename and change types and number of parameters
     public static PrazoDiasPagamento newInstance(String param1, String param2) {
         PrazoDiasPagamento fragment = new PrazoDiasPagamento();
         Bundle args = new Bundle();
-
-
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,7 +50,6 @@ Button btnInserirPrazos;
         if (bundle != null) {
             diasPagamentos =(List<android.curso.minhaaplicacao.model.PrazoDiasPagamento>) bundle.getSerializable("prazos");
             idprazo = (Integer) bundle.getSerializable("idPrazo");
-
         }
     }
 
@@ -57,53 +57,60 @@ Button btnInserirPrazos;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =inflater.inflate(R.layout.fragment_prazo_dias_pagamento, container, false);
-        dias = view.findViewById(R.id.txtDias);
-        porcentagem = view.findViewById(R.id.txtPorcentagem);
-        btnInserirPrazos = view.findViewById(R.id.btnInserirPrazos);
 
-        btnInserirPrazos.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                boolean dadosValidados = true;
+            public void onClick(final View view) {
+                LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View alertLayout = inflater.inflate(R.layout.financeiro_prazo_dias_pagamento, null);
+                final EditText txtDias = alertLayout.findViewById(R.id.txtDias);
+                final EditText txtPorcentagem = alertLayout.findViewById(R.id.txtPorcentagem);
+                AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
+                alert.setTitle("Cadastro Condição Pagamento");
+                // this is set the view from XML inside AlertDialog
+                alert.setView(alertLayout);
+                // disallow cancel of AlertDialog on click of back button and outside touch
+                alert.setCancelable(false);
+                alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-
-                if(!(dias.getText().length()>0)){
-                    dias.setError("*");
-                    dias.requestFocus();
-                    dadosValidados = false;
-                }
-                else if(!(porcentagem.getText().length()>0)){
-                    porcentagem.setError("*");
-                    porcentagem.requestFocus();
-                    dadosValidados = false;
-                }
-
-
-                if(dadosValidados){
-                    android.curso.minhaaplicacao.model.PrazoDiasPagamento prazoDiasPagamento = new android.curso.minhaaplicacao.model.PrazoDiasPagamento();
-                    prazoDiasPagamento.setIdPrazo(idprazo);
-                    prazoDiasPagamento.setNumeroDias(Integer.valueOf(dias.getText().toString()));
-                    prazoDiasPagamento.setPorcentagem(Double.valueOf(porcentagem.getText().toString()));
-                    ControleDiasPrazo controleDiasPrazo = new ControleDiasPrazo(getContext());
-                    if(controleDiasPrazo.salvar(prazoDiasPagamento)){
-                        rv= view.findViewById(R.id.rv);
-                        rv.setHasFixedSize(true);
-                        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-                        rv.setLayoutManager(llm);
-                        rv.setAdapter(getAdapter());
-                    }else{
-                        Toast.makeText(getContext(),"Não foi possível inserir, porcentagem total maior que 100%", Toast.LENGTH_LONG).show();
                     }
-                }else{
-                    Toast.makeText(getContext(), "Insira os Campos",Toast.LENGTH_LONG).show();
+                });
+                alert.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        boolean dadosValidados = true;
+                        if(!(txtDias.getText().length()>0)){
+                            txtDias.setError("*");
+                            txtDias.requestFocus();
+                            dadosValidados = false;
+                        }
+                        else if(!(porcentagem.getText().length()>0)){
+                            txtPorcentagem.setError("*");
+                            txtPorcentagem.requestFocus();
+                            dadosValidados = false;
+                        }
 
-                }
-
-
+                        if(dadosValidados){
+                            android.curso.minhaaplicacao.model.PrazoDiasPagamento prazoDiasPagamento = new android.curso.minhaaplicacao.model.PrazoDiasPagamento();
+                            prazoDiasPagamento.setIdPrazo(idprazo);
+                            prazoDiasPagamento.setNumeroDias(Integer.valueOf(txtDias.getText().toString()));
+                            prazoDiasPagamento.setPorcentagem(Double.valueOf(txtPorcentagem.getText().toString()));
+                            ControleDiasPrazo controleDiasPrazo = new ControleDiasPrazo(getContext());
+                            if(controleDiasPrazo.salvar(prazoDiasPagamento)){
+                                rv.setAdapter(getAdapter());
+                            }else{
+                                Toast.makeText(getContext(),"Não foi possível inserir, porcentagem total maior que 100%", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                });
+                AlertDialog dialog = alert.create();
+                dialog.show();
             }
         });
-
-
 
 
         if(diasPagamentos != null){
@@ -113,9 +120,6 @@ Button btnInserirPrazos;
             rv.setLayoutManager(llm);
             rv.setAdapter(getAdapter());
         }
-
-
-
 
         return view;
     }
