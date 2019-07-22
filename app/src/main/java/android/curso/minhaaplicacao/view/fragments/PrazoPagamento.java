@@ -59,8 +59,6 @@ public class PrazoPagamento extends Fragment {
             @Override
             public void onClick(View v) {
                 boolean dadosValidados = true;
-
-
                 if(!(prazoPagamento.getText().length()>0)){
                     prazoPagamento.setError("*");
                     prazoPagamento.requestFocus();

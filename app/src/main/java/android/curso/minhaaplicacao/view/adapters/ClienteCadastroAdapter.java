@@ -110,7 +110,7 @@ public class ClienteCadastroAdapter extends RecyclerView.Adapter<ClienteCadastro
 
                 CadastroCliente cadastroCliente = new CadastroCliente();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("prazo",clientes);
+                bundle.putSerializable("cliente",clientes);
                 cadastroCliente.setArguments(bundle);
 
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();

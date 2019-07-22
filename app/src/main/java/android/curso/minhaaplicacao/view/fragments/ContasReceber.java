@@ -17,12 +17,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.curso.minhaaplicacao.R;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 
 public class ContasReceber extends Fragment {
  RecyclerView rv;
  EditText txtData, txtCliente;
+ CheckBox chkMesAtual, chkQuitado, chkAberto;
+ Button btnBuscar;
     public ContasReceber() {
         // Required empty public constructor
     }
@@ -43,12 +48,19 @@ public class ContasReceber extends Fragment {
         View view = inflater.inflate(R.layout.fragment_contas_receber, container, false);
         txtData = view.findViewById(R.id.txtData);
         txtCliente = view.findViewById(R.id.txtCliente);
+        chkAberto = view.findViewById(R.id.chkAberto);
+        chkMesAtual = view.findViewById(R.id.chkMesAtual);
+        chkAberto = view.findViewById(R.id.chkAberto);
+        chkQuitado = view.findViewById(R.id.chkQuitado);
+        btnBuscar = view.findViewById(R.id.btnBuscar);
+
         rv= view.findViewById(R.id.rv);
         rv.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
         setHasOptionsMenu(true);
         rv.setAdapter(getAdapter());
+
 
         txtCliente.addTextChangedListener(new TextWatcher() {
             @Override
@@ -64,11 +76,128 @@ public class ContasReceber extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 ControleContasReceber controleContasReceber = new ControleContasReceber(getContext());
-                ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberByCliente(s.toString()));
-                rv.setAdapter(contasReceberAdapter);
+                if(txtData.getText().length() >0){
+                    ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberByClienteAndDate(s.toString(),txtData.getText().toString()));
+                    rv.setAdapter(contasReceberAdapter);
+                }else if(chkAberto.isChecked()){
+                    ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberByClienteAndAberta(s.toString()));
+                    rv.setAdapter(contasReceberAdapter);
+
+                }else if (chkMesAtual.isChecked()){
+                    ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberByClienteAndCurrentMonth(s.toString()));
+                    rv.setAdapter(contasReceberAdapter);
+
+                }else if(chkQuitado.isChecked()){
+                    ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberByClienteAndQuitada(s.toString()));
+                    rv.setAdapter(contasReceberAdapter);
+                }else{
+                    ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberByCliente(s.toString()));
+                    rv.setAdapter(contasReceberAdapter);
+
+                }
+
+
             }
         });
 
+        chkAberto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ControleContasReceber controleContasReceber = new ControleContasReceber(getContext());
+                if(isChecked){
+                    if(chkMesAtual.isChecked()){
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberAbertasCurrentMonth());
+                        rv.setAdapter(contasReceberAdapter);
+                    }
+                    else if(txtCliente.getText().length()>0){
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberByClienteAndAberta(txtCliente.getText().toString()));
+                        rv.setAdapter(contasReceberAdapter);
+
+                    }
+                    else {
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberAberta());
+                        rv.setAdapter(contasReceberAdapter);
+                    }
+                }
+                else{
+
+                    rv.setAdapter(getAdapter());
+                }
+            }
+        });
+
+        chkQuitado.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ControleContasReceber controleContasReceber = new ControleContasReceber(getContext());
+                if(isChecked){
+                    if(chkMesAtual.isChecked()){
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberQuitadasCurrentMonth());
+                        rv.setAdapter(contasReceberAdapter);
+                    }else if(chkAberto.isChecked()){
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceber());
+                        rv.setAdapter(contasReceberAdapter);
+                    }else{
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberQuitadas());
+                        rv.setAdapter(contasReceberAdapter);
+                    }
+
+                }else{
+                    rv.setAdapter(getAdapter());
+
+                }
+
+            }
+        });
+
+        chkMesAtual.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ControleContasReceber controleContasReceber = new ControleContasReceber(getContext());
+                if(isChecked){
+                    if(chkQuitado.isChecked()){
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberQuitadasCurrentMonth());
+                        rv.setAdapter(contasReceberAdapter);
+
+                    }else if (chkAberto.isChecked()){
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberAbertasCurrentMonth());
+                        rv.setAdapter(contasReceberAdapter);
+                    }else if (txtCliente.getText().length()>0){
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberByClienteAndCurrentMonth(txtCliente.getText().toString()));
+                        rv.setAdapter(contasReceberAdapter);
+
+                    }else{
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberCurrentMonth());
+                        rv.setAdapter(contasReceberAdapter);
+                    }
+                }
+                else{
+                    rv.setAdapter(getAdapter());
+                }
+            }
+        });
+
+
+
+        btnBuscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ControleContasReceber controleContasReceber = new ControleContasReceber(getContext());
+                if(chkQuitado.isChecked()){
+                    ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getContasAReceberByDataAndQuitadas(txtData.getText().toString()));
+                    rv.setAdapter(contasReceberAdapter);
+                }else if (chkAberto.isChecked()){
+                    ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getContasAReceberByDataAndAbertas(txtData.getText().toString()));
+                    rv.setAdapter(contasReceberAdapter);
+                }else if (txtCliente.getText().length()>0){
+                    ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberByClienteAndDate(txtCliente.getText().toString(),txtData.getText().toString()));
+                    rv.setAdapter(contasReceberAdapter);
+                }else{
+                    ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getContasAReceberByData(txtData.getText().toString()));
+                    rv.setAdapter(contasReceberAdapter);
+                }
+            }
+        });
 
 
        return view;

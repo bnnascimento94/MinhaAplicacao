@@ -254,9 +254,6 @@ public class CadastroCliente extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
-
             if(requestCode == RESULT_CAMERA && resultCode == -1){
                 Bitmap foto1 = (Bitmap)data.getExtras().get("data");
                 foto.setImageBitmap(foto1);

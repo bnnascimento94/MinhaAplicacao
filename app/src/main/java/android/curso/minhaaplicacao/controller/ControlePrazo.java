@@ -31,9 +31,11 @@ public class ControlePrazo extends DataSource {
         return sucesso;
     }
     public boolean deletar(PrazosPagamento obj){
-        boolean sucesso;
+        boolean sucesso = false;
         try {
-            sucesso = deletar(PrazosPagamentoDataModel.getTabela(), obj.getIdPrazoPagamento());
+            if(!(getPrazoDiaPagamentoById(obj.getIdPrazoPagamento()).size()>0) && getPedidoByIdPrazo(obj.getIdPrazoPagamento()).size() >0 ){
+                sucesso = deletar(PrazosPagamentoDataModel.getTabela(), obj.getIdPrazoPagamento());
+            }
         }catch(Exception e){
             Log.i("ERRO DELETAR PEDIDO ->"," "+e);
             sucesso = false;

@@ -37,7 +37,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
 
-
             <TextView
                 android:id="@+id/txtCondicaoPagamento"
                 android:layout_width="wrap_content"

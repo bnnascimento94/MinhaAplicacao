@@ -22,12 +22,10 @@
                 android:id="@+id/textView22"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="8dp"
                 android:text="@string/contaReceberNomeCliente"
                 app:layout_constraintEnd_toStartOf="@+id/txtCliente"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
@@ -59,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="132dp"
-                android:layout_marginBottom="72dp"
+                android:layout_marginBottom="68dp"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text=""
@@ -67,27 +65,28 @@
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btnBuscar"
                 android:layout_width="80dp"
                 android:layout_height="47dp"
                 android:layout_marginEnd="36dp"
                 android:layout_marginBottom="16dp"
-                android:text="Button"
+                android:text="Buscar"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <CheckBox
-                android:id="@+id/checkBox"
+                android:id="@+id/chkMesAtual"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="9dp"
-                android:text="Mês"
+                android:layout_marginStart="20dp"
+                android:text="Mês Atual"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/txtData"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.468" />
 
             <CheckBox
-                android:id="@+id/checkBox2"
+                android:id="@+id/chkQuitado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="27dp"
@@ -98,12 +97,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <CheckBox
-                android:id="@+id/checkBox3"
+                android:id="@+id/chkAberto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
-                android:text="CheckBox"
-                app:layout_constraintBaseline_toBaselineOf="@+id/checkBox2"
+                android:text="Em aberto"
+                app:layout_constraintBaseline_toBaselineOf="@+id/chkQuitado"
                 app:layout_constraintEnd_toEndOf="@+id/txtData" />
 
         </android.support.constraint.ConstraintLayout>
@@ -113,6 +112,6 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
-        android:layout_height="800dp" />
+        android:layout_height="400dp" />
 
 </LinearLayout>

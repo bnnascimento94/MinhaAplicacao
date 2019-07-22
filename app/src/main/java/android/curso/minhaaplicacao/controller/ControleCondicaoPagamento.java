@@ -31,9 +31,11 @@ public class ControleCondicaoPagamento extends DataSource {
         return sucesso;
     }
     public boolean deletar(CondicoesPagamento obj){
-        boolean sucesso;
+        boolean sucesso = false;
         try {
-            sucesso = deletar(CondicoesPagamentoDataModel.getTabela(), obj.getIdCondicaoPagamento());
+            if(!(getPedidoByIdCondicao(obj.getIdCondicaoPagamento()).size()>0)){
+                sucesso = deletar(CondicoesPagamentoDataModel.getTabela(), obj.getIdCondicaoPagamento());
+            }
         }catch(Exception e){
             Log.i("ERRO DELETAR PEDIDO ->"," "+e);
             sucesso = false;
