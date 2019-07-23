@@ -18,51 +18,27 @@
             app:layout_constraintTop_toBottomOf="@+id/txtCliente">
 
 
-            <TextView
-                android:id="@+id/textView22"
-                android:layout_width="47dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/contaReceberNomeCliente"
-                app:layout_constraintEnd_toStartOf="@+id/txtCliente"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <EditText
                 android:id="@+id/txtCliente"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="12dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
                 android:ems="10"
+                android:hint="@string/contaReceberNomeCliente"
                 android:inputType="textPersonName"
                 android:text=""
                 app:layout_constraintEnd_toStartOf="@+id/chkMesAtual"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="35dp"
-                android:layout_height="19dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="76dp"
-                android:text="@string/contaReceberData"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/txtData"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
                 android:id="@+id/txtData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="512dp"
-                android:layout_marginBottom="52dp"
+                android:layout_marginBottom="60dp"
                 android:ems="10"
+                android:hint="@string/contaReceberData"
                 android:inputType="textPersonName"
                 android:text=""
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -70,36 +46,35 @@
 
             <Button
                 android:id="@+id/btnBuscar"
-                android:layout_width="80dp"
-                android:layout_height="47dp"
-                android:layout_marginEnd="404dp"
-                android:layout_marginBottom="4dp"
+                android:layout_width="84dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="408dp"
+                android:layout_marginBottom="56dp"
                 android:text="Buscar"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/txtData" />
 
             <CheckBox
                 android:id="@+id/chkMesAtual"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="16dp"
                 android:text="Mês Atual"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/txtData"
+                app:layout_constraintStart_toEndOf="@+id/chkAberto"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.601" />
+                app:layout_constraintVertical_bias="0.898" />
 
             <CheckBox
                 android:id="@+id/chkQuitado"
                 android:layout_width="86dp"
                 android:layout_height="32dp"
-                android:layout_marginTop="27dp"
                 android:layout_marginBottom="25dp"
                 android:text="Quitado"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/txtData"
-                app:layout_constraintTop_toBottomOf="@+id/textView4"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintStart_toStartOf="@+id/txtData" />
 
             <CheckBox
                 android:id="@+id/chkAberto"

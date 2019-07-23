@@ -70,7 +70,7 @@ public class PrazoPagamento extends Fragment {
                 View alertLayout = inflater.inflate(R.layout.financeiro_prazo_pagamento, null);
                 final EditText txtNomePrazo = alertLayout.findViewById(R.id.txtNomePrazo);
                 AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
-                alert.setTitle("Cadastro Condição Pagamento");
+                alert.setTitle("Cadastro Prazo de Pagamento");
                 // this is set the view from XML inside AlertDialog
                 alert.setView(alertLayout);
                 // disallow cancel of AlertDialog on click of back button and outside touch
@@ -95,9 +95,11 @@ public class PrazoPagamento extends Fragment {
                             ControlePrazo controlePrazo = new ControlePrazo(getContext());
                             PrazosPagamento prazosPagamento = new PrazosPagamento();
                             prazosPagamento.setNomePrazoPagamento(txtNomePrazo.getText().toString());
-                            if(controlePrazo.alterar(prazosPagamento)){
+                            if(controlePrazo.salvar(prazosPagamento)){
                                 rv.setAdapter(getAdapter());
-                                Toast.makeText(view.getContext(),"Alteração Realizada com Sucesso", Toast.LENGTH_LONG).show();
+                                Toast.makeText(view.getContext(),"Inserido com sucesso", Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(view.getContext(),"Problemas ao inserir", Toast.LENGTH_LONG).show();
                             }
                         }
                     }

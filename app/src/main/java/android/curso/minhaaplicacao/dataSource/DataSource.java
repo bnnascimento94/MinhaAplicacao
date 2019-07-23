@@ -32,12 +32,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class DataSource extends SQLiteOpenHelper {
     private static final String nomeBanco = "media_escolar.sqlite";
@@ -895,8 +897,7 @@ public class DataSource extends SQLiteOpenHelper {
                     obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
                     Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
                     obj.setPedido(pedido);
-                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-
+                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                     obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
                     obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
                     obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
@@ -1302,6 +1303,64 @@ public class DataSource extends SQLiteOpenHelper {
         }
         cursor.close();
         return lista;
+    }
+
+    public int getNumberProducts(){
+        int qtdeProdutos = 0;
+
+        List<Pedidos> lista = new ArrayList<>();
+
+        String sql ="SELECT Count(*) as total FROM "+ ItemPedidoDataModel.getTabela() +" GROUP BY "+
+                ItemPedidoDataModel.getIdProduto() +" Order By total DESC LIMIT 5 " ;
+
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+
+                try{
+                    qtdeProdutos =cursor.getInt(cursor.getColumnIndex("total"));
+                }
+                catch (Exception p){
+                    String errp = p.getMessage();
+                }
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+
+        return qtdeProdutos;
+    }
+
+    public Map<Integer,Double> topSalesProducts(){
+        Map<Integer, Double> valorProdutos = null;
+        int total = getNumberProducts();
+
+        String sql ="SELECT Count(*) as total, "+ItemPedidoDataModel.getIdProduto()+" FROM "+ ItemPedidoDataModel.getTabela()+" GROUP BY "+ItemPedidoDataModel.getIdProduto()+
+               " Order By total DESC LIMIT 5"  ;
+
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+
+                try{
+                    Integer produto = cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()));
+                    Integer totalElementos = cursor.getInt(cursor.getColumnIndex("total"));
+                    double porcentagem = totalElementos/total;
+                    valorProdutos.put(produto,porcentagem);
+                }
+                catch (Exception p){
+                    Log.e("Erro busca pieChart",""+p.getMessage());
+                    String errp = p.getMessage();
+                }
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+
+
+        return valorProdutos;
     }
 
 

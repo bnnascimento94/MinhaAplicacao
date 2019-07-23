@@ -57,6 +57,11 @@ TextView porcentagem;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =inflater.inflate(R.layout.fragment_prazo_dias_pagamento, container, false);
+        rv= view.findViewById(R.id.rv);
+        rv.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        rv.setLayoutManager(llm);
+        rv.setAdapter(getAdapter());
 
         FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +92,7 @@ TextView porcentagem;
                             txtDias.requestFocus();
                             dadosValidados = false;
                         }
-                        else if(!(porcentagem.getText().length()>0)){
+                        else if(!(txtPorcentagem.getText().length()>0)){
                             txtPorcentagem.setError("*");
                             txtPorcentagem.requestFocus();
                             dadosValidados = false;
@@ -116,7 +121,6 @@ TextView porcentagem;
         if(diasPagamentos != null){
             rv= view.findViewById(R.id.rv);
             rv.setHasFixedSize(true);
-            LinearLayoutManager llm = new LinearLayoutManager(getContext());
             rv.setLayoutManager(llm);
             rv.setAdapter(getAdapter());
         }

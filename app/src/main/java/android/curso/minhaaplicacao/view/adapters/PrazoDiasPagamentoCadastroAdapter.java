@@ -39,7 +39,7 @@ public class PrazoDiasPagamentoCadastroAdapter extends RecyclerView.Adapter<Praz
 
     @Override
     public void onBindViewHolder(@NonNull final PrazoViewHolder prazoViewHolder, final int i) {
-        prazoViewHolder.txtPrazodias.setText(String.valueOf(prazoFiltrado.get(i).getNumeroDias()));
+        prazoViewHolder.txtPrazodias.setText(String.valueOf(prazoFiltrado.get(i).getNumeroDias())+" Dias");
         prazoViewHolder.txtPorcentagem.setText(String.valueOf(prazoFiltrado.get(i).getPorcentagem())+ " %");
 
         prazoViewHolder.btnDeletar.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +79,8 @@ public class PrazoDiasPagamentoCadastroAdapter extends RecyclerView.Adapter<Praz
                 View alertLayout = inflater.inflate(R.layout.financeiro_prazo_dias_pagamento, null);
                 final EditText txtDias = alertLayout.findViewById(R.id.txtDias);
                 final EditText txtPorcentagem = alertLayout.findViewById(R.id.txtPorcentagem);
+                txtDias.setText(String.valueOf(prazoFiltrado.get(i).getNumeroDias()));
+                txtPorcentagem.setText(String.valueOf(prazoFiltrado.get(i).getPorcentagem()));
                 AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
                 alert.setTitle("Cadastro Prazo Dias Pagamento");
                 // this is set the view from XML inside AlertDialog
