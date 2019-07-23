@@ -1051,10 +1051,10 @@ public class DataSource extends SQLiteOpenHelper {
         ContasReceber obj;
         List<ContasReceber> lista = new ArrayList<>();
         String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " a INNER JOIN "+PedidoDataModel.getTabela()+
-                " b ON a."+ContaAReceberDataModel.getIdPedido()+" = b."+PedidoDataModel.getid()+" WHERE  a."+ContaAReceberDataModel.getDataContaReceber()+" = date(?) and b."+PedidoDataModel.getIdCliente()+
+                " b ON a."+ContaAReceberDataModel.getIdPedido()+" = b."+PedidoDataModel.getid()+" WHERE  a."+ContaAReceberDataModel.getDataContaReceber()+" = date("+converterParaDataSqlite(sdata)+") and b."+PedidoDataModel.getIdCliente()+
                 " IN (SELECT "+ClienteDataModel.getid()+" FROM "+ ClienteDataModel.getTabela() +" WHERE "+ClienteDataModel.getNomeCliente()+" like ?)";
 
-        Cursor cursor = db.rawQuery(sql,new String[]{converterParaDataSqlite(sdata),'%'+nomeCliente+'%'});
+        Cursor cursor = db.rawQuery(sql,new String[]{'%'+nomeCliente+'%'});
         if(cursor.moveToFirst()){
             do{
                 try{
@@ -1142,7 +1142,7 @@ public class DataSource extends SQLiteOpenHelper {
         List<ContasReceber> lista = new ArrayList<>();
         String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " a INNER JOIN "+PedidoDataModel.getTabela()+
                 " b ON a."+ContaAReceberDataModel.getIdPedido()+" = b."+PedidoDataModel.getid()+" WHERE  a."+ContaAReceberDataModel.getDataContaReceber() +" " +
-                "BETWEEN date('start of month') AND date('now','start of month','+1 month','-1 day')  and b."+PedidoDataModel.getIdCliente()+
+                "BETWEEN date('now','start of month') AND date('now','start of month','+1 month','-1 day')  and b."+PedidoDataModel.getIdCliente()+
                 " IN (SELECT "+ClienteDataModel.getid()+" FROM "+ ClienteDataModel.getTabela() +" WHERE "+ClienteDataModel.getNomeCliente()+" like ?)";
 
         Cursor cursor = db.rawQuery(sql,new String[]{'%'+nomeCliente+'%'});
@@ -1227,7 +1227,7 @@ public class DataSource extends SQLiteOpenHelper {
     public List<ContasReceber> getAllContasReceberCurrentMonth(){
         ContasReceber obj;
         List<ContasReceber> lista = new ArrayList<>();
-        String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " WHERE "+ContaAReceberDataModel.getDataContaReceber() +" BETWEEN date('start of month') AND date('now','start of month','+1 month','-1 day') " ;
+        String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " WHERE "+ContaAReceberDataModel.getDataContaReceber() +" BETWEEN date('now','start of month') AND date('now','start of month','+1 month','-1 day') " ;
 
         Cursor cursor = db.rawQuery(sql,null);
         if(cursor.moveToFirst()){
@@ -1253,7 +1253,7 @@ public class DataSource extends SQLiteOpenHelper {
     public List<ContasReceber> getAllContasReceberQuitadasCurrentMonth(){
         ContasReceber obj;
         List<ContasReceber> lista = new ArrayList<>();
-        String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " WHERE "+ContaAReceberDataModel.getDataContaReceber() +" BETWEEN date('start of month') AND date('now','start of month','+1 month','-1 day')" +
+        String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " WHERE "+ContaAReceberDataModel.getDataContaReceber() +" BETWEEN date('now','start of month') AND date('now','start of month','+1 month','-1 day')" +
                 " and "+ContaAReceberDataModel.getValor() +" = "+ContaAReceberDataModel.getValorLiquidado() +" ORDER BY id" ;
 
         Cursor cursor = db.rawQuery(sql,null);
@@ -1280,7 +1280,7 @@ public class DataSource extends SQLiteOpenHelper {
     public List<ContasReceber> getAllContasReceberAbertasCurrentMonth(){
         ContasReceber obj;
         List<ContasReceber> lista = new ArrayList<>();
-        String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " WHERE "+ContaAReceberDataModel.getDataContaReceber() +" BETWEEN date('start of month') AND date('now','start of month','+1 month','-1 day')" +
+        String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " WHERE "+ContaAReceberDataModel.getDataContaReceber() +" BETWEEN date('now','start of month') AND date('now','start of month','+1 month','-1 day')" +
                 " and "+ContaAReceberDataModel.getValor() +" != "+ContaAReceberDataModel.getValorLiquidado() +" ORDER BY id" ;
 
         Cursor cursor = db.rawQuery(sql,null);
