@@ -20,6 +20,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,8 +95,9 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
 
     @Override
     public void onBindViewHolder(@NonNull final PedidoViewHolder produtoViewHolder,final int i) {
+        NumberFormat z = NumberFormat.getCurrencyInstance();
         produtoViewHolder.nomeCliente.setText(pedidosFiltrados.get(i).getCliente().getNomeCliente());
-        produtoViewHolder.valorTotal.setText("R$ "+String.valueOf(pedidosFiltrados.get(i).getValorTotal()));
+        produtoViewHolder.valorTotal.setText(z.format(pedidosFiltrados.get(i).getValorTotal()));
         SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
         produtoViewHolder.data.setText(dataFormatada.format(pedidosFiltrados.get(i).getData()));
 

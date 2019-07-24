@@ -22,7 +22,7 @@ public class ClienteDataModel {
         queryCriarTabela +=idCliente+" INTEGER PRIMARY KEY AUTOINCREMENT, ";
         queryCriarTabela +=nomeCliente+" TEXT, ";
         queryCriarTabela +=emailCliente+" TEXT, ";
-        queryCriarTabela +=telefoneCliente+" INTEGER, ";
+        queryCriarTabela +=telefoneCliente+" TEXT, ";
         queryCriarTabela +=enderecoCliente+" TEXT, ";
         queryCriarTabela +=diretorioFoto+" TEXT, ";
         queryCriarTabela +=nomeFoto+" TEXT ";

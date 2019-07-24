@@ -176,7 +176,7 @@ public class CadastroCliente extends Fragment {
                             client.setIdCliente(cliente.get(0).getIdCliente());
                             client.setNomeCliente(nomeCliente.getText().toString());
                             client.setEmailCliente(email.getText().toString());
-                            client.setTelefoneCliente(Integer.parseInt(telefone.getText().toString()));
+                            client.setTelefoneCliente(telefone.getText().toString());
                             client.setEnderecoCliente(endereco.getText().toString());
                             client.setDiretorioFoto("clientes");
                             client.setNomeArquivo(nomeCliente.getText().toString()+".png");
@@ -201,7 +201,7 @@ public class CadastroCliente extends Fragment {
                         Cliente cliente = new Cliente();
                         cliente.setNomeCliente(nomeCliente.getText().toString());
                         cliente.setEmailCliente(email.getText().toString());
-                        cliente.setTelefoneCliente(Integer.parseInt(telefone.getText().toString()));
+                        cliente.setTelefoneCliente(telefone.getText().toString());
                         cliente.setEnderecoCliente(endereco.getText().toString());
                         cliente.setDiretorioFoto("clientes");
                         cliente.setNomeArquivo(nomeCliente.getText().toString()+".png");
@@ -254,6 +254,8 @@ public class CadastroCliente extends Fragment {
         super.onSaveInstanceState(savedInstanceState);//Restaura o Activity
 
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

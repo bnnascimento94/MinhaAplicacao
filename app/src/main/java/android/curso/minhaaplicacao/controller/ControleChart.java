@@ -17,4 +17,7 @@ public class ControleChart extends DataSource {
         return topClientesPedidos();
 
     }
+    public Map<String,Double> getValoresVendas(){
+        return valoresVendas();
+    }
 }

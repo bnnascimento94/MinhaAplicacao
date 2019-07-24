@@ -34,7 +34,9 @@ public class ControleClientes extends DataSource {
     }
     public boolean deletar(Cliente obj){
         boolean sucesso = true;
-        sucesso = deletar(ClienteDataModel.getTabela(),obj.getIdCliente());
+        if(!(getAllContasReceberByCliente(obj.getNomeCliente()).size()>0)){
+            sucesso = deletar(ClienteDataModel.getTabela(),obj.getIdCliente());
+        }
         return sucesso;
     }
 

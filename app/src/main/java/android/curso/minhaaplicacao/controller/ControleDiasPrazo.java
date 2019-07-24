@@ -51,7 +51,7 @@ public class ControleDiasPrazo extends DataSource {
         return sucesso;
     }
 
-    private double getTotalPorcentagemPrazo(int idPrazo) {
+    public double getTotalPorcentagemPrazo(int idPrazo) {
         return totalPorcentagemDiasPrazo(idPrazo);
 
     }

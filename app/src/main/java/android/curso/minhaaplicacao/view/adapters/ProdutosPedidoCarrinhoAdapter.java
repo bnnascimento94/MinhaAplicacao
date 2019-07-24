@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -44,7 +45,8 @@ public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<Produtos
         CircleImageView fotoID;
         TextView nomeProduto;
         TextView valorUnitario;
-        TextView valorTotal;
+        TextView valorTotal,txtQtde;
+
         ProdutoViewHolder(final View itemView) {
             super(itemView);
 
@@ -52,6 +54,7 @@ public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<Produtos
             nomeProduto = itemView.findViewById(R.id.txtNomeProdutoSelecionado);
             valorUnitario = itemView.findViewById(R.id.txtValorUnitarioProdutoSelecionado);
             valorTotal = itemView.findViewById(R.id.txtValorVendaProdutoSelecionado);
+            txtQtde = itemView.findViewById(R.id.txtQtde);
 
 
         }
@@ -67,10 +70,11 @@ public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<Produtos
 
     @Override
     public void onBindViewHolder(@NonNull final ProdutoViewHolder produtoViewHolder,final int i) {
-
+        NumberFormat z = NumberFormat.getCurrencyInstance();
         produtoViewHolder.nomeProduto.setText(produtos.get(i).getProduto().getNomeProduto());
-        produtoViewHolder.valorUnitario.setText(String.valueOf(produtos.get(i).getProduto().getValorUnitario()));
-        produtoViewHolder.valorTotal.setText(String.valueOf(produtos.get(i).getItemValorVenda()));
+        produtoViewHolder.valorUnitario.setText(z.format(produtos.get(i).getProduto().getValorUnitario()));
+        produtoViewHolder.valorTotal.setText(z.format(produtos.get(i).getItemValorVenda()));
+        produtoViewHolder.txtQtde.setText(String.valueOf(produtos.get(i).getQtde()));
         Bitmap bitmap = new ImageSaver(produtoViewHolder.itemView.getContext()).
                 setFileName(produtos.get(i).getProduto().getNomeArquivo()).
                 setDirectoryName(produtos.get(i).getProduto().getDiretorioFoto()).
@@ -108,7 +112,7 @@ public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<Produtos
 
                                         Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
                                         AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                                        Fragment myFragment = new Fragment();
+
                                         activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment, new Graficos()).addToBackStack(null).commit();
                                     }
                                     else{

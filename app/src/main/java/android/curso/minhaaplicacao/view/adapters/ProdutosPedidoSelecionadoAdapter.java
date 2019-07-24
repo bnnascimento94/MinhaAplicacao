@@ -20,6 +20,7 @@ import android.widget.EditText;
 
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,9 +62,10 @@ public class ProdutosPedidoSelecionadoAdapter extends RecyclerView.Adapter<Produ
 
     @Override
     public void onBindViewHolder(@NonNull final ProdutoViewHolder produtoViewHolder,final int i) {
+        NumberFormat z = NumberFormat.getCurrencyInstance();
         produtoViewHolder.nomeProduto.setText(produtos.get(i).getProduto().getNomeProduto());
-        produtoViewHolder.valorUnitario.setText("R$ "+String.valueOf(produtos.get(i).getProduto().getValorUnitario()));
-        produtoViewHolder.valorTotal.setText("R$ "+String.valueOf(produtos.get(i).getItemValorVenda()));
+        produtoViewHolder.valorUnitario.setText(z.format(produtos.get(i).getProduto().getValorUnitario()));
+        produtoViewHolder.valorTotal.setText(z.format(produtos.get(i).getItemValorVenda()));
         produtoViewHolder.txtQtde.setText(String.valueOf(produtos.get(i).getQtde()));
 
         Bitmap bitmap = new ImageSaver(produtoViewHolder.itemView.getContext()).

@@ -49,10 +49,12 @@ public class EscreverRecibo {
         SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
         canvas.drawText("Recibo de Venda          Data Venda:"+dataFormatada.format(pedidos.getData()), 50, 150, paint);
         canvas.drawText("Cliente: "+pedidos.getCliente().getNomeCliente(), 50, 180, paint);
-        canvas.drawText("Valor Total: R$ "+Double.toString(pedidos.getValorTotal()), 50, 210, paint);
-        canvas.drawText("=======================================", 50, 250, paint);
+        canvas.drawText("Condição: "+pedidos.getCondicoesPagamento().getNomeCondiçãoPagamento(), 50, 210, paint);
+        canvas.drawText("Prazo: "+pedidos.getPrazosPagamento().getNomePrazoPagamento(), 50, 240, paint);
+        canvas.drawText("Valor Total: R$ "+Double.toString(pedidos.getValorTotal()), 50, 270, paint);
+        canvas.drawText("=======================================", 50, 300, paint);
         if(pedidos.getItensPedido().size()>0){
-            int y = 280;
+            int y = 330;
 
             for(ItemPedido item : pedidos.getItensPedido()){
                 canvas.drawText(item.getProduto().getNomeProduto(), 50, y, paint);

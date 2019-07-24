@@ -50,13 +50,10 @@ public class MoneyTextWatcher implements TextWatcher {
     private BigDecimal parseToBigDecimal(String value, Locale locale) {
         String replaceable = String.format("[%s,.\\s]", NumberFormat.getCurrencyInstance(locale).getCurrency().getSymbol());
 
-
         String cleanString = value.replaceAll(replaceable, "");
 
-
-
-        return new BigDecimal(cleanString ).setScale(
-                2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(10), BigDecimal.ROUND_FLOOR
+        return new BigDecimal(cleanString).setScale(
+                2, BigDecimal.ROUND_FLOOR).divide(new BigDecimal(100), BigDecimal.ROUND_FLOOR
         );
     }
 }

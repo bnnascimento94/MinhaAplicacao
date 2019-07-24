@@ -3,13 +3,16 @@ package android.curso.minhaaplicacao.view.fragments;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.curso.minhaaplicacao.controller.ControleDiasPrazo;
+import android.curso.minhaaplicacao.controller.ControleItemCarrinho;
 import android.curso.minhaaplicacao.controller.ControlePrazo;
 import android.curso.minhaaplicacao.model.PrazosPagamento;
 import android.curso.minhaaplicacao.view.adapters.PrazoDiasPagamentoCadastroAdapter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +25,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -31,6 +35,7 @@ List<android.curso.minhaaplicacao.model.PrazoDiasPagamento> diasPagamentos;
 View view;
 RecyclerView rv;
 TextView porcentagem;
+private AlertDialog alerta;
 
     public PrazoDiasPagamento() {
         // Required empty public constructor
@@ -135,6 +140,31 @@ TextView porcentagem;
         return prazosPagamentoAdapter;
     }
 
+    public void onPause() {
+        ControleDiasPrazo controleDiasPrazo = new ControleDiasPrazo(getContext());
+        if(controleDiasPrazo.getTotalPorcentagemPrazo(idprazo)<100){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Atenção");
+            builder.setMessage("O total da porcentagem dos prazos não chegou a 100%");
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface arg0, int arg1) {
+
+                }
+            });
+
+            alerta = builder.create();
+            alerta.show();
+
+
+        }
+
+
+
+
+        super.onPause();
+
+// add your code here which executes when user leaving the current fragment or fragment is no longer intractable.
+    }
 
 
 

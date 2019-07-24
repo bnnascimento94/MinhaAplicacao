@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Cliente implements Serializable {
     private String nomeCliente;
     private String emailCliente;
-    private int telefoneCliente;
+    private String telefoneCliente;
     private String enderecoCliente;
     private String diretorioFoto;
     private String nomeArquivo;
@@ -14,7 +14,7 @@ public class Cliente implements Serializable {
 
     public Cliente(){ }
 
-    public Cliente(String nomeCliente, String emailCliente, int telefoneCliente, String enderecoCliente, String diretorioFoto, String nomeArquivo){
+    public Cliente(String nomeCliente, String emailCliente, String telefoneCliente, String enderecoCliente, String diretorioFoto, String nomeArquivo){
         this.nomeCliente = nomeCliente;
         this.emailCliente = emailCliente;
         this.telefoneCliente = telefoneCliente;
@@ -39,11 +39,11 @@ public class Cliente implements Serializable {
         this.emailCliente = emailCliente;
     }
 
-    public int getTelefoneCliente() {
+    public String getTelefoneCliente() {
         return telefoneCliente;
     }
 
-    public void setTelefoneCliente(int telefoneCliente) {
+    public void setTelefoneCliente(String telefoneCliente) {
         this.telefoneCliente = telefoneCliente;
     }
 

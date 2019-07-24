@@ -26,6 +26,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,8 +107,9 @@ public class ProdutoCadastroAdapter extends RecyclerView.Adapter<ProdutoCadastro
 
     @Override
     public void onBindViewHolder(@NonNull final ProdutoViewHolder produtoViewHolder, final int i) {
+        NumberFormat z = NumberFormat.getCurrencyInstance();
         produtoViewHolder.nomeView.setText(produtoFiltrado.get(i).getNomeProduto());
-        produtoViewHolder.price.setText(String.valueOf(produtoFiltrado.get(i).getValorUnitario()));
+        produtoViewHolder.price.setText(z.format(produtoFiltrado.get(i).getValorUnitario()));
 
         Bitmap bitmap = new ImageSaver(produtoViewHolder.itemView.getContext()).
                 setFileName(produtoFiltrado.get(i).getNomeArquivo()).

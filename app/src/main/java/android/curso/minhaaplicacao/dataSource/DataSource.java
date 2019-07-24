@@ -53,7 +53,6 @@ public class DataSource extends SQLiteOpenHelper {
         super(context, nomeBanco, null, versaoBanco);
         db = getWritableDatabase(); //permite a gravação no banco de dados
 
-
     }
 
 
@@ -80,10 +79,9 @@ public class DataSource extends SQLiteOpenHelper {
     public boolean insert(String nomeTabela, ContentValues dados){
         boolean sucesso= true;
 
-        try{
-            sucesso = db.insert(nomeTabela,null, dados) >0; // se foi inserido retorna o valor
-        }catch(Exception e){
-
+            try{
+                sucesso = db.insert(nomeTabela,null, dados) >0; // se foi inserido retorna o valor
+            }catch(Exception e){
 
         }
 
@@ -111,7 +109,6 @@ public class DataSource extends SQLiteOpenHelper {
 
         try{
             db.delete(nomeTabela,"id=?", new String[]{Integer.toString(id)});
-
             sucesso = true;
         }
         catch(Exception e){
@@ -174,12 +171,11 @@ public class DataSource extends SQLiteOpenHelper {
                     obj = new Cliente();
                     obj.setIdCliente(cursor.getInt(cursor.getColumnIndex(ClienteDataModel.getid())));
                     obj.setNomeCliente(cursor.getString(cursor.getColumnIndex(ClienteDataModel.getNomeCliente())));
-                    obj.setTelefoneCliente(cursor.getInt(cursor.getColumnIndex(ClienteDataModel.getTelefoneCliente())));
+                    obj.setTelefoneCliente(cursor.getString(cursor.getColumnIndex(ClienteDataModel.getTelefoneCliente())));
                     obj.setEmailCliente(cursor.getString(cursor.getColumnIndex(ClienteDataModel.getEmailCliente())));
                     obj.setEnderecoCliente(cursor.getString(cursor.getColumnIndex(ClienteDataModel.getEnderecoCliente())));
                     obj.setNomeArquivo(cursor.getString(cursor.getColumnIndex(ClienteDataModel.getNomeFoto())));
                     obj.setDiretorioFoto(cursor.getString(cursor.getColumnIndex(ClienteDataModel.getDiretorioFoto())));
-
                     lista.add(obj);
                 }while(cursor.moveToNext());
 
@@ -207,7 +203,7 @@ public class DataSource extends SQLiteOpenHelper {
                 obj = new Cliente();
                 obj.setIdCliente(cursor.getInt(cursor.getColumnIndex(ClienteDataModel.getid())));
                 obj.setNomeCliente(cursor.getString(cursor.getColumnIndex(ClienteDataModel.getNomeCliente())));
-                obj.setTelefoneCliente(cursor.getInt(cursor.getColumnIndex(ClienteDataModel.getTelefoneCliente())));
+                obj.setTelefoneCliente(cursor.getString(cursor.getColumnIndex(ClienteDataModel.getTelefoneCliente())));
                 obj.setEmailCliente(cursor.getString(cursor.getColumnIndex(ClienteDataModel.getEmailCliente())));
                 obj.setEnderecoCliente(cursor.getString(cursor.getColumnIndex(ClienteDataModel.getEnderecoCliente())));
                 obj.setNomeArquivo(cursor.getString(cursor.getColumnIndex(ClienteDataModel.getNomeFoto())));
@@ -234,7 +230,7 @@ public class DataSource extends SQLiteOpenHelper {
                 obj = new Cliente();
                 obj.setIdCliente(cursor.getInt(cursor.getColumnIndex(ClienteDataModel.getid())));
                 obj.setNomeCliente(cursor.getString(cursor.getColumnIndex(ClienteDataModel.getNomeCliente())));
-                obj.setTelefoneCliente(cursor.getInt(cursor.getColumnIndex(ClienteDataModel.getTelefoneCliente())));
+                obj.setTelefoneCliente(cursor.getString(cursor.getColumnIndex(ClienteDataModel.getTelefoneCliente())));
                 obj.setEmailCliente(cursor.getString(cursor.getColumnIndex(ClienteDataModel.getEmailCliente())));
                 obj.setEnderecoCliente(cursor.getString(cursor.getColumnIndex(ClienteDataModel.getEnderecoCliente())));
                 obj.setNomeArquivo(cursor.getString(cursor.getColumnIndex(ClienteDataModel.getNomeFoto())));
@@ -1417,20 +1413,19 @@ public class DataSource extends SQLiteOpenHelper {
 
     //TODO IMPLEMENTAR METODO
     public Map<String, Double> valoresVendas(){
-        Map<String, Double> topClientes = new HashMap<String, Double>();
+        Map<String, Double> topClientes = new HashMap<String,Double>();
         int total = getNumberPedidos();
 
-        String sql ="SELECT SUM(valor_total) FROM tb_pedidos group by data BETWEEN date('now','start of month') AND date('now','start of month','+1 month','-1 day')";
+        String sql ="select SUM(valor) as valor, strftime('%m-%Y', data_conta) as 'mes' from tb_conta_receber group by strftime('%m-%Y', data_conta) order by strftime('%m', data_conta) desc limit 12";
 
         Cursor cursor = db.rawQuery(sql,null);
 
         if(cursor.moveToFirst()){
             do{
                 try{
-                    String cliente = cursor.getString(cursor.getColumnIndex(ClienteDataModel.getNomeCliente()));
-                    Integer totalElementos = cursor.getInt(cursor.getColumnIndex("total"));
-                    double porcentagem = (Double.valueOf(String.valueOf(totalElementos))/total);
-                    topClientes.put(cliente,porcentagem);
+                    Double valor = cursor.getDouble(cursor.getColumnIndex("valor"));
+                    String mes = cursor.getString(cursor.getColumnIndex("mes"));
+                    topClientes.put(mes,valor);
                 }
                 catch (Exception p){
                     Log.e("Erro busca pieChart",""+p.getMessage());

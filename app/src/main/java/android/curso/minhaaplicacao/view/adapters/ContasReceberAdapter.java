@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -39,8 +40,9 @@ public class ContasReceberAdapter extends RecyclerView.Adapter<ContasReceberAdap
 
     @Override
     public void onBindViewHolder(@NonNull ContasReceberViewHolder contasReceberViewHolder, final int i) {
+        NumberFormat z = NumberFormat.getCurrencyInstance();
         contasReceberViewHolder.txtCliente.setText(contasReceber.get(i).getPedido().getCliente().getNomeCliente());
-        contasReceberViewHolder.txtValorConta.setText(String.valueOf(contasReceber.get(i).getValor()));
+        contasReceberViewHolder.txtValorConta.setText(z.format(contasReceber.get(i).getValor()));
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         contasReceberViewHolder.txtDataConta.setText(simpleDateFormat.format(contasReceber.get(i).getData()));
 
