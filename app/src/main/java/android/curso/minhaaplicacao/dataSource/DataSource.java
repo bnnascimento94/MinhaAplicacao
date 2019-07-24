@@ -38,6 +38,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -325,7 +326,6 @@ public class DataSource extends SQLiteOpenHelper {
         return lista;
 
     }
-
     public List<ItemPedido> getAllItemPedidoByIdPedido(int id){
         ItemPedido obj;
 
@@ -374,7 +374,6 @@ public class DataSource extends SQLiteOpenHelper {
         return lista;
 
     }
-
     public Pedidos getLastPedido(){
         Pedidos obj = null;
         String sql ="SELECT "+PedidoDataModel.getid()+" FROM "+ PedidoDataModel.getTabela()+ " ORDER BY "+PedidoDataModel.getid()+" desc limit 1" ;
@@ -570,7 +569,6 @@ public class DataSource extends SQLiteOpenHelper {
         cursor.close();
         return lista;
     }
-
     public List<ItemCarrinho> getAllItensCarrinhos(){
         ItemCarrinho obj;
 
@@ -660,8 +658,6 @@ public class DataSource extends SQLiteOpenHelper {
         }
         cursor.close();
         return lista;
-
-
     }
     public List<CondicoesPagamento> getCondicoesPagamentoById(int idCondicoesPagamento){
         CondicoesPagamento obj;
@@ -709,7 +705,6 @@ public class DataSource extends SQLiteOpenHelper {
         return lista;
 
     }
-
     public List<PrazosPagamento> getPrazosPagamento(){
         PrazosPagamento obj;
 
@@ -927,7 +922,7 @@ public class DataSource extends SQLiteOpenHelper {
                         obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
                         Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
                         obj.setPedido(pedido);
-                        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                         obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
                         obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
                         obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
@@ -960,7 +955,7 @@ public class DataSource extends SQLiteOpenHelper {
                         obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
                         Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
                         obj.setPedido(pedido);
-                        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                         obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
                         obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
                         obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
@@ -994,7 +989,7 @@ public class DataSource extends SQLiteOpenHelper {
                         obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
                         Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
                         obj.setPedido(pedido);
-                        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                         obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
                         obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
                         obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
@@ -1030,7 +1025,7 @@ public class DataSource extends SQLiteOpenHelper {
                     obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
                     Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
                     obj.setPedido(pedido);
-                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                     obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
                     obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
                     obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
@@ -1062,7 +1057,7 @@ public class DataSource extends SQLiteOpenHelper {
                     obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
                     Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
                     obj.setPedido(pedido);
-                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                     obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
                     obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
                     obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
@@ -1092,7 +1087,7 @@ public class DataSource extends SQLiteOpenHelper {
                     obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
                     Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
                     obj.setPedido(pedido);
-                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                     obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
                     obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
                     obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
@@ -1122,7 +1117,7 @@ public class DataSource extends SQLiteOpenHelper {
                     obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
                     Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
                     obj.setPedido(pedido);
-                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                     obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
                     obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
                     obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
@@ -1153,7 +1148,7 @@ public class DataSource extends SQLiteOpenHelper {
                     obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
                     Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
                     obj.setPedido(pedido);
-                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                     obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
                     obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
                     obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
@@ -1181,7 +1176,7 @@ public class DataSource extends SQLiteOpenHelper {
                     obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
                     Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
                     obj.setPedido(pedido);
-                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                     obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
                     obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
                     obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
@@ -1209,7 +1204,7 @@ public class DataSource extends SQLiteOpenHelper {
                     obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
                     Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
                     obj.setPedido(pedido);
-                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                     obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
                     obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
                     obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
@@ -1237,7 +1232,7 @@ public class DataSource extends SQLiteOpenHelper {
                     obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
                     Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
                     obj.setPedido(pedido);
-                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                     obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
                     obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
                     obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
@@ -1291,7 +1286,7 @@ public class DataSource extends SQLiteOpenHelper {
                     obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
                     Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
                     obj.setPedido(pedido);
-                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
                     obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
                     obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
                     obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
@@ -1310,8 +1305,7 @@ public class DataSource extends SQLiteOpenHelper {
 
         List<Pedidos> lista = new ArrayList<>();
 
-        String sql ="SELECT Count(*) as total FROM "+ ItemPedidoDataModel.getTabela() +" GROUP BY "+
-                ItemPedidoDataModel.getIdProduto() +" Order By total DESC LIMIT 5 " ;
+        String sql ="SELECT Count(*) as total FROM "+ ItemPedidoDataModel.getTabela() +" Order By total DESC LIMIT 5 " ;
 
         Cursor cursor = db.rawQuery(sql,null);
 
@@ -1331,13 +1325,13 @@ public class DataSource extends SQLiteOpenHelper {
 
         return qtdeProdutos;
     }
+    public int getNumberPedidos(){
+        int qtdeProdutos = 0;
 
-    public Map<Integer,Double> topSalesProducts(){
-        Map<Integer, Double> valorProdutos = null;
-        int total = getNumberProducts();
+        List<Pedidos> lista = new ArrayList<>();
 
-        String sql ="SELECT Count(*) as total, "+ItemPedidoDataModel.getIdProduto()+" FROM "+ ItemPedidoDataModel.getTabela()+" GROUP BY "+ItemPedidoDataModel.getIdProduto()+
-               " Order By total DESC LIMIT 5"  ;
+        String sql ="SELECT COUNT(*) as total from "+PedidoDataModel.getTabela()+" a inner join "+ ClienteDataModel.getTabela()+" b on a."+
+                PedidoDataModel.getIdCliente()+" = b."+ClienteDataModel.getid()+" order by total desc limit 5 ";
 
         Cursor cursor = db.rawQuery(sql,null);
 
@@ -1345,9 +1339,35 @@ public class DataSource extends SQLiteOpenHelper {
             do{
 
                 try{
-                    Integer produto = cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()));
+                    qtdeProdutos =cursor.getInt(cursor.getColumnIndex("total"));
+                }
+                catch (Exception p){
+                    String errp = p.getMessage();
+                }
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+
+        return qtdeProdutos;
+
+
+    }
+    public Map<String,Double> topSalesProducts(){
+        Map<String, Double> valorProdutos = new HashMap<String, Double>();
+        int total = getNumberProducts();
+
+        String sql = "SELECT Count(*) as total, b."+ProdutoDataModel.getNomeProduto()+" from "+ ItemPedidoDataModel.getTabela()+" a  inner join "+ ProdutoDataModel.getTabela() +
+                " b on a."+ItemPedidoDataModel.getIdProduto()+" = b."+ProdutoDataModel.getid()+ " group by a."+ItemPedidoDataModel.getIdProduto()+" order by total desc limit 5";
+
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                try{
+                    String produto = cursor.getString(cursor.getColumnIndex(ProdutoDataModel.getNomeProduto()));
                     Integer totalElementos = cursor.getInt(cursor.getColumnIndex("total"));
-                    double porcentagem = totalElementos/total;
+                    double porcentagem = (Double.valueOf(String.valueOf(totalElementos))/total);
                     valorProdutos.put(produto,porcentagem);
                 }
                 catch (Exception p){
@@ -1361,6 +1381,70 @@ public class DataSource extends SQLiteOpenHelper {
 
 
         return valorProdutos;
+    }
+    public Map<String, Double> topClientesPedidos(){
+        Map<String, Double> topClientes = new HashMap<String, Double>();
+        int total = getNumberPedidos();
+
+        String sql ="SELECT COUNT(*) as total, b."+ClienteDataModel.getNomeCliente()+" from "+PedidoDataModel.getTabela()+" a inner join "+ ClienteDataModel.getTabela()+" b on a."+
+                PedidoDataModel.getIdCliente()+" = b."+ClienteDataModel.getid()+" group by b."+ ClienteDataModel.getNomeCliente()+" order by total desc limit 5 ";
+
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                try{
+                    String cliente = cursor.getString(cursor.getColumnIndex(ClienteDataModel.getNomeCliente()));
+                    Integer totalElementos = cursor.getInt(cursor.getColumnIndex("total"));
+                    double porcentagem = (Double.valueOf(String.valueOf(totalElementos))/total);
+                    topClientes.put(cliente,porcentagem);
+                }
+                catch (Exception p){
+                    Log.e("Erro busca pieChart",""+p.getMessage());
+                    String errp = p.getMessage();
+                }
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+
+
+        return topClientes;
+
+
+    }
+
+
+    //TODO IMPLEMENTAR METODO
+    public Map<String, Double> valoresVendas(){
+        Map<String, Double> topClientes = new HashMap<String, Double>();
+        int total = getNumberPedidos();
+
+        String sql ="SELECT SUM(valor_total) FROM tb_pedidos group by data BETWEEN date('now','start of month') AND date('now','start of month','+1 month','-1 day')";
+
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                try{
+                    String cliente = cursor.getString(cursor.getColumnIndex(ClienteDataModel.getNomeCliente()));
+                    Integer totalElementos = cursor.getInt(cursor.getColumnIndex("total"));
+                    double porcentagem = (Double.valueOf(String.valueOf(totalElementos))/total);
+                    topClientes.put(cliente,porcentagem);
+                }
+                catch (Exception p){
+                    Log.e("Erro busca pieChart",""+p.getMessage());
+                    String errp = p.getMessage();
+                }
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+
+
+        return topClientes;
+
+
     }
 
 

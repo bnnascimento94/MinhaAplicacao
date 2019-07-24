@@ -42,7 +42,7 @@ public class FinalizarPedido extends Fragment {
     CondicoesPagamento condicaoPagamentos;
     PrazosPagamento prazosPagamento;
     View view;
-    TextView nomeCliente;
+    TextView nomeCliente, txtCondicaoPagamento,txtPrazoPagamento ;
     public TextView valorTotal;
     Button btnFinalizarPedido;
     RecyclerView rv;
@@ -77,6 +77,11 @@ public class FinalizarPedido extends Fragment {
             nomeCliente = view.findViewById(R.id.txtNome);
             valorTotal = view.findViewById(R.id.txtValorTotal);
             btnFinalizarPedido = view.findViewById(R.id.btnConfirmarPedido);
+            txtCondicaoPagamento = view.findViewById(R.id.txtCondicaoPagamento);
+            txtPrazoPagamento = view.findViewById(R.id.txtPrazoPagamento);
+
+            txtCondicaoPagamento.setText(condicaoPagamentos.getNomeCondiçãoPagamento());
+            txtPrazoPagamento.setText(prazosPagamento.getNomePrazoPagamento());
 
             rv= view.findViewById(R.id.rv);
             rv.setHasFixedSize(true);
@@ -177,9 +182,9 @@ public class FinalizarPedido extends Fragment {
         DecimalFormat fmt = new DecimalFormat("0.00");
         String string = fmt.format(precoDouble);
         String[] part = string.split("[,]");
-       // String string2 = part[0]+"."+part[1];
+        String string2 = part[0]+"."+part[1];
         //
-        double preco = Double.parseDouble(string);
+        double preco = Double.parseDouble(string2);
         return preco;
     }
 
