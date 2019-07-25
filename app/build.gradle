@@ -34,5 +34,6 @@ dependencies {
     implementation 'android.arch.navigation:navigation-fragment:1.0.0'
     implementation 'android.arch.navigation:navigation-ui:1.0.0'
     implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
+    implementation 'com.github.chrisbanes:PhotoView:2.1.3'
 
 }

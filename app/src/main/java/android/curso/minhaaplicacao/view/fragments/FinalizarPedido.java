@@ -15,6 +15,7 @@ import android.curso.minhaaplicacao.model.PrazosPagamento;
 import android.curso.minhaaplicacao.view.adapters.ProdutosPedidoCarrinhoAdapter;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -32,22 +33,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class FinalizarPedido extends Fragment {
     ArrayList<Cliente> cliente;
     CondicoesPagamento condicaoPagamentos;
     PrazosPagamento prazosPagamento;
     View view;
+    NumberFormat z;
+    Locale locale;
+    String replaceable;
     TextView nomeCliente, txtCondicaoPagamento,txtPrazoPagamento ;
     public TextView valorTotal;
     Button btnFinalizarPedido;
     RecyclerView rv;
-    String valorPedido;
     ProdutosPedidoCarrinhoAdapter adapter;
+    ControleItemCarrinho controleItemCarrinho;
+    List<ItemCarrinho> itens;
 
     public FinalizarPedido() {
         // Required empty public constructor
@@ -56,22 +63,24 @@ public class FinalizarPedido extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             cliente =(ArrayList<Cliente>) bundle.getSerializable("cliente");
             condicaoPagamentos = (CondicoesPagamento) bundle.getSerializable("condicaoPagamento") ;
             prazosPagamento = (PrazosPagamento) bundle.getSerializable("prazoPagamento");
         }
-
+        locale = new Locale("pt", "BR");
+        replaceable = String.format("[%s.\\s]", NumberFormat.getCurrencyInstance(locale).getCurrency().getSymbol());
+        controleItemCarrinho = new ControleItemCarrinho(getContext());
+        z = NumberFormat.getCurrencyInstance();
+        itens  = controleItemCarrinho.getAllItens();
+        startTimerThread();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        ControleItemCarrinho controleItemCarrinho = new ControleItemCarrinho(getContext());
-        final List<ItemCarrinho> itens = controleItemCarrinho.getAllItens();
         if(itens.size()>0){
             view = inflater.inflate(R.layout.fragment_finalizar_pedido, container, false);
             nomeCliente = view.findViewById(R.id.txtNome);
@@ -80,9 +89,6 @@ public class FinalizarPedido extends Fragment {
             txtCondicaoPagamento = view.findViewById(R.id.txtCondicaoPagamento);
             txtPrazoPagamento = view.findViewById(R.id.txtPrazoPagamento);
 
-            txtCondicaoPagamento.setText(condicaoPagamentos.getNomeCondiçãoPagamento());
-            txtPrazoPagamento.setText(prazosPagamento.getNomePrazoPagamento());
-
             rv= view.findViewById(R.id.rv);
             rv.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -90,20 +96,9 @@ public class FinalizarPedido extends Fragment {
             adapter = new ProdutosPedidoCarrinhoAdapter(itens);
             rv.setAdapter(adapter);
 
-
+            txtCondicaoPagamento.setText(condicaoPagamentos.getNomeCondiçãoPagamento());
+            txtPrazoPagamento.setText(prazosPagamento.getNomePrazoPagamento());
             nomeCliente.setText(cliente.get(0).getNomeCliente());
-            if(adapter.valorTotal.equals("")){
-                ControleItemCarrinho controller = new ControleItemCarrinho(getContext());
-                adapter.valorTotal =controller.setTotalCarrinho(itens);
-                valorPedido = adapter.valorTotal;
-            }
-            else{
-                valorPedido = adapter.valorTotal;
-            }
-
-
-            valorTotal.setText(""+valorPedido);
-
 
             btnFinalizarPedido.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -112,12 +107,11 @@ public class FinalizarPedido extends Fragment {
                     Pedidos pedidos = new Pedidos();
                     pedidos.setItensPedido((ArrayList<ItemPedido>) controlePedido.setarItemPedido(itens));
                     pedidos.setCliente(cliente.get(0));
-                    String preco = valorPedido.replaceAll("[R$ ]","");
+                    String preco = valorTotal.getText().toString().replaceAll(replaceable, "").replaceAll(",",".");;
                     pedidos.setValorTotal(Double.parseDouble(preco));
                     pedidos.setData(new Date());
                     pedidos.setCondicoesPagamento(condicaoPagamentos);
                     pedidos.setPrazosPagamento(prazosPagamento);
-
 
                     if(controlePedido.salvar(pedidos)){
 
@@ -166,17 +160,11 @@ public class FinalizarPedido extends Fragment {
 
     }
 
-
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);//Salva Activity
     }
 
-
-    public void onRestoreInstanceState(Bundle savedInstanceState){
-        super.onSaveInstanceState(savedInstanceState);//Restaura o Activity
-
-    }
 
     public static double converterDoubleDoisDecimais(double precoDouble) {
         DecimalFormat fmt = new DecimalFormat("0.00");
@@ -188,10 +176,25 @@ public class FinalizarPedido extends Fragment {
         return preco;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Toast.makeText(getActivity().getApplicationContext(),"activity sendo destruida", Toast.LENGTH_LONG).show();
+    private void startTimerThread() {
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            public void run() {
+                    while(true) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        handler.post(new Runnable() {
+                            public void run() {
+                                valorTotal.setText(z.format(controleItemCarrinho.setTotalCarrinho(itens)));
+                            }
+                        });
+                    }
+            }
+        };
+        new Thread(runnable).start();
     }
 
 

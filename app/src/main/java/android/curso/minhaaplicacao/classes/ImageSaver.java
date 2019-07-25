@@ -126,7 +126,8 @@ public class ImageSaver {
             save(bitmap);
             File directory = context.getDir("images", Context.MODE_PRIVATE);
             File file = new File(directory, "image.png");
-            exifInterface = new ExifInterface(file.getAbsolutePath());
+
+            exifInterface = new ExifInterface(file.getPath());
         }catch(IOException e){
             e.printStackTrace();
         }

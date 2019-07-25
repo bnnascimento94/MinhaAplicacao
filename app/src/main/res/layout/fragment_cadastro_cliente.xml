@@ -20,7 +20,7 @@
 
             <EditText
                 android:id="@+id/txtEndereco"
-                android:layout_width="297dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:ems="10"
@@ -33,7 +33,7 @@
 
             <EditText
                 android:id="@+id/txtTelefone"
-                android:layout_width="297dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:ems="10"
@@ -46,7 +46,7 @@
 
             <EditText
                 android:id="@+id/txtEmail"
-                android:layout_width="297dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:ems="10"
@@ -149,7 +149,7 @@
 
             <EditText
                 android:id="@+id/txtNome"
-                android:layout_width="297dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"

@@ -77,12 +77,12 @@ public class ControleItemCarrinho extends DataSource {
         return getAllItemCarrinhoByName(idProduto);
     }
 
-    public String setTotalCarrinho(List<ItemCarrinho> itemCarrinhos){
+    public Double setTotalCarrinho(List<ItemCarrinho> itemCarrinhos){
         double total =0.00;
         for(ItemCarrinho item : itemCarrinhos){
             total += item.getItemValorVenda();
         }
-        return "R$ "+total;
+        return total;
     }
 
 

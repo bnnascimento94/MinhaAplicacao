@@ -1,33 +1,29 @@
 package android.curso.minhaaplicacao.view.fragments;
 
-import android.content.Context;
+
 import android.curso.minhaaplicacao.classes.ImageSaver;
 import android.curso.minhaaplicacao.controller.ControleItemCarrinho;
-import android.curso.minhaaplicacao.model.Cliente;
 import android.curso.minhaaplicacao.model.ItemCarrinho;
-import android.curso.minhaaplicacao.model.ItemPedido;
 import android.curso.minhaaplicacao.model.Produto;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.curso.minhaaplicacao.R;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 
 public class ProdutoDetalhe extends Fragment {
@@ -38,8 +34,9 @@ public class ProdutoDetalhe extends Fragment {
     Button btnAdicionarCarrinho;
     ImageView imageViewProduto;
     View view;
-    byte[] fotoArray;
-    Bitmap raw;
+    NumberFormat z;
+    Locale locale;
+    String replaceable;
     ControleItemCarrinho controleItemCarrinho;
     Boolean itemSelecionado;
     List <ItemCarrinho> itemCarrinho;
@@ -55,6 +52,9 @@ public class ProdutoDetalhe extends Fragment {
         if (bundle != null) {
             produto =(Produto) bundle.getSerializable("produto");
         }
+        locale = new Locale("pt", "BR");
+        replaceable = String.format("[%s.\\s]", NumberFormat.getCurrencyInstance(locale).getCurrency().getSymbol());
+        z = NumberFormat.getCurrencyInstance();
     }
 
     @Override
@@ -71,11 +71,12 @@ public class ProdutoDetalhe extends Fragment {
         controleItemCarrinho = new ControleItemCarrinho(getContext());
         itemCarrinho = controleItemCarrinho.getItemCarrinhoByNome(produto.getIdProduto());
 
+
+
         if(itemCarrinho.size()>0){
             itemSelecionado = true;
             txtNomeProduto.setText(produto.getNomeProduto());
-            txtValorUnitario.setText("R$ "+produto.getValorUnitario());
-
+            txtValorUnitario.setText(z.format(produto.getValorUnitario()));
 
             Bitmap bitmap = new ImageSaver(getContext()).
                     setFileName(produto.getNomeArquivo()).
@@ -88,11 +89,11 @@ public class ProdutoDetalhe extends Fragment {
             }
 
             editQtde.setText(String.valueOf(itemCarrinho.get(0).getQtde()));
-            txtValorVenda.setText(Double.toString(itemCarrinho.get(0).getItemValorVenda()));
+            txtValorVenda.setText(z.format(itemCarrinho.get(0).getItemValorVenda()));
         }else{
             itemSelecionado = false;
             txtNomeProduto.setText(produto.getNomeProduto());
-            txtValorUnitario.setText("R$ "+produto.getValorUnitario());
+            txtValorUnitario.setText(z.format(produto.getValorUnitario()));
             Bitmap bitmap = new ImageSaver(getContext()).
                     setFileName(produto.getNomeArquivo()).
                     setDirectoryName(produto.getDiretorioFoto()).
@@ -108,17 +109,34 @@ public class ProdutoDetalhe extends Fragment {
 
         }
 
+        imageViewProduto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImagemAmpliada imagemAmpliada = new ImagemAmpliada();
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("nomeArquivo",produto.getNomeArquivo());
+                bundle.putSerializable("diretorio",produto.getDiretorioFoto());
+                imagemAmpliada.setArguments(bundle);
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content_fragment, imagemAmpliada).commit();
+            }
+        });
+
 
 
 
         editQtde.addTextChangedListener(new TextWatcher() {
             double valorProduto;
 
+
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 if(editQtde.isFocused()){
                     if(count ==0){ //verifica se é a primeira vez
-                        String preco = txtValorUnitario.getText().toString().replaceAll("[R$ ]","");
+                        String preco = txtValorUnitario.getText().toString().replaceAll(replaceable, "").replaceAll(",",".");
                         valorProduto = Double.parseDouble(preco);
                     }
                 }
@@ -131,15 +149,15 @@ public class ProdutoDetalhe extends Fragment {
                     if(editQtde.getText().toString().equals("")){
                         quantidade = 1;
                         double valor_venda = quantidade * valorProduto;
-                        txtValorVenda.setText("R$ "+String.valueOf(valor_venda));
+                        txtValorVenda.setText(z.format(valor_venda));
 
                     }
                     else{
                         quantidade = Integer.parseInt(editQtde.getText().toString());
-                        String preco = txtValorUnitario.getText().toString().replaceAll("[R$ ]","");
+                        String preco = txtValorUnitario.getText().toString().replaceAll(replaceable, "").replaceAll(",",".");
                         double productPrice = Double.parseDouble(preco);
                         double valor_produto = quantidade * productPrice;
-                        txtValorVenda.setText("R$ "+String.valueOf(valor_produto));
+                        txtValorVenda.setText(z.format(valor_produto));
                     }
                 }
             }
@@ -163,7 +181,7 @@ public class ProdutoDetalhe extends Fragment {
                                 item.setIdItemCarrinho(itemCarrinho.get(0).getIdItemCarrinho());
                                 item.setQtde(Integer.parseInt(editQtde.getText().toString()));
                                 item.setProduto(produto);
-                                item.setItemValorVenda(Double.parseDouble(txtValorVenda.getText().toString().replaceAll("[R$ ]","")));
+                                item.setItemValorVenda(Double.parseDouble(txtValorVenda.getText().toString().replaceAll(replaceable, "").replaceAll(",",".")));
                                 controleItemCarrinho = new ControleItemCarrinho(getContext());
 
                                 if(controleItemCarrinho.alterar(item)){
@@ -176,15 +194,13 @@ public class ProdutoDetalhe extends Fragment {
                                 item.setIdItemCarrinho(itemCarrinho.get(0).getIdItemCarrinho());
                                 item.setQtde(1);
                                 item.setProduto(produto);
-                                item.setItemValorVenda(Double.parseDouble(txtValorVenda.getText().toString().replaceAll("[R$ ]","")));
+                                item.setItemValorVenda(Double.parseDouble(txtValorVenda.getText().toString().replaceAll(replaceable, "").replaceAll(",",".")));
                                 controleItemCarrinho = new ControleItemCarrinho(getContext());
 
                                 if(controleItemCarrinho.alterar(item)){
                                     getFragmentManager().popBackStack();
                                     Toast.makeText(getContext(),"Item inserido no carrinho",Toast.LENGTH_LONG).show();
                                 }
-
-
 
                             }else{
                                 Toast.makeText(getContext(),"Insira um numero válido",Toast.LENGTH_LONG).show();
@@ -200,7 +216,7 @@ public class ProdutoDetalhe extends Fragment {
                             ItemCarrinho item = new ItemCarrinho();
                             item.setQtde(Integer.parseInt(editQtde.getText().toString()));
                             item.setProduto(produto);
-                            item.setItemValorVenda(Double.parseDouble(txtValorVenda.getText().toString().replaceAll("[R$ ]","")));
+                            item.setItemValorVenda((Double.parseDouble(txtValorVenda.getText().toString().replaceAll(replaceable, "").replaceAll(",","."))));
                             controleItemCarrinho = new ControleItemCarrinho(getContext());
 
                             if(controleItemCarrinho.salvar(item)){

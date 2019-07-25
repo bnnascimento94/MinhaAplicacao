@@ -4,15 +4,10 @@ import android.content.DialogInterface;
 import android.curso.minhaaplicacao.R;
 import android.curso.minhaaplicacao.classes.ImageSaver;
 import android.curso.minhaaplicacao.controller.ControleItemCarrinho;
-import android.curso.minhaaplicacao.controller.ControleProdutos;
 import android.curso.minhaaplicacao.model.ItemCarrinho;
-import android.curso.minhaaplicacao.model.ItemPedido;
-import android.curso.minhaaplicacao.view.TelaPrincipalActivity;
 import android.curso.minhaaplicacao.view.fragments.Graficos;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -29,17 +24,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<ProdutosPedidoCarrinhoAdapter.ProdutoViewHolder>{
     List<ItemCarrinho> produtos;
-    byte[] fotoArray;
-    Bitmap raw;
     private AlertDialog alerta;
-    public String valorTotal = "";
 
     public ProdutosPedidoCarrinhoAdapter(List<ItemCarrinho> produtos){
         this.produtos = produtos;
 
     }
-
-
 
     public static class ProdutoViewHolder extends RecyclerView.ViewHolder {
         CircleImageView fotoID;
@@ -56,7 +46,6 @@ public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<Produtos
             valorTotal = itemView.findViewById(R.id.txtValorVendaProdutoSelecionado);
             txtQtde = itemView.findViewById(R.id.txtQtde);
 
-
         }
 
     }
@@ -64,7 +53,6 @@ public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<Produtos
     public ProdutoViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.pedido_produtos_selecionados, viewGroup, false);
         ProdutoViewHolder pvh = new ProdutoViewHolder(v);
-
         return pvh;
     }
 
@@ -105,8 +93,6 @@ public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<Produtos
                                         notifyItemRemoved(i); //seta o elemento que foi excluido
                                         notifyItemRangeChanged(i, produtos.size());
 
-                                        valorTotal =controller.setTotalCarrinho(produtos);
-
                                         ControleItemCarrinho controleItemCarrinho = new ControleItemCarrinho(v.getContext());
                                         controleItemCarrinho.deletarAllItemCarinho();
 
@@ -134,7 +120,7 @@ public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<Produtos
                                 produtos.remove(produtos.get(i));
                                 notifyItemRemoved(i); //seta o elemento que foi excluido
                                 notifyItemRangeChanged(i, produtos.size());
-                                valorTotal =controller.setTotalCarrinho(produtos);
+
                                 Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
                             }else{
                                 Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
