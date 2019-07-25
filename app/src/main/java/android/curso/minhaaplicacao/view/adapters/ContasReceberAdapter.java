@@ -3,6 +3,7 @@ package android.curso.minhaaplicacao.view.adapters;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.curso.minhaaplicacao.R;
+import android.curso.minhaaplicacao.classes.MoneyTextWatcher;
 import android.curso.minhaaplicacao.controller.ControleContasReceber;
 import android.curso.minhaaplicacao.model.ContasReceber;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class ContasReceberAdapter extends RecyclerView.Adapter<ContasReceberAdapter.ContasReceberViewHolder> {
     List<ContasReceber> contasReceber;
@@ -52,10 +54,13 @@ public class ContasReceberAdapter extends RecyclerView.Adapter<ContasReceberAdap
                                              LayoutInflater inflater = (LayoutInflater) v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                                              View alertLayout = inflater.inflate(R.layout.pagamento_conta_receber, null);
                                              final EditText editName = alertLayout.findViewById(R.id.editName);
+                                             NumberFormat z = NumberFormat.getCurrencyInstance();
                                              final EditText editLiquidado = alertLayout.findViewById(R.id.editLiquidado);
-                                             editName.setText(String.valueOf(contasReceber.get(i).getValor()));
+                                             editName.setText(z.format(contasReceber.get(i).getValor()));
                                              editName.setEnabled(false);
-                                             editLiquidado.setText(String.valueOf(contasReceber.get(i).getValorLiquidado()));
+                                             editLiquidado.setText(z.format(contasReceber.get(i).getValorLiquidado()));
+                                             final Locale mLocale = new Locale("pt", "BR");
+                                             editLiquidado.addTextChangedListener(new MoneyTextWatcher(editLiquidado, mLocale));
 
                                              AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
                                              alert.setTitle("Quitação de Conta");
@@ -73,11 +78,13 @@ public class ContasReceberAdapter extends RecyclerView.Adapter<ContasReceberAdap
                                              alert.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
                                                  @Override
                                                  public void onClick(DialogInterface dialog, int which) {
+                                                     String replaceable = String.format("[%s.\\s]", NumberFormat.getCurrencyInstance(mLocale).getCurrency().getSymbol());
+                                                     String cleanLiquidado = editLiquidado.getText().toString().replaceAll(replaceable, "").replaceAll(",",".");
                                                      ControleContasReceber controleContasReceber = new ControleContasReceber(v.getContext());
                                                      ContasReceber contaReceber = new ContasReceber();
                                                      contaReceber.setIdContaReceber(contasReceber.get(i).getIdContaReceber());
                                                      contaReceber.setValor(contasReceber.get(i).getValor());
-                                                     contaReceber.setValorLiquidado(Double.parseDouble(editLiquidado.getText().toString()));
+                                                     contaReceber.setValorLiquidado(Double.parseDouble(cleanLiquidado));
                                                      contaReceber.setData(contasReceber.get(i).getData());
                                                      contaReceber.setPedido(contasReceber.get(i).getPedido());
                                                      if(controleContasReceber.alterar(contaReceber)){

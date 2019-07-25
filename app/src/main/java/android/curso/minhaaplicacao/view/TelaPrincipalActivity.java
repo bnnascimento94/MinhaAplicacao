@@ -1,5 +1,6 @@
 package android.curso.minhaaplicacao.view;
 
+import android.content.Intent;
 import android.curso.minhaaplicacao.R;
 import android.curso.minhaaplicacao.controller.ControleItemCarrinho;
 import android.curso.minhaaplicacao.view.adapters.ExpandableAdapter;
@@ -184,6 +185,15 @@ public class TelaPrincipalActivity extends AppCompatActivity {
                                 break;
                         }
                         break;
+
+                    case 5:
+                        switch (childPosition) {
+                            case 0:
+                                Intent telaPrincipal = new Intent(TelaPrincipalActivity.this,GuiaGraficosActivity.class );
+                                startActivity(telaPrincipal);
+                                break;
+                        }
+                        break;
                 }
                 return false;
             }
@@ -276,6 +286,7 @@ public class TelaPrincipalActivity extends AppCompatActivity {
         listGroup.add("Financeiro");
         listGroup.add("Pedidos");
         listGroup.add("Contas a Receber");
+        listGroup.add("Graficos");
 
         // CHILDREN
         List<String> auxList = new ArrayList<String>();
@@ -301,6 +312,10 @@ public class TelaPrincipalActivity extends AppCompatActivity {
         auxList = new ArrayList<String>();
         auxList.add("Contas a Receber");
         listData.put(listGroup.get(4), auxList);
+
+        auxList = new ArrayList<String>();
+        auxList.add("Graficos");
+        listData.put(listGroup.get(5), auxList);
 
     }
 

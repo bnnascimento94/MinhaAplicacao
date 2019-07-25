@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -263,11 +264,12 @@ public class CadastroCliente extends Fragment {
             if(requestCode == RESULT_CAMERA && resultCode == -1){
                 try {
                     Bitmap foto1 = (Bitmap)data.getExtras().get("data");
-                    Matrix matrix = new Matrix();
+
+                    /**Matrix matrix = new Matrix();
                     matrix.postRotate(90);
                     Bitmap fotoFinal = Bitmap.createBitmap(foto1, 0, 0, foto1.getWidth(),
-                            foto1.getHeight(), matrix, true);
-                    foto.setImageBitmap(fotoFinal);
+                            foto1.getHeight(), matrix, true);**/
+                    foto.setImageBitmap(new ImageSaver(getContext()).rotateImage(foto1));
                 } catch (Exception e) {
                     Toast.makeText(getContext()," "+e,Toast.LENGTH_LONG);
                 }
@@ -294,5 +296,7 @@ public class CadastroCliente extends Fragment {
 
 
     }
+
+
 
 }

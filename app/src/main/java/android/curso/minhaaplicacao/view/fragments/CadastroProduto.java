@@ -95,14 +95,11 @@ public class CadastroProduto extends Fragment {
         camera = view.findViewById(R.id.editFoto);
         imagemProduto.setImageResource(R.drawable.produto);
 
-        Locale mLocale = new Locale("pt", "BR");
-        valorVenda.addTextChangedListener(new MoneyTextWatcher(valorVenda, mLocale));
-        custoProduto.addTextChangedListener(new MoneyTextWatcher(custoProduto, mLocale));
-
         if(produto!=null){
+            NumberFormat z = NumberFormat.getCurrencyInstance();
             nomeProduto.setText(produto.get(0).getNomeProduto());
-            custoProduto.setText(String.valueOf(produto.get(0).getCustoProduto()));
-            valorVenda.setText(String.valueOf(produto.get(0).getValorUnitario()));
+            custoProduto.setText(z.format(produto.get(0).getCustoProduto()));
+            valorVenda.setText(z.format(produto.get(0).getValorUnitario()));
 
             Bitmap bitmap = new ImageSaver(getContext()).
                     setFileName(produto.get(0).getNomeArquivo()).
@@ -116,6 +113,10 @@ public class CadastroProduto extends Fragment {
             }
 
         }
+
+        Locale mLocale = new Locale("pt", "BR");
+        valorVenda.addTextChangedListener(new MoneyTextWatcher(valorVenda, mLocale));
+        custoProduto.addTextChangedListener(new MoneyTextWatcher(custoProduto, mLocale));
 
         camera.setOnClickListener(new View.OnClickListener() {
             @Override

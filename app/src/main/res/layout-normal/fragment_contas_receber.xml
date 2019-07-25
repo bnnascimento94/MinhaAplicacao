@@ -51,6 +51,7 @@
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="64dp"
                 android:text="Buscar"
+                android:background="@drawable/btn_customizado"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/txtData" />

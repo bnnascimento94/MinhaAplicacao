@@ -54,4 +54,7 @@
     <string name="contaReceberData">Data</string>
     <string name="contaReceberQuitar">Quitar</string>
     <string name="contaReceberDelete">Deletar</string>
+    <string name="title_activity_guia_graficos">GuiaGraficosActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 </resources>

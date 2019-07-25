@@ -2,6 +2,8 @@ package android.curso.minhaaplicacao.classes;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -117,4 +119,32 @@ public class ImageSaver {
         deleted = f0.delete();
         return deleted;
     }
+
+    public Bitmap rotateImage(Bitmap bitmap){
+        ExifInterface exifInterface = null;
+        try{
+            save(bitmap);
+            File directory = context.getDir("images", Context.MODE_PRIVATE);
+            File file = new File(directory, "image.png");
+            exifInterface = new ExifInterface(file.getAbsolutePath());
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_UNDEFINED);
+
+        Matrix matrix = new Matrix();
+        switch(orientation){
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                break;
+            default:
+        }
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0,0,bitmap.getWidth(), bitmap.getHeight(),matrix, true);
+
+        return rotatedBitmap;
+    }
+
 }
