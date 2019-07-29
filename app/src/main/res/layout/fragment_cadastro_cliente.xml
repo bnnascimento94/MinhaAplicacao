@@ -1,166 +1,112 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.CadastroCliente">
+    android:fitsSystemWindows="true">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="111dp">
+        android:padding="16dp"
+        android:orientation="vertical"
+        app:layout_behavior="android.support.design.behavior.HideBottomViewOnScrollBehavior">
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/contraintInterno"
+        <RelativeLayout
+            android:id="@+id/relativeLayout4"
+            android:layout_width="131dp"
+            android:layout_height="95dp"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageView2"
+                android:layout_width="123dp"
+                android:layout_height="80dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="36dp"
+                android:src="@drawable/user_no_pic" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/editFoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="0dp"
+                app:srcCompat="@android:drawable/ic_menu_camera" />
+
+        </RelativeLayout>
+
+
+
+
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <EditText
-                android:id="@+id/txtEndereco"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:ems="10"
-                android:inputType="textPersonName"
-                app:layout_constraintBottom_toTopOf="@+id/btnSalvar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView19" />
-
-            <EditText
-                android:id="@+id/txtTelefone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:ems="10"
-                android:inputType="numberDecimal"
-                app:layout_constraintBottom_toTopOf="@+id/textView17"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
-            <EditText
-                android:id="@+id/txtEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:ems="10"
-                android:inputType="textEmailAddress"
-                app:layout_constraintBottom_toTopOf="@+id/textView19"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView17" />
-
-            <RelativeLayout
-                android:id="@+id/relativeLayout4"
-                android:layout_width="131dp"
-                android:layout_height="95dp"
-                app:layout_constraintBottom_toTopOf="@+id/textView15"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="123dp"
-                    android:layout_height="80dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="36dp"
-                    android:src="@drawable/user_no_pic" />
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/editFoto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="0dp"
-                    app:srcCompat="@android:drawable/ic_menu_camera" />
-
-            </RelativeLayout>
-
-            <Button
-                android:id="@+id/btnSalvar"
-                android:layout_width="293dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="541dp"
-                android:background="@drawable/btn_customizado"
-                android:text="Salvar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cadastroClienteNome"
-                app:layout_constraintBottom_toTopOf="@+id/txtNome"
-                app:layout_constraintStart_toStartOf="@+id/txtNome"
-                app:layout_constraintTop_toBottomOf="@+id/relativeLayout4" />
-
-            <TextView
-                android:id="@+id/textView17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cadastroClienteEmail"
-                app:layout_constraintBottom_toTopOf="@+id/txtEmail"
-                app:layout_constraintStart_toStartOf="@+id/txtEmail"
-                app:layout_constraintTop_toBottomOf="@+id/txtTelefone" />
-
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cadastroClienteTelefone"
-                app:layout_constraintBottom_toTopOf="@+id/txtTelefone"
-                app:layout_constraintStart_toStartOf="@+id/txtTelefone"
-                app:layout_constraintTop_toBottomOf="@+id/txtNome" />
-
-            <TextView
-                android:id="@+id/textView19"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cadastroClienteEndereco"
-                app:layout_constraintBottom_toTopOf="@+id/txtEndereco"
-                app:layout_constraintStart_toStartOf="@+id/txtEndereco"
-                app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
-
-            <android.support.constraint.Barrier
-                android:id="@+id/barrier"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="top"
-                tools:layout_editor_absoluteY="602dp" />
-
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
             <EditText
                 android:id="@+id/txtNome"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                app:layout_constraintBottom_toTopOf="@+id/textView18"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+                android:inputType="text|textCapSentences"
+                android:maxLines="1"
+                android:hint="@string/cadastroClienteNome"/>
+        </android.support.design.widget.TextInputLayout>
 
-        </android.support.constraint.ConstraintLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+            <EditText
+                android:id="@+id/txtTelefone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone|textCapSentences"
+                android:maxLines="1"
+                android:hint="@string/cadastroClienteTelefone"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+            <EditText
+                android:id="@+id/txtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress|textCapSentences"
+                android:maxLines="1"
+                android:hint="@string/cadastroClienteEmail"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+            <EditText
+                android:id="@+id/txtEndereco"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text|textCapSentences"
+                android:maxLines="1"
+                android:hint="@string/cadastroClienteEndereco"/>
+        </android.support.design.widget.TextInputLayout>
 
-    </ScrollView>
 
-</android.support.constraint.ConstraintLayout>
+
+        <Button
+            android:id="@+id/btnSalvar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_customizado"
+            android:layout_marginTop="30dp"
+            android:text="Salvar"/>
+
+
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

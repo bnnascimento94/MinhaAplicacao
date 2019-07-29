@@ -29,7 +29,7 @@
         android:layout_width="492dp"
         android:layout_height="47dp"
         android:layout_marginTop="77dp"
-        android:layout_marginEnd="120dp"
+        android:layout_marginEnd="96dp"
         android:layout_marginBottom="82dp"
         android:background="@drawable/edit_customizado"
         android:ems="10"
@@ -38,7 +38,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/btnSair"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/txtUsuario"
-        app:layout_constraintVertical_bias="0.461" />
+        app:layout_constraintVertical_bias="0.653" />
 
 
     <Button

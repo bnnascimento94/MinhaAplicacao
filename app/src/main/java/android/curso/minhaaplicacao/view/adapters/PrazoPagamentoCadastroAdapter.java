@@ -3,9 +3,7 @@ package android.curso.minhaaplicacao.view.adapters;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.curso.minhaaplicacao.R;
-import android.curso.minhaaplicacao.controller.ControleCondicaoPagamento;
 import android.curso.minhaaplicacao.controller.ControlePrazo;
-import android.curso.minhaaplicacao.model.CondicoesPagamento;
 import android.curso.minhaaplicacao.model.PrazosPagamento;
 import android.curso.minhaaplicacao.view.fragments.PrazoDiasPagamento;
 import android.os.Bundle;
@@ -99,7 +97,7 @@ public class PrazoPagamentoCadastroAdapter extends RecyclerView.Adapter<PrazoPag
             public void onClick(final View v) {
                 LayoutInflater inflater = (LayoutInflater) v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View alertLayout = inflater.inflate(R.layout.financeiro_prazo_pagamento, null);
-                final EditText nomePrazoPagamento = alertLayout.findViewById(R.id.txtNomePrazo);
+                final EditText nomePrazoPagamento = alertLayout.findViewById(R.id.txtDias);
                 nomePrazoPagamento.setText(prazoFiltrado.get(i).getNomePrazoPagamento());
                 AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
                 alert.setTitle("Cadastro Nome Prazo de Pagamento");
@@ -134,6 +132,7 @@ public class PrazoPagamentoCadastroAdapter extends RecyclerView.Adapter<PrazoPag
                     }
                 });
                 AlertDialog dialog = alert.create();
+                dialog.getWindow().setLayout(393, 199); //Controlling width and height.
                 dialog.show();
             }
         });

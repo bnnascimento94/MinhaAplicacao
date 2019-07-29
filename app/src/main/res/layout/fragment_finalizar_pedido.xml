@@ -13,7 +13,7 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="241dp"
+        android:layout_height="156dp"
         android:paddingVertical="10dp"
 
         >
@@ -21,7 +21,7 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/relativeLayout2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="159dp"
 
             android:orientation="vertical"
             android:padding="16dp">
@@ -31,130 +31,93 @@
                 android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="21dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
                 android:text="@string/nomeClienteFinalizarPedido"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/txtNomeCondicao"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.039" />
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/btnConfirmarPedido"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="44dp"
-                android:layout_marginTop="487dp"
-                android:layout_marginEnd="44dp"
-                android:layout_marginBottom="188dp"
-                android:background="@drawable/btn_customizado"
-                android:text="@string/finalizarPedido"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.623"
-                tools:layout_conversion_wrapHeight="155"
-                tools:layout_conversion_wrapWidth="869" />
 
             <TextView
                 android:id="@+id/txtNome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="273dp"
-                android:layout_marginBottom="402dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="21dp"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="Name"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView14"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.53" />
+                app:layout_constraintTop_toTopOf="parent" />
 
-
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/valorTotalPedido"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.268" />
-
-            <TextView
-                android:id="@+id/txtValorTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="100dp"
-                android:layout_marginBottom="312dp"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView13"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.198" />
 
             <TextView
                 android:id="@+id/textView24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
                 android:text="Condição Pagamento:"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtValorTotal" />
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
             <TextView
                 android:id="@+id/txtCondicaoPagamento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
                 android:text="TextView"
                 android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@+id/textView24"
-                app:layout_constraintTop_toBottomOf="@+id/txtValorTotal" />
+                app:layout_constraintTop_toBottomOf="@+id/txtNome" />
 
             <TextView
                 android:id="@+id/textView26"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
                 android:text="Prazo Pagamento:"
                 android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView24" />
+                app:layout_constraintTop_toBottomOf="@+id/textView24"
+                app:layout_constraintVertical_bias="0.111" />
 
             <TextView
                 android:id="@+id/txtPrazoPagamento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="15dp"
                 android:text="TextView"
                 android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@+id/textView26"
-                app:layout_constraintTop_toBottomOf="@+id/txtCondicaoPagamento" />
+                app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
 
         </android.support.constraint.ConstraintLayout>
 
 
-
     </android.support.v7.widget.CardView>
 
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="389dp"
+        android:padding="0dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </ScrollView>
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -171,54 +134,52 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardView2"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingVertical="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="22dp"
+                android:text="@string/valorTotalPedido"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/txtValorTotal"
+                android:layout_width="124dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="43dp"
+                android:layout_marginBottom="22dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Name"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView13"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <Button
+                android:id="@+id/btnConfirmarPedido"
+                android:layout_width="164dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="17dp"
+                android:background="@drawable/btn_customizado"
+                android:text="@string/finalizarPedido"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_wrapHeight="155"
+                tools:layout_conversion_wrapWidth="869" />
 
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/relativeLayout7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-
-                    android:padding="0dp">
-
-                    <TextView
-                        android:id="@+id/textView16"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-
-                        android:text="@string/produtoPedidoFinalizado"
-                        android:textSize="30sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </android.support.constraint.ConstraintLayout>
-
-            </android.support.v7.widget.CardView>
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
-
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="0dp">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </ScrollView>
 </LinearLayout>
 
 

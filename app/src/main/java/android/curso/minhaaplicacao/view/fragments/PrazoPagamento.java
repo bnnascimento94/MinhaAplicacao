@@ -2,9 +2,7 @@ package android.curso.minhaaplicacao.view.fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.curso.minhaaplicacao.controller.ControleCondicaoPagamento;
 import android.curso.minhaaplicacao.controller.ControlePrazo;
-import android.curso.minhaaplicacao.model.CondicoesPagamento;
 import android.curso.minhaaplicacao.model.PrazosPagamento;
 import android.curso.minhaaplicacao.view.adapters.PrazoPagamentoCadastroAdapter;
 import android.os.Bundle;
@@ -18,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.curso.minhaaplicacao.R;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -68,7 +65,7 @@ public class PrazoPagamento extends Fragment {
             public void onClick(final View view) {
                 LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View alertLayout = inflater.inflate(R.layout.financeiro_prazo_pagamento, null);
-                final EditText txtNomePrazo = alertLayout.findViewById(R.id.txtNomePrazo);
+                final EditText txtNomePrazo = alertLayout.findViewById(R.id.txtDias);
                 AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
                 alert.setTitle("Cadastro Prazo de Pagamento");
                 // this is set the view from XML inside AlertDialog

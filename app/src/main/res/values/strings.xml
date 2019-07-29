@@ -21,8 +21,8 @@
     <string name="cadastroClienteEmail">Digite o E-mail</string>
     <string name="cadastroClienteTelefone">Telefone Cliente</string>
     <string name="cadastroClienteEndereco">Digite o Endereço</string>
-    <string name="cadastroProdutoCusto">Custo:</string>
-    <string name="cadastroProdutoNomeProduto">Nome:</string>
+    <string name="cadastroProdutoCusto">Custo</string>
+    <string name="cadastroProdutoNomeProduto">Nome</string>
     <string name="cadastroProdutoPreco">Preço:</string>
     <string name="cadastroPedidosSelecionarProduto">Adicione o Produto:</string>
     <string name="cadastroPedidoQuantidade">Quantidade:</string>
@@ -35,7 +35,7 @@
     <string name="nomeClienteFinalizarPedido">Cliente:</string>
     <string name="valorTotalPedido">Total:</string>
     <string name="tituloFinalizarPedido">Finalizar Pedido</string>
-    <string name="finalizarPedido">Confirmar Pedido</string>
+    <string name="finalizarPedido">Finalizar</string>
     <string name="pedidoListagem">Produtos</string>
     <string name="search_hint">valor</string>
     <string name="cancelarPedidos">Cancelar</string>

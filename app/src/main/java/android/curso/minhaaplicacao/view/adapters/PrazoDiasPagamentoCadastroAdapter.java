@@ -124,6 +124,7 @@ public class PrazoDiasPagamentoCadastroAdapter extends RecyclerView.Adapter<Praz
                     }
                 });
                 AlertDialog dialog = alert.create();
+                dialog.getWindow().setLayout(393, 220); //Controlling width and height.
                 dialog.show();
 
             }
