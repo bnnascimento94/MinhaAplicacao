@@ -8,6 +8,7 @@ import android.curso.minhaaplicacao.view.adapters.PedidosAdapter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -46,6 +47,7 @@ public class ContasReceber extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contas_receber, container, false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Contas a Receber");
         txtData = view.findViewById(R.id.txtData);
         txtCliente = view.findViewById(R.id.txtCliente);
         chkAberto = view.findViewById(R.id.chkAberto);

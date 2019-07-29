@@ -1,18 +1,26 @@
 package android.curso.minhaaplicacao.view.fragments;
 
-
+import android.content.Intent;
 import android.curso.minhaaplicacao.classes.ImageSaver;
 import android.curso.minhaaplicacao.controller.ControleItemCarrinho;
 import android.curso.minhaaplicacao.model.ItemCarrinho;
 import android.curso.minhaaplicacao.model.Produto;
+import android.curso.minhaaplicacao.view.ImagemAmpliadaActivity;
+import android.curso.minhaaplicacao.view.TelaPrincipalActivity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.curso.minhaaplicacao.R;
@@ -71,6 +79,8 @@ public class ProdutoDetalhe extends Fragment {
         controleItemCarrinho = new ControleItemCarrinho(getContext());
         itemCarrinho = controleItemCarrinho.getItemCarrinhoByNome(produto.getIdProduto());
 
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Detalhes Produto");
+
 
 
         if(itemCarrinho.size()>0){
@@ -113,14 +123,11 @@ public class ProdutoDetalhe extends Fragment {
             @Override
             public void onClick(View v) {
                 ImagemAmpliada imagemAmpliada = new ImagemAmpliada();
+                Intent intentVaiProFormulario = new Intent(getContext(), ImagemAmpliadaActivity.class );
+                intentVaiProFormulario.putExtra("nomeArquivo",produto.getNomeArquivo());
+                intentVaiProFormulario.putExtra("diretorio",produto.getDiretorioFoto());
+                startActivity(intentVaiProFormulario);
 
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("nomeArquivo",produto.getNomeArquivo());
-                bundle.putSerializable("diretorio",produto.getDiretorioFoto());
-                imagemAmpliada.setArguments(bundle);
-
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().addToBackStack(null).replace(R.id.content_fragment, imagemAmpliada).commit();
             }
         });
 
@@ -237,6 +244,49 @@ public class ProdutoDetalhe extends Fragment {
 
         return view ;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+      //  ExpandableListView expandableListView = (ExpandableListView) getActivity().findViewById(R.id.expandableListView);
+      //  ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        //((AppCompatActivity)getActivity()).setSupportActionBar(expandableListView)
+      //  ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Produto Detalhe");
+      //  ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+      //  ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+
+
+        //toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+          //  @Override
+            /**public void onClick(View v) {
+                Toast.makeText(getContext(),"Testando aqui",Toast.LENGTH_LONG).show();
+                //SetExpandableListView setExpandableListView = new SetExpandableListView(getActivity());
+                //setExpandableListView.setar();
+
+            }
+        });**/
+
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.tela_principal, menu);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Produto Detalhe");
+        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView searchView = new SearchView(((TelaPrincipalActivity) getContext()).getSupportActionBar().getThemedContext());
+        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        MenuItemCompat.setActionView(item, searchView);
+
+
+
+    }
+
 
 
 }

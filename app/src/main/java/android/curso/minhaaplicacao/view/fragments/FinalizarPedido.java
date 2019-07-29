@@ -1,6 +1,7 @@
 package android.curso.minhaaplicacao.view.fragments;
 
 
+import android.content.Intent;
 import android.curso.minhaaplicacao.controller.ControleContasReceber;
 import android.curso.minhaaplicacao.controller.ControleItemCarrinho;
 import android.curso.minhaaplicacao.controller.ControlePedidos;
@@ -12,6 +13,8 @@ import android.curso.minhaaplicacao.model.ItemPedido;
 import android.curso.minhaaplicacao.model.Pedidos;
 
 import android.curso.minhaaplicacao.model.PrazosPagamento;
+import android.curso.minhaaplicacao.view.ImagemAmpliadaActivity;
+import android.curso.minhaaplicacao.view.ReciboActivity;
 import android.curso.minhaaplicacao.view.adapters.ProdutosPedidoCarrinhoAdapter;
 
 import android.os.Bundle;
@@ -19,9 +22,11 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +68,7 @@ public class FinalizarPedido extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Finalize o pedido");
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             cliente =(ArrayList<Cliente>) bundle.getSerializable("cliente");
@@ -80,7 +86,7 @@ public class FinalizarPedido extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        itens  = controleItemCarrinho.getAllItens();
         if(itens.size()>0){
             view = inflater.inflate(R.layout.fragment_finalizar_pedido, container, false);
             nomeCliente = view.findViewById(R.id.txtNome);
@@ -135,15 +141,11 @@ public class FinalizarPedido extends Fragment {
                         ControleItemCarrinho controleItemCarrinho = new ControleItemCarrinho(getContext());
                         controleItemCarrinho.deletarAllItemCarinho();
                         Toast.makeText(getActivity().getApplicationContext(),"Salvo com sucesso", Toast.LENGTH_LONG).show();
-                        Recibo recibo = new Recibo();
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("pedido",pedidos);
-                        recibo.setArguments(bundle);
 
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        transaction.addToBackStack(null); // essa linha é responsável por adicionar o fragment ao stack
-                        transaction.replace(R.id.content_fragment, recibo);
-                        transaction.commit();
+                        Intent intentVaiProFormulario = new Intent(getContext(), ReciboActivity.class );
+                        intentVaiProFormulario.putExtra("pedido",pedidos);
+                        startActivity(intentVaiProFormulario);
+
                     }
                     else{
                         Toast.makeText(getActivity().getApplicationContext(),"Não foi possível salvar", Toast.LENGTH_LONG).show();
@@ -188,7 +190,13 @@ public class FinalizarPedido extends Fragment {
                         }
                         handler.post(new Runnable() {
                             public void run() {
-                                valorTotal.setText(z.format(controleItemCarrinho.setTotalCarrinho(itens)));
+                                try{
+                                    valorTotal.setText(z.format(controleItemCarrinho.setTotalCarrinho(itens)));
+                                }
+                                catch(Exception e){
+                                    Log.e("Erro total carrinho=>",""+e);
+                                }
+
                             }
                         });
                     }

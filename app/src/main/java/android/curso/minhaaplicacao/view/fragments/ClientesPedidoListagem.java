@@ -9,6 +9,7 @@ import android.curso.minhaaplicacao.view.adapters.ClientePedidoAdapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -46,6 +47,7 @@ public class ClientesPedidoListagem extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_clientes_pedido_listagem, container, false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Selecione o Cliente");
         rv= view.findViewById(R.id.rvc);
         rv.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(context);

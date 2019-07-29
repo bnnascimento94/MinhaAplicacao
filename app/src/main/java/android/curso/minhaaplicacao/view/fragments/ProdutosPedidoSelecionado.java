@@ -7,6 +7,7 @@ import android.curso.minhaaplicacao.model.ItemPedido;
 import android.curso.minhaaplicacao.view.adapters.ProdutosPedidoSelecionadoAdapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ public class ProdutosPedidoSelecionado extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
             view = inflater.inflate(R.layout.fragment_produtos_pedido_selecionado, container, false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Produtos do Pedido");
             rv= view.findViewById(R.id.rv);
             rv.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(context);

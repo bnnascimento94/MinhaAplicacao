@@ -6,13 +6,18 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.curso.minhaaplicacao.R;
+import android.support.v7.widget.Toolbar;
+
 import com.github.chrisbanes.photoview.PhotoView;
 
-
+import java.util.HashMap;
+import java.util.List;
 
 
 public class ImagemAmpliada extends Fragment {
@@ -21,6 +26,9 @@ public class ImagemAmpliada extends Fragment {
     private OnFragmentInteractionListener mListener;
     String nomeArquivo;
     String diretorio;
+    public List<String> listGroup;
+    public HashMap<String, List<String>> listData;
+    FragmentManager fragmentManager;
 
     public ImagemAmpliada() {
         // Required empty public constructor
@@ -45,11 +53,27 @@ public class ImagemAmpliada extends Fragment {
         photoView = view.findViewById(R.id.photo_view);
         //photoView.setImageResource(R.drawable.image);
 
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Detalhes Produto");
+        Toolbar bar=Toolbar.class.cast(getActivity().findViewById(R.id.toolbar));
+
+        ( (AppCompatActivity)getActivity()).getSupportActionBar();
+
+
+
+        bar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
         Bitmap bitmap = new ImageSaver(getContext()).
                 setFileName(nomeArquivo).
                 setDirectoryName(diretorio).
                 load();
         photoView.setImageBitmap(bitmap);
+
 
         return view;
     }
@@ -60,6 +84,8 @@ public class ImagemAmpliada extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
+
+
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

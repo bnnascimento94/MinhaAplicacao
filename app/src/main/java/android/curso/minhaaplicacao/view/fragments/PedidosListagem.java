@@ -1,11 +1,14 @@
 package android.curso.minhaaplicacao.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.curso.minhaaplicacao.controller.ControlePedidos;
 import android.curso.minhaaplicacao.model.Cliente;
 import android.curso.minhaaplicacao.model.ItemPedido;
 import android.curso.minhaaplicacao.model.Pedidos;
 import android.curso.minhaaplicacao.model.Produto;
+import android.curso.minhaaplicacao.view.CarrinhoActivity;
+import android.curso.minhaaplicacao.view.ImagemAmpliadaActivity;
 import android.curso.minhaaplicacao.view.TelaPrincipalActivity;
 import android.curso.minhaaplicacao.view.adapters.PedidosAdapter;
 import android.os.Bundle;
@@ -77,18 +80,16 @@ public class PedidosListagem extends Fragment {
         menu.clear();
         inflater.inflate(R.menu.tela_principal, menu);
         MenuItem item = menu.findItem(R.id.action_search);
+
         SearchView searchView = new SearchView(((TelaPrincipalActivity) getContext()).getSupportActionBar().getThemedContext());
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
         MenuItemCompat.setActionView(item, searchView);
 
-        // listening to search query text change
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // filter recycler view when query submitted
                 pedidosAdapter.getFilter().filter(query);
-
-
                 return true;
             }
 
@@ -96,7 +97,6 @@ public class PedidosListagem extends Fragment {
             public boolean onQueryTextChange(String query) {
                 // filter recycler view when text is changed
                 pedidosAdapter.getFilter().filter(query);
-
                 return true;
             }
         });

@@ -8,6 +8,7 @@ import android.curso.minhaaplicacao.view.adapters.PrazoPagamentoPedidoAdapter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -43,6 +44,7 @@ public class PrazoPagamentoPedidoListagem extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_prazo_pagamento_pedido_listagem, container, false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Selecione o prazo de pagamento do pedido");
 
         rv= view.findViewById(R.id.rv);
         rv.setHasFixedSize(true);

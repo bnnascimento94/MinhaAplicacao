@@ -86,7 +86,6 @@ public class CadastroProdutoListagem extends Fragment {
                 // filter recycler view when query submitted
                 pca.getFilter().filter(query);
 
-
                 return true;
             }
 
