@@ -30,7 +30,7 @@
     <string name="cadastroProdutoQuantidade">Quantidade:</string>
     <string name="cadastroPedidoValorParcial">Valor</string>
     <string name="cadastroProdutoValorTotal">Total da Venda</string>
-    <string name="pedidoProduto">Finalizar Pedido</string>
+    <string name="pedidoProduto">Prosseguir</string>
     <string name="textview">TextView</string>
     <string name="nomeClienteFinalizarPedido">Cliente:</string>
     <string name="valorTotalPedido">Total:</string>

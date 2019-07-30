@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.curso.minhaaplicacao.controller.ControleItemCarrinho;
 import android.curso.minhaaplicacao.controller.ControleProdutos;
 import android.curso.minhaaplicacao.model.Cliente;
+import android.curso.minhaaplicacao.model.ItemCarrinho;
 import android.curso.minhaaplicacao.model.Produto;
 import android.curso.minhaaplicacao.view.CarrinhoActivity;
 import android.curso.minhaaplicacao.view.TelaPrincipalActivity;
 import android.curso.minhaaplicacao.view.adapters.ProdutoCadastroAdapter;
 import android.curso.minhaaplicacao.view.adapters.ProdutoPedidoAdapter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
@@ -18,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,10 +30,13 @@ import android.view.ViewGroup;
 
 import android.curso.minhaaplicacao.R;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class ProdutosPedidoListagem extends Fragment {
@@ -39,8 +45,14 @@ public class ProdutosPedidoListagem extends Fragment {
     RecyclerView rv;
     Context context;
     Button finalizarPedido;
+    TextView valorTotal;
     ArrayList<Cliente> cliente;
     ProdutoPedidoAdapter adapter;
+    List<ItemCarrinho> itens;
+    ControleItemCarrinho controleItemCarrinho;
+    NumberFormat z;
+    Locale locale;
+    String replaceable;
     public ProdutosPedidoListagem() {
         // Required empty public constructor
         context = getContext();
@@ -54,6 +66,12 @@ public class ProdutosPedidoListagem extends Fragment {
         if (bundle != null) {
             cliente =(ArrayList<Cliente>) bundle.getSerializable("cliente");
         }
+        locale = new Locale("pt", "BR");
+        replaceable = String.format("[%s.\\s]", NumberFormat.getCurrencyInstance(locale).getCurrency().getSymbol());
+        controleItemCarrinho = new ControleItemCarrinho(getContext());
+        z = NumberFormat.getCurrencyInstance();
+        itens  = controleItemCarrinho.getAllItens();
+        startTimerThread();
     }
 
     @Override
@@ -62,6 +80,7 @@ public class ProdutosPedidoListagem extends Fragment {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_produto_pedidos_listagem, container, false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Produtos");
+        valorTotal = view.findViewById(R.id.txtValorTotal);
         finalizarPedido = view.findViewById(R.id.btnFinalizarPedido);
         rv= view.findViewById(R.id.rv);
         rv.setHasFixedSize(true);
@@ -153,6 +172,41 @@ public class ProdutosPedidoListagem extends Fragment {
     public void onRestoreInstanceState(Bundle savedInstanceState){
         super.onSaveInstanceState(savedInstanceState);//Restaura o Activity
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startTimerThread();
+    }
+
+    private void startTimerThread() {
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            public void run() {
+                while(true) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    handler.post(new Runnable() {
+                        public void run() {
+                            try{
+                                controleItemCarrinho = new ControleItemCarrinho(getContext());
+                                itens  = controleItemCarrinho.getAllItens();
+                                valorTotal.setText(z.format(controleItemCarrinho.setTotalCarrinho(itens)));
+                            }
+                            catch(Exception e){
+                                Log.e("Erro total carrinho=>",""+e);
+                            }
+
+                        }
+                    });
+                }
+            }
+        };
+        new Thread(runnable).start();
     }
 
 

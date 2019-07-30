@@ -1,5 +1,6 @@
 package android.curso.minhaaplicacao.view.fragments;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.curso.minhaaplicacao.controller.ControleContasReceber;
 import android.curso.minhaaplicacao.controller.ControlePedidos;
@@ -21,7 +22,12 @@ import android.curso.minhaaplicacao.R;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 public class ContasReceber extends Fragment {
@@ -29,6 +35,7 @@ public class ContasReceber extends Fragment {
  EditText txtData, txtCliente;
  CheckBox chkMesAtual, chkQuitado, chkAberto;
  Button btnBuscar;
+ Calendar myCalendar;
     public ContasReceber() {
         // Required empty public constructor
     }
@@ -63,6 +70,24 @@ public class ContasReceber extends Fragment {
         setHasOptionsMenu(true);
         rv.setAdapter(getAdapter());
 
+        myCalendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, month);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+        };
+
+        txtData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(getContext(),date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
 
         txtCliente.addTextChangedListener(new TextWatcher() {
             @Override
@@ -203,6 +228,12 @@ public class ContasReceber extends Fragment {
 
 
        return view;
+    }
+    private void updateLabel(){
+        String myFormat = "dd/MM/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat,new Locale("pt","BR"));
+        txtData.setText(sdf.format(myCalendar.getTime()));
+
     }
 
     public ContasReceberAdapter getAdapter(){
