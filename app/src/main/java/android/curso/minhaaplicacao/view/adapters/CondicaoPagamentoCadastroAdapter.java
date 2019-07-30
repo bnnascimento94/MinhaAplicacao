@@ -160,6 +160,7 @@ public class CondicaoPagamentoCadastroAdapter extends RecyclerView.Adapter<Condi
                     }
                 });
                 AlertDialog dialog = alert.create();
+                dialog.getWindow().setLayout(393, 220); //Controlling width and height.
                 dialog.show();
 
             }

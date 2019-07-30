@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -57,6 +58,7 @@ public class PrazoPagamento extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
         rv.setAdapter(getAdapter());
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Prazo Pagamento");
 
 
         FloatingActionButton fab = view.findViewById(R.id.fab);

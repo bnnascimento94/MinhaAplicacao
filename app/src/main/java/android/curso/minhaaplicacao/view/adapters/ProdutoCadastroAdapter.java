@@ -1,11 +1,14 @@
 package android.curso.minhaaplicacao.view.adapters;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.curso.minhaaplicacao.R;
 import android.curso.minhaaplicacao.classes.ImageSaver;
 import android.curso.minhaaplicacao.controller.ControleClientes;
+import android.curso.minhaaplicacao.controller.ControlePedidos;
 import android.curso.minhaaplicacao.controller.ControleProdutos;
 import android.curso.minhaaplicacao.model.Produto;
+import android.curso.minhaaplicacao.view.ImagemAmpliadaActivity;
 import android.curso.minhaaplicacao.view.fragments.CadastroProduto;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -121,6 +124,18 @@ public class ProdutoCadastroAdapter extends RecyclerView.Adapter<ProdutoCadastro
             produtoViewHolder.fotoView.setImageResource(R.drawable.produto);
         }
 
+        produtoViewHolder.fotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentVaiProFormulario = new Intent(v.getContext(), ImagemAmpliadaActivity.class );
+                intentVaiProFormulario.putExtra("nomeArquivo",produtoFiltrado.get(i).getNomeArquivo());
+                intentVaiProFormulario.putExtra("diretorio",produtoFiltrado.get(i).getDiretorioFoto());
+                v.getContext().startActivity(intentVaiProFormulario);
+
+            }
+        });
+
+
         produtoViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,17 +161,22 @@ public class ProdutoCadastroAdapter extends RecyclerView.Adapter<ProdutoCadastro
                 builder.setMessage("Deseja Realmente Excluir este Registro?");
                 builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        ControleProdutos controller = new ControleProdutos(v.getContext());
-                        if(controller.deletar(produtoFiltrado.get(i))){
-                            if(new ImageSaver(v.getContext(),produtoFiltrado.get(i).getDiretorioFoto(),produtoFiltrado.get(i).getNomeArquivo()).deleteFile()){
-                                produtoFiltrado.remove(produtoFiltrado.get(i));
-                                notifyItemRemoved(i); //seta o elemento que foi excluido
-                                notifyItemRangeChanged(i, produtoFiltrado.size()); //muda em tela a quantidade de elementos exibidos
-                                produto = produtoFiltrado; // seta os dados para não aparecer os elementos já excluidos
-                                Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
+                        ControlePedidos controlePedidos = new ControlePedidos(v.getContext());
+                        if(!(controlePedidos.getAllItemPedidoByIdProduto(produtoFiltrado.get(i).getIdProduto()).size()>0)){
+                            ControleProdutos controller = new ControleProdutos(v.getContext());
+                            if(controller.deletar(produtoFiltrado.get(i))){
+                                if(new ImageSaver(v.getContext(),produtoFiltrado.get(i).getDiretorioFoto(),produtoFiltrado.get(i).getNomeArquivo()).deleteFile()){
+                                    produtoFiltrado.remove(produtoFiltrado.get(i));
+                                    notifyItemRemoved(i); //seta o elemento que foi excluido
+                                    notifyItemRangeChanged(i, produtoFiltrado.size()); //muda em tela a quantidade de elementos exibidos
+                                    produto = produtoFiltrado; // seta os dados para não aparecer os elementos já excluidos
+                                    Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
+                                }
+                            }else{
+                                Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
                             }
-
-                        }else{
+                        }
+                        else{
                             Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
                         }
                     }

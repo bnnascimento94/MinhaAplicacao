@@ -12,20 +12,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.DetalheActivity"></activity>
-        <activity android:name=".view.ReciboActivity" />
+        <activity android:name=".view.DetalheActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".view.ReciboActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".view.CarrinhoActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".view.ImagemAmpliadaActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".view.GuiaGraficosActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity android:name=".view.MainActivity" />
         <activity
             android:name=".view.TelaPrincipalActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_tela_principal"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan">
@@ -35,6 +41,7 @@
         </activity>
         <activity
             android:name=".view.SplashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

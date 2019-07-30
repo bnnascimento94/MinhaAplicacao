@@ -122,7 +122,6 @@ public class ProdutoDetalhe extends Fragment {
         imageViewProduto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImagemAmpliada imagemAmpliada = new ImagemAmpliada();
                 Intent intentVaiProFormulario = new Intent(getContext(), ImagemAmpliadaActivity.class );
                 intentVaiProFormulario.putExtra("nomeArquivo",produto.getNomeArquivo());
                 intentVaiProFormulario.putExtra("diretorio",produto.getDiretorioFoto());

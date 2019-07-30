@@ -94,6 +94,7 @@ public class FinalizarPedido extends Fragment {
             btnFinalizarPedido = view.findViewById(R.id.btnConfirmarPedido);
             txtCondicaoPagamento = view.findViewById(R.id.txtCondicaoPagamento);
             txtPrazoPagamento = view.findViewById(R.id.txtPrazoPagamento);
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Finalizar Pagamento");
 
             rv= view.findViewById(R.id.rv);
             rv.setHasFixedSize(true);

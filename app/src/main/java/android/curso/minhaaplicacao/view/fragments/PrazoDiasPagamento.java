@@ -51,7 +51,7 @@ private AlertDialog alerta;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Selecione os prazos de Pagamento");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Prazos de Pagamento");
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             diasPagamentos =(List<android.curso.minhaaplicacao.model.PrazoDiasPagamento>) bundle.getSerializable("prazos");

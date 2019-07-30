@@ -44,7 +44,7 @@ public class CondicaoPagamentoPedidoListagem extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_condicao_pagamento_pedido_listagem, container, false);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Selecione a Condição de Pagamento");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Condição de Pagamento");
         rv= view.findViewById(R.id.rv);
         rv.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());

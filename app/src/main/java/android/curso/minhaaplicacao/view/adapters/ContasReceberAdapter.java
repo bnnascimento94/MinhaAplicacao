@@ -3,8 +3,11 @@ package android.curso.minhaaplicacao.view.adapters;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.curso.minhaaplicacao.R;
+import android.curso.minhaaplicacao.classes.ImageSaver;
 import android.curso.minhaaplicacao.classes.MoneyTextWatcher;
+import android.curso.minhaaplicacao.controller.ControleClientes;
 import android.curso.minhaaplicacao.controller.ControleContasReceber;
+import android.curso.minhaaplicacao.controller.ControlePedidos;
 import android.curso.minhaaplicacao.model.ContasReceber;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -79,20 +82,49 @@ public class ContasReceberAdapter extends RecyclerView.Adapter<ContasReceberAdap
                                                  @Override
                                                  public void onClick(DialogInterface dialog, int which) {
                                                      String replaceable = String.format("[%s.\\s]", NumberFormat.getCurrencyInstance(mLocale).getCurrency().getSymbol());
-                                                     String cleanLiquidado = editLiquidado.getText().toString().replaceAll(replaceable, "").replaceAll(",",".");
-                                                     ControleContasReceber controleContasReceber = new ControleContasReceber(v.getContext());
-                                                     ContasReceber contaReceber = new ContasReceber();
-                                                     contaReceber.setIdContaReceber(contasReceber.get(i).getIdContaReceber());
-                                                     contaReceber.setValor(contasReceber.get(i).getValor());
-                                                     contaReceber.setValorLiquidado(Double.parseDouble(cleanLiquidado));
-                                                     contaReceber.setData(contasReceber.get(i).getData());
-                                                     contaReceber.setPedido(contasReceber.get(i).getPedido());
-                                                     if(controleContasReceber.alterar(contaReceber)){
-                                                         Toast.makeText(v.getContext(), "Valor Cadastrado", Toast.LENGTH_SHORT).show();
+                                                     final String cleanLiquidado = editLiquidado.getText().toString().replaceAll(replaceable, "").replaceAll(",",".");
+                                                     final ControleContasReceber controleContasReceber = new ControleContasReceber(v.getContext());
+                                                     double valor =Double.parseDouble(cleanLiquidado);
+                                                     if(valor != contasReceber.get(i).getValor()){
+                                                         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                                                         builder.setTitle("Atenção");
+                                                         builder.setMessage("O valor inserido não é o valor total da compra, deseja prosseguir?");
+                                                         builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
+                                                             public void onClick(DialogInterface arg0, int arg1) {
+                                                                 ContasReceber contaReceber = new ContasReceber();
+                                                                 contaReceber.setIdContaReceber(contasReceber.get(i).getIdContaReceber());
+                                                                 contaReceber.setValor(contasReceber.get(i).getValor());
+                                                                 contaReceber.setValorLiquidado(Double.parseDouble(cleanLiquidado));
+                                                                 contaReceber.setData(contasReceber.get(i).getData());
+                                                                 contaReceber.setPedido(contasReceber.get(i).getPedido());
+                                                                 if(controleContasReceber.alterar(contaReceber)){
+                                                                     Toast.makeText(v.getContext(), "Valor Cadastrado", Toast.LENGTH_SHORT).show();
+                                                                 }
+                                                             }
+                                                         });
+                                                         builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
+                                                             public void onClick(DialogInterface arg0, int arg1) {
+
+                                                             }
+                                                         });
+                                                         alerta = builder.create();
+                                                         alerta.show();
+
+                                                     }else{
+                                                            ContasReceber contaReceber = new ContasReceber();
+                                                            contaReceber.setIdContaReceber(contasReceber.get(i).getIdContaReceber());
+                                                            contaReceber.setValor(contasReceber.get(i).getValor());
+                                                            contaReceber.setValorLiquidado(Double.parseDouble(cleanLiquidado));
+                                                            contaReceber.setData(contasReceber.get(i).getData());
+                                                             contaReceber.setPedido(contasReceber.get(i).getPedido());
+                                                             if(controleContasReceber.alterar(contaReceber)){
+                                                                    Toast.makeText(v.getContext(), "Valor Cadastrado", Toast.LENGTH_SHORT).show();
+                                                             }
                                                      }
                                                  }
                                              });
                                              AlertDialog dialog = alert.create();
+                                             dialog.getWindow().setLayout(393, 220); //Controlling width and height.
                                              dialog.show();
                                          }
 

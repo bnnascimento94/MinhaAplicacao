@@ -44,7 +44,7 @@ public class PrazoPagamentoPedidoListagem extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_prazo_pagamento_pedido_listagem, container, false);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Selecione o prazo de pagamento do pedido");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Prazo de Pagamento");
 
         rv= view.findViewById(R.id.rv);
         rv.setHasFixedSize(true);

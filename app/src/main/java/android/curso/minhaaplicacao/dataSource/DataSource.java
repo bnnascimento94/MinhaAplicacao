@@ -1324,8 +1324,6 @@ public class DataSource extends SQLiteOpenHelper {
     public int getNumberPedidos(){
         int qtdeProdutos = 0;
 
-        List<Pedidos> lista = new ArrayList<>();
-
         String sql ="SELECT COUNT(*) as total from "+PedidoDataModel.getTabela()+" a inner join "+ ClienteDataModel.getTabela()+" b on a."+
                 PedidoDataModel.getIdCliente()+" = b."+ClienteDataModel.getid()+" order by total desc limit 5 ";
 
@@ -1409,9 +1407,6 @@ public class DataSource extends SQLiteOpenHelper {
 
 
     }
-
-
-    //TODO IMPLEMENTAR METODO
     public Map<String, Double> valoresVendas(){
         Map<String, Double> topClientes = new HashMap<String,Double>();
         int total = getNumberPedidos();
@@ -1442,7 +1437,242 @@ public class DataSource extends SQLiteOpenHelper {
 
     }
 
+    public Double valorTotalVendasMensais(){
+        double valorTotal = 0.00;
 
+        String sql ="select SUM(valor) as valor from " + ContaAReceberDataModel.getTabela()+
+                " group by strftime('%m-%Y', "+ContaAReceberDataModel.getDataContaReceber()+")  order by strftime('%m', "+ContaAReceberDataModel.getDataContaReceber()+") desc limit 1";
+
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                try{
+                    valorTotal = cursor.getDouble(cursor.getColumnIndex("valor"));
+                }
+                catch (Exception p){
+                    Log.e("Erro  valorTotal mes",""+p.getMessage());
+                    String errp = p.getMessage();
+                }
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        return valorTotal;
+    }
+    public Double valorTotalVendasQuidatasMensais(){
+        double valorTotal = 0.00;
+        String sql ="select SUM(valor) as valor from tb_conta_receber " + ContaAReceberDataModel.getTabela()+ " where "+ContaAReceberDataModel.getValor() +" = "+ContaAReceberDataModel.getValorLiquidado() +
+                " group by strftime('%m-%Y', "+ContaAReceberDataModel.getDataContaReceber()+")  order by strftime('%m', "+ContaAReceberDataModel.getDataContaReceber()+") desc limit 1";
+
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                try{
+                    valorTotal = cursor.getDouble(cursor.getColumnIndex("valor"));
+                }
+                catch (Exception p){
+                    Log.e("Erro  valorTotal mes",""+p.getMessage());
+                    String errp = p.getMessage();
+                }
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        return valorTotal;
+
+    }
+    public Double valorTotalVendasAReceberMensais(){
+        double valorTotal = 0.00;
+
+        String sql ="select SUM(valor) as valor from tb_conta_receber " + ContaAReceberDataModel.getTabela()+ " where "+ContaAReceberDataModel.getValor() +" != "+ContaAReceberDataModel.getValorLiquidado() +
+                " group by strftime('%m-%Y', "+ContaAReceberDataModel.getDataContaReceber()+")  order by strftime('%m', "+ContaAReceberDataModel.getDataContaReceber()+") desc limit 1";
+
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                try{
+                    valorTotal = cursor.getDouble(cursor.getColumnIndex("valor"));
+                }
+                catch (Exception p){
+                    Log.e("Erro  valorTotal mes",""+p.getMessage());
+                    String errp = p.getMessage();
+                }
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+
+
+        return valorTotal;
+    }
+    public String produtoMaisVendidoMensal(){
+        String nomeProduto = "";
+
+        String sql ="select sum(a.valor) as valor, c.nome_produto  as nome from tb_conta_receber a inner join tb_item_produto b on a.id_pedido = b.id_pedido inner join tb_produto c on \n" +
+                "b.id_produto = c.id\n" +
+                " where a.data_conta BETWEEN date('now','start of month') AND date('now','start of month','+1 month','-1 day') group by c.nome_produto order by valor desc limit 1 ;";
+
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                try{
+                    nomeProduto = cursor.getString(cursor.getColumnIndex("nome"));
+                }
+                catch (Exception p){
+                    Log.e("Erro  nomeProduto mes",""+p.getMessage());
+                    String errp = p.getMessage();
+                }
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+
+
+        return nomeProduto;
+    }
+    public String produtoMenosVendidoMensal(){
+        String nomeProduto = "";
+
+        String sql ="select sum(a.valor) as valor, c.nome_produto  as nome from tb_conta_receber a inner join tb_item_produto b on a.id_pedido = b.id_pedido inner join tb_produto c on \n" +
+                "b.id_produto = c.id\n" +
+                " where a.data_conta BETWEEN date('now','start of month') AND date('now','start of month','+1 month','-1 day') group by c.nome_produto order by valor asc limit 1 ;";
+
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                try{
+                    nomeProduto = cursor.getString(cursor.getColumnIndex("nome"));
+                }
+                catch (Exception p){
+                    Log.e("Erro  nomeProduto mes",""+p.getMessage());
+                    String errp = p.getMessage();
+                }
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+
+
+        return nomeProduto;
+    }
+    public Double valorTotalVendasAnuais(){
+        double valorTotal = 0.00;
+
+        String sql ="select sum(valor) as valor from tb_conta_receber where data_conta BETWEEN date('now','start of year') AND date('now','start of year','+1 year','-1 day')";
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                try{
+                    valorTotal = cursor.getDouble(cursor.getColumnIndex("valor"));
+                }
+                catch (Exception p){
+                    Log.e("Erro  valorTotal mes",""+p.getMessage());
+                    String errp = p.getMessage();
+                }
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        return valorTotal;
+    }
+    public Double valorTotalVendasQuidatasAnuais(){
+        double valorTotal = 0.00;
+
+        String sql ="select sum(valor) as valor from tb_conta_receber where valor = valor_liquidado and data_conta BETWEEN date('now','start of year') AND date('now','start of year','+1 year','-1 day')";
+
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                try{
+                    valorTotal = cursor.getDouble(cursor.getColumnIndex("valor"));
+                }
+                catch (Exception p){
+                    Log.e("Erro  valorTotal mes",""+p.getMessage());
+                    String errp = p.getMessage();
+                }
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+
+
+        return valorTotal;
+    }
+    public Double valorTotalVendasAReceberAnuais(){
+        double valorTotal = 0.00;
+
+        String sql ="select sum(valor) as valor from tb_conta_receber where valor != valor_liquidado and data_conta BETWEEN date('now','start of year') AND date('now','start of year','+1 year','-1 day')";
+
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                try{
+                    valorTotal = cursor.getDouble(cursor.getColumnIndex("valor"));
+                }
+                catch (Exception p){
+                    Log.e("Erro  valorTotal mes",""+p.getMessage());
+                    String errp = p.getMessage();
+                }
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+
+
+        return valorTotal;
+    }
+    public String produtoMaisVendidoAnuais(){
+        String nomeProduto = "";
+        String sql ="select sum(a.valor) as valor, c.nome_produto  as nome from tb_conta_receber a inner join tb_item_produto b on a.id_pedido = b.id_pedido inner join tb_produto c on \n" +
+                "b.id_produto = c.id\n" +
+                " where a.data_conta BETWEEN date('now','start of year') AND date('now','start of year','+1 year','-1 day') group by c.nome_produto order by valor desc limit 1 ;";
+        Cursor cursor = db.rawQuery(sql,null);
+        if(cursor.moveToFirst()){
+            do{
+                try{
+                    nomeProduto = cursor.getString(cursor.getColumnIndex("nome"));
+                }
+                catch (Exception p){
+                    Log.e("Erro  nomeProduto mes",""+p.getMessage());
+                    String errp = p.getMessage();
+                }
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        return nomeProduto;
+    }
+    public String produtoMenosVendidoAnuais(){
+        String nomeProduto = "";
+
+        String sql ="select sum(a.valor) as valor, c.nome_produto  as nome from tb_conta_receber a inner join tb_item_produto b on a.id_pedido = b.id_pedido inner join tb_produto c on \n" +
+                "b.id_produto = c.id\n" +
+                " where a.data_conta BETWEEN date('now','start of year') AND date('now','start of year','+1 year','-1 day') group by c.nome_produto order by valor asc limit 1 ;";
+
+        Cursor cursor = db.rawQuery(sql,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                try{
+                    nomeProduto = cursor.getString(cursor.getColumnIndex("nome"));
+                }
+                catch (Exception p){
+                    Log.e("Erro  nomeProduto mes",""+p.getMessage());
+                    String errp = p.getMessage();
+                }
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        return nomeProduto;
+    }
     private String converterParaDataSqlite(String sdata){
         Date data;
         String dataParaBanco = "";
@@ -1454,7 +1684,6 @@ public class DataSource extends SQLiteOpenHelper {
             e.printStackTrace();
             Log.i("ERRO ao Coverter ->",""+e);
         }
-
         return dataParaBanco;
     }
 }

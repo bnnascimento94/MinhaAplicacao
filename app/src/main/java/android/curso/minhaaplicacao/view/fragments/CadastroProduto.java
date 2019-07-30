@@ -24,6 +24,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -79,7 +80,6 @@ public class CadastroProduto extends Fragment {
         if (bundle != null) {
             produto =(ArrayList<Produto>) bundle.getSerializable("produto");
         }
-
     }
 
     @Override
@@ -94,6 +94,7 @@ public class CadastroProduto extends Fragment {
         btnSalvar = view.findViewById(R.id.btnSalvar);
         camera = view.findViewById(R.id.editFoto);
         imagemProduto.setImageResource(R.drawable.produto);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Cadastro Produto");
 
         if(produto!=null){
             NumberFormat z = NumberFormat.getCurrencyInstance();

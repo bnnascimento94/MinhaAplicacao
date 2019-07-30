@@ -1,6 +1,10 @@
 package android.curso.minhaaplicacao.view.adapters;
 
+import android.content.Intent;
 import android.curso.minhaaplicacao.classes.ImageSaver;
+import android.curso.minhaaplicacao.controller.ControlePedidos;
+import android.curso.minhaaplicacao.view.ImagemAmpliadaActivity;
+import android.curso.minhaaplicacao.view.fragments.ImagemAmpliada;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
@@ -68,6 +72,17 @@ public class ClienteCadastroAdapter extends RecyclerView.Adapter<ClienteCadastro
             clienteViewHolder.fotoCliente.setImageResource(R.drawable.user_no_pic);
         }
 
+        clienteViewHolder.fotoCliente.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intentVaiProFormulario = new Intent(v.getContext(), ImagemAmpliadaActivity.class );
+                intentVaiProFormulario.putExtra("nomeArquivo",clienteFiltrado.get(i).getNomeArquivo());
+                intentVaiProFormulario.putExtra("diretorio",clienteFiltrado.get(i).getDiretorioFoto());
+                v.getContext().startActivity(intentVaiProFormulario);
+            }
+        });
+
         clienteViewHolder.btnDeletar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -76,17 +91,24 @@ public class ClienteCadastroAdapter extends RecyclerView.Adapter<ClienteCadastro
                 builder.setMessage("Deseja Realmente Excluir este Registro?");
                 builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        ControleClientes controller = new ControleClientes(clienteViewHolder.context);
-                        if(controller.deletar(clienteFiltrado.get(i))){
-                            if(new ImageSaver(v.getContext(),clienteFiltrado.get(i).getDiretorioFoto(),clienteFiltrado.get(i).getNomeArquivo()).deleteFile()){}
+                        ControlePedidos controlePedidos = new ControlePedidos(v.getContext());
+                        if(!(controlePedidos.getAllClientesByName(clienteFiltrado.get(i).getNomeCliente()).size()>0)){
+                            ControleClientes controller = new ControleClientes(clienteViewHolder.context);
+                            if(controller.deletar(clienteFiltrado.get(i))){
+                                if(new ImageSaver(v.getContext(),clienteFiltrado.get(i).getDiretorioFoto(),clienteFiltrado.get(i).getNomeArquivo()).deleteFile()){}
                                 clienteFiltrado.remove(clienteFiltrado.get(i));
                                 notifyItemRemoved(i); //seta o elemento que foi excluido
                                 notifyItemRangeChanged(i, clienteFiltrado.size()); //muda em tela a quantidade de elementos exibidos
                                 cliente = clienteFiltrado; // seta os dados para não aparecer os elementos já excluidos
                                 Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
+                            }
+
                         }else{
-                            Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
+                            Toast.makeText(v.getContext(),"Não foi possível deletar, cliente com vínculos",Toast.LENGTH_LONG).show();
                         }
+
                     }
                 });
                 builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {

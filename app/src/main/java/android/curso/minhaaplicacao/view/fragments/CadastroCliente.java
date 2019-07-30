@@ -11,29 +11,26 @@ import android.curso.minhaaplicacao.controller.ControleClientes;
 import android.curso.minhaaplicacao.model.Cliente;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.curso.minhaaplicacao.R;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -42,6 +39,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CadastroCliente extends Fragment {
     private static final int SOLICITAR_PERMISSAO = 1;
+    private ProgressBar progressBar;
+    Boolean concluido = false;
     Context context;
     ArrayList<Cliente> cliente;
     View view;
@@ -87,9 +86,10 @@ public class CadastroCliente extends Fragment {
         camera = view.findViewById(R.id.editFoto);
         btnSalvar = view.findViewById(R.id.btnSalvar);
         foto = view.findViewById(R.id.imageView2);
-
-
         foto.setImageResource(R.drawable.user_no_pic);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Cadastro Cliente");
+        progressBar = view.findViewById(R.id.progressBar_cyclic);
+
 
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,6 +191,7 @@ public class CadastroCliente extends Fragment {
 
                                 ControleClientes clientes = new ControleClientes(getActivity().getApplicationContext());
                                 clientes.alterar(client);
+                                concluido = true;
                                 Toast.makeText(getActivity().getApplicationContext(),"Dados alterados com êxito!",Toast.LENGTH_LONG).show();
                             }
                         }catch (Exception e){
@@ -256,19 +257,12 @@ public class CadastroCliente extends Fragment {
 
     }
 
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
             if(requestCode == RESULT_CAMERA && resultCode == -1){
                 try {
                     Bitmap foto1 = (Bitmap)data.getExtras().get("data");
-
-                    /**Matrix matrix = new Matrix();
-                    matrix.postRotate(90);
-                    Bitmap fotoFinal = Bitmap.createBitmap(foto1, 0, 0, foto1.getWidth(),
-                            foto1.getHeight(), matrix, true);**/
                     foto.setImageBitmap(new ImageSaver(getContext()).rotateImage(foto1));
                 } catch (Exception e) {
                     Toast.makeText(getContext()," "+e,Toast.LENGTH_LONG);
@@ -295,6 +289,34 @@ public class CadastroCliente extends Fragment {
             }
 
 
+    }
+
+    private void startTimerThread(final Boolean valor) {
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            public void run() {
+
+                while(valor ==false) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    handler.post(new Runnable() {
+                        public void run() {
+                            try{
+                                progressBar.setIndeterminate(true);
+                            }
+                            catch(Exception e){
+                                Log.e("Erro total carrinho=>",""+e);
+                            }
+
+                        }
+                    });
+                }
+            }
+        };
+        new Thread(runnable).start();
     }
 
 

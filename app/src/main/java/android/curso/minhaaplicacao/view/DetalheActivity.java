@@ -52,6 +52,8 @@ public class DetalheActivity extends AppCompatActivity {
         btnAdicionarCarrinho = findViewById(R.id.btnAdicionarCarrinho);
         imageViewProduto = findViewById(R.id.imageViewProduto);
 
+        txtValorUnitario.setEnabled(false);
+        txtValorVenda.setEnabled(false);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -80,8 +82,6 @@ public class DetalheActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: favoritar nota na base de dados
-                Snackbar.make(view, "Nota favoritada", Snackbar.LENGTH_LONG).show();
                 if(editQtde.getText().length()>0){
                     if(itemSelecionado){
                         try{
@@ -130,11 +130,20 @@ public class DetalheActivity extends AppCompatActivity {
                             item.setItemValorVenda((Double.parseDouble(txtValorVenda.getText().toString().replaceAll(replaceable, "").replaceAll(",","."))));
                             controleItemCarrinho = new ControleItemCarrinho(view.getContext());
 
-                            if(controleItemCarrinho.salvar(item)){
-                                getFragmentManager().popBackStack();
-                                Snackbar.make(view, "Item inserido no carrinho", Snackbar.LENGTH_LONG).show();
+                            if(!(controleItemCarrinho.getItemCarrinhoByNome(produto.getIdProduto()).size()>0)){
+                                if(controleItemCarrinho.salvar(item)){
+                                    getFragmentManager().popBackStack();
+                                    Snackbar.make(view, "Item inserido no carrinho", Snackbar.LENGTH_LONG).show();
 
+                                }
+
+                            }else{
+
+                                Snackbar.make(view, "Produto Já cadastrado", Snackbar.LENGTH_LONG).show();
                             }
+
+
+
                         }catch(Exception e){
                             Snackbar.make(view, "Erro ao Setar is Itens do Carrinho", Snackbar.LENGTH_LONG).show();
                             Log.e("ERRO ->"," "+e);
@@ -208,6 +217,7 @@ public class DetalheActivity extends AppCompatActivity {
 
             editQtde.setText(String.valueOf(itemCarrinho.get(0).getQtde()));
             txtValorVenda.setText(z.format(itemCarrinho.get(0).getItemValorVenda()));
+
         }else{
             itemSelecionado = false;
             txtNomeProduto.setText(produto.getNomeProduto());
