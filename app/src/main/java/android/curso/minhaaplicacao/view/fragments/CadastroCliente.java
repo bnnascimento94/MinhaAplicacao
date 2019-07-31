@@ -72,6 +72,7 @@ public class CadastroCliente extends Fragment {
         if (bundle != null) {
             cliente =(ArrayList<Cliente>) bundle.getSerializable("cliente");
         }
+
     }
 
     @Override
@@ -79,6 +80,7 @@ public class CadastroCliente extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_cadastro_cliente, container, false);
+        progressBar = view.findViewById(R.id.progressBar_cyclic);
         nomeCliente = view.findViewById(R.id.txtNome);
         email = view.findViewById(R.id.txtEmail);
         telefone = view.findViewById(R.id.txtTelefone);
@@ -88,7 +90,7 @@ public class CadastroCliente extends Fragment {
         foto = view.findViewById(R.id.imageView2);
         foto.setImageResource(R.drawable.user_no_pic);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Cadastro Cliente");
-        progressBar = view.findViewById(R.id.progressBar_cyclic);
+
 
 
         camera.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +153,6 @@ public class CadastroCliente extends Fragment {
             @Override
             public void onClick(View v) {
                 boolean dadosValidados = true;
-
 
                 if(!(nomeCliente.getText().length()>0)){
                     nomeCliente.setError("*");
@@ -239,6 +240,7 @@ public class CadastroCliente extends Fragment {
                 }
 
             }
+
         });
 
         return view;
@@ -292,11 +294,12 @@ public class CadastroCliente extends Fragment {
     }
 
     private void startTimerThread(final Boolean valor) {
+        final Integer[] controle = {0};
         final Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
+        final Runnable runnable = new Runnable() {
             public void run() {
 
-                while(valor ==false) {
+                while(controle[0] < 100) {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -305,7 +308,7 @@ public class CadastroCliente extends Fragment {
                     handler.post(new Runnable() {
                         public void run() {
                             try{
-                                progressBar.setIndeterminate(true);
+                                progressBar.setVisibility(View.VISIBLE);
                             }
                             catch(Exception e){
                                 Log.e("Erro total carrinho=>",""+e);
@@ -313,7 +316,9 @@ public class CadastroCliente extends Fragment {
 
                         }
                     });
+                    controle[0] += 1;
                 }
+                progressBar.setVisibility(View.GONE);
             }
         };
         new Thread(runnable).start();
