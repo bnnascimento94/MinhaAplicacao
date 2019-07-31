@@ -11,7 +11,7 @@ import android.curso.minhaaplicacao.model.Pedidos;
 import android.curso.minhaaplicacao.model.Produto;
 import android.curso.minhaaplicacao.view.DetalheActivity;
 import android.curso.minhaaplicacao.view.ImagemAmpliadaActivity;
-import android.curso.minhaaplicacao.view.fragments.ProdutoDetalhe;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -129,15 +129,7 @@ public class ProdutoPedidoAdapter extends RecyclerView.Adapter<ProdutoPedidoAdap
         produtoViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /**ProdutoDetalhe prod_detalhe = new ProdutoDetalhe();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("produto",produtoFiltrado.get(i));
-                prod_detalhe.setArguments(bundle);
 
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                Fragment myFragment = new Fragment();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment, prod_detalhe).addToBackStack(null).commit();
-**/
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 Intent intentVaiProFormulario = new Intent(v.getContext(), DetalheActivity.class );
                 intentVaiProFormulario.putExtra("produto",produtoFiltrado.get(i));

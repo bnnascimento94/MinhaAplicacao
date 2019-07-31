@@ -1,25 +1,34 @@
 package android.curso.minhaaplicacao.view.fragments;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ProviderInfo;
 import android.curso.minhaaplicacao.classes.CarregadorDeFoto;
 import android.curso.minhaaplicacao.classes.ImageSaver;
 import android.curso.minhaaplicacao.controller.ControleClientes;
 import android.curso.minhaaplicacao.model.Cliente;
+import android.curso.minhaaplicacao.view.MainActivity;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -31,8 +40,11 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -44,8 +56,6 @@ public class CadastroCliente extends Fragment {
     Context context;
     ArrayList<Cliente> cliente;
     View view;
-    byte[] fotoArray;
-    Bitmap raw;
     CircleImageView foto;
     FloatingActionButton camera;
     private AlertDialog alerta;
@@ -53,9 +63,10 @@ public class CadastroCliente extends Fragment {
     Button btnSalvar;
     /** RESULT_CAMERA */
     private static final int RESULT_CAMERA = 111;
-
     /** RESULT_GALERIA */
     private static final int RESULT_GALERIA = 222;
+    private String mImageFileLocation;
+    Integer count =1;//PROGRESS BAR
 
     public CadastroCliente() {
         // Required empty public constructor
@@ -95,7 +106,7 @@ public class CadastroCliente extends Fragment {
 
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 // Verifica  o estado da permissão de WRITE_EXTERNAL_STORAGE
                 int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
 
@@ -109,9 +120,21 @@ public class CadastroCliente extends Fragment {
                     builder.setMessage("Deseja capturar a Imagem da galeria ou Tirar a Foto?");
                     builder.setPositiveButton("Tirar Foto", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE );
-                            startActivityForResult(intent, RESULT_CAMERA);
 
+                            Intent intent = new Intent();
+                            intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                            File photoFile = null;
+                            try{
+                                photoFile = createImageFile();
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
+
+
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT,FileProvider.getUriForFile( getActivity(),
+                                    getActivity().getApplicationContext().getPackageName() + ".provider",
+                                    photoFile));
+                            startActivityForResult(intent, RESULT_CAMERA);
                         }
                     });
                     builder.setNegativeButton("Galeria", new DialogInterface.OnClickListener() {
@@ -254,22 +277,15 @@ public class CadastroCliente extends Fragment {
     }
 
 
-    public void onRestoreInstanceState(Bundle savedInstanceState){
-        super.onSaveInstanceState(savedInstanceState);//Restaura o Activity
-
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
             if(requestCode == RESULT_CAMERA && resultCode == -1){
                 try {
-                    Bitmap foto1 = (Bitmap)data.getExtras().get("data");
-                    foto.setImageBitmap(new ImageSaver(getContext()).rotateImage(foto1));
-                } catch (Exception e) {
+                    rotateImage(setReducedImageSize());
+                } catch (Exception e ) {
                     Toast.makeText(getContext()," "+e,Toast.LENGTH_LONG);
                 }
-
             }
             else if(requestCode == RESULT_GALERIA && resultCode == -1){
 
@@ -289,8 +305,6 @@ public class CadastroCliente extends Fragment {
                 }
 
             }
-
-
     }
 
     private void startTimerThread(final Boolean valor) {
@@ -324,6 +338,62 @@ public class CadastroCliente extends Fragment {
         new Thread(runnable).start();
     }
 
+    File createImageFile(){
+        File image = null;
+        try {
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "IMAGE_"+timeStamp+"_";
+            File storageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            image = File.createTempFile(imageFileName,".jpg",storageDirectory);
+            mImageFileLocation = image.getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
 
+
+
+
+    private void rotateImage(Bitmap bitmap){
+        ExifInterface exifInterface = null;
+        try{
+            exifInterface = new ExifInterface(mImageFileLocation);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+        Matrix matrix = new Matrix();
+        switch (orientation){
+
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                break;
+            default:
+        }
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,true);
+        foto.setImageBitmap(rotatedBitmap);
+
+    }
+
+    private Bitmap setReducedImageSize(){
+        int imageTargetViewWidth = foto.getWidth();
+        int imageTargetViewHeight = foto.getHeight();
+
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(mImageFileLocation, bmOptions);
+        int cameraImageWidth = bmOptions.outWidth;
+        int cameraImageHeight = bmOptions.outHeight;
+
+        int scaleFactor = Math.min(cameraImageWidth/imageTargetViewWidth,cameraImageHeight/imageTargetViewHeight);
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(mImageFileLocation, bmOptions);
+
+    }
 
 }

@@ -100,7 +100,7 @@ public class FinalizarPedido extends Fragment {
             rv.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             rv.setLayoutManager(llm);
-            adapter = new ProdutosPedidoCarrinhoAdapter(itens);
+            adapter = new ProdutosPedidoCarrinhoAdapter(itens,false);
             rv.setAdapter(adapter);
 
             txtCondicaoPagamento.setText(condicaoPagamentos.getNomeCondiçãoPagamento());

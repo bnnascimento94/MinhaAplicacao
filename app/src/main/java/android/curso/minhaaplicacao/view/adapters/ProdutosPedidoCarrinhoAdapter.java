@@ -25,8 +25,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<ProdutosPedidoCarrinhoAdapter.ProdutoViewHolder>{
     List<ItemCarrinho> produtos;
     private AlertDialog alerta;
+    Boolean eCarrinho = false;
 
-    public ProdutosPedidoCarrinhoAdapter(List<ItemCarrinho> produtos){
+    public ProdutosPedidoCarrinhoAdapter(List<ItemCarrinho> produtos, Boolean eCarrinho){
         this.produtos = produtos;
 
     }
@@ -82,37 +83,50 @@ public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<Produtos
                 builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         if(produtos.size() == 1){
-                            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                            builder.setTitle("Atenção");
-                            builder.setMessage("Este é o produto único ao deletar estará excluindo o pedido, deseja confirmar?");
-                            builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface arg0, int arg1) {
-                                    ControleItemCarrinho controller = new ControleItemCarrinho(v.getContext());
-                                    if(controller.deletarItemCarinho(produtos.get(i))){
-                                        produtos.remove(produtos.get(i));
-                                        notifyItemRemoved(i); //seta o elemento que foi excluido
-                                        notifyItemRangeChanged(i, produtos.size());
+                            if(!eCarrinho){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                                builder.setTitle("Atenção");
+                                builder.setMessage("Este é o único item ao deletar estará excluindo o pedido, deseja confirmar?");
+                                builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        ControleItemCarrinho controller = new ControleItemCarrinho(v.getContext());
+                                        if(controller.deletarItemCarinho(produtos.get(i))){
+                                            produtos.remove(produtos.get(i));
+                                            notifyItemRemoved(i); //seta o elemento que foi excluido
+                                            notifyItemRangeChanged(i, produtos.size());
 
-                                        ControleItemCarrinho controleItemCarrinho = new ControleItemCarrinho(v.getContext());
-                                        controleItemCarrinho.deletarAllItemCarinho();
+                                            ControleItemCarrinho controleItemCarrinho = new ControleItemCarrinho(v.getContext());
+                                            controleItemCarrinho.deletarAllItemCarinho();
 
-                                        Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
-                                        AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                                            Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
+                                            AppCompatActivity activity = (AppCompatActivity) v.getContext();
 
-                                        activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment, new Graficos()).addToBackStack(null).commit();
+                                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment, new Graficos()).addToBackStack(null).commit();
+                                        }
+                                        else{
+                                            Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
+                                        }
                                     }
-                                    else{
-                                        Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            });
-                            builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface arg0, int arg1) {
+                                });
+                                builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface arg0, int arg1) {
 
+                                    }
+                                });
+                                alerta = builder.create();
+                                alerta.show();
+                            }else{
+                                ControleItemCarrinho controller = new ControleItemCarrinho(v.getContext());
+                                if(controller.deletarItemCarinho(produtos.get(i))){
+                                    produtos.remove(produtos.get(i));
+                                    notifyItemRemoved(i); //seta o elemento que foi excluido
+                                    notifyItemRangeChanged(i, produtos.size());
+
+                                    Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
+                                }else{
+                                    Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
                                 }
-                            });
-                            alerta = builder.create();
-                            alerta.show();
+                            }
 
                         }else{
                             ControleItemCarrinho controller = new ControleItemCarrinho(v.getContext());

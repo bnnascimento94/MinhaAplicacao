@@ -14,14 +14,18 @@ import android.curso.minhaaplicacao.model.Produto;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 
 import android.support.v7.app.AppCompatActivity;
@@ -40,8 +44,12 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -55,7 +63,8 @@ public class CadastroProduto extends Fragment {
     ArrayList<Produto> produto;
     CircleImageView imagemProduto;
     FloatingActionButton camera;
-    byte[] fotoArray;
+    private String mImageFileLocation;
+
     Bitmap raw;
     private AlertDialog alerta;
     EditText nomeProduto,custoProduto,valorVenda;
@@ -135,7 +144,19 @@ public class CadastroProduto extends Fragment {
                     builder.setMessage("Deseja capturar a Imagem da galeria ou Tirar a Foto?");
                     builder.setPositiveButton("Tirar Foto", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE );
+                            Intent intent = new Intent();
+                            intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+                            File photoFile = null;
+                            try{
+                                photoFile = createImageFile();
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
+
+
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile( getActivity(),
+                                    getActivity().getApplicationContext().getPackageName() + ".provider",
+                                    photoFile));
                             startActivityForResult(intent, RESULT_CAMERA);
 
                         }
@@ -222,9 +243,7 @@ public class CadastroProduto extends Fragment {
 
                         Produto prod = new Produto();
                         prod.setNomeProduto(nomeProduto.getText().toString());
-                        //String custo = custoProduto.getText().toString().replaceAll("[,]",".").replaceAll("[R$]","");
                         prod.setCustoProduto(Double.parseDouble(cleancusto));
-                        //String venda = valorVenda.getText().toString().replaceAll("[,]",".").replaceAll("[R$]","");
                         prod.setValorUnitario(Double.parseDouble(cleanPreco));
                         prod.setDiretorioFoto("produtos");
                         prod.setNomeArquivo(nomeProduto.getText().toString()+".png");
@@ -264,18 +283,12 @@ public class CadastroProduto extends Fragment {
     }
 
 
-    public void onRestoreInstanceState(Bundle savedInstanceState){
-        super.onSaveInstanceState(savedInstanceState);//Restaura o Activity
-
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
             // Senão vamos compartilhar a imagem
             if(requestCode == RESULT_CAMERA && resultCode == -1){
-                Bitmap foto = (Bitmap)data.getExtras().get("data");
-                imagemProduto.setImageBitmap(foto);
+                rotateImage(setReducedImageSize());
             }
             else if(requestCode == RESULT_GALERIA && resultCode == -1){
                 Uri imageUri = data.getData();
@@ -291,7 +304,60 @@ public class CadastroProduto extends Fragment {
                     imagemProduto.setImageBitmap(foto);
                 }
             }
+    }
 
+    File createImageFile(){
+        File image = null;
+        try {
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "IMAGE_"+timeStamp+"_";
+            File storageDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            image = File.createTempFile(imageFileName,".jpg",storageDirectory);
+            mImageFileLocation = image.getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return image;
+    }
+
+    private void rotateImage(Bitmap bitmap){
+        ExifInterface exifInterface = null;
+        try{
+            exifInterface = new ExifInterface(mImageFileLocation);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+        Matrix matrix = new Matrix();
+        switch (orientation){
+
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                break;
+            default:
+        }
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,true);
+        imagemProduto.setImageBitmap(rotatedBitmap);
+
+    }
+
+    private Bitmap setReducedImageSize(){
+        int imageTargetViewWidth = imagemProduto.getWidth();
+        int imageTargetViewHeight = imagemProduto.getHeight();
+
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(mImageFileLocation, bmOptions);
+        int cameraImageWidth = bmOptions.outWidth;
+        int cameraImageHeight = bmOptions.outHeight;
+
+        int scaleFactor = Math.min(cameraImageWidth/imageTargetViewWidth,cameraImageHeight/imageTargetViewHeight);
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(mImageFileLocation, bmOptions);
 
     }
 

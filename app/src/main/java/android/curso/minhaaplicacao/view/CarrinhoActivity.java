@@ -39,7 +39,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         rv.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
-        adapter = new ProdutosPedidoCarrinhoAdapter(itens);
+        adapter = new ProdutosPedidoCarrinhoAdapter(itens,true);
         rv.setAdapter(adapter);
     }
 }

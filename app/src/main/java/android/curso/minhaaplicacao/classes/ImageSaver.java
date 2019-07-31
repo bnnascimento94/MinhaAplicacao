@@ -1,47 +1,67 @@
 package android.curso.minhaaplicacao.classes;
+import android.Manifest;
+import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 
 /**
  * Created by Ilya Gazman on 3/6/2016.
  */
 public class ImageSaver {
-
+    private static final int SOLICITAR_PERMISSAO = 1;
     private String directoryName = "images";
-    private String fileName = "image.png";
+    private String fileName = "image.jpeg";
     private Context context;
     private boolean external = false;
+    static int MAX_IMAGE_DIMENSION = 720;
 
     public ImageSaver(Context context) {
         this.context = context;
     }
-    public ImageSaver(Context context, String directoryName, String fileName){
+
+    public ImageSaver(Context context, String directoryName, String fileName) {
         this.context = context;
         this.directoryName = directoryName;
         this.fileName = fileName;
     }
+
     public ImageSaver setFileName(String fileName) {
         this.fileName = fileName;
         return this;
     }
+
     public ImageSaver setExternal(boolean external) {
         this.external = external;
         return this;
     }
+
     public ImageSaver setDirectoryName(String directoryName) {
         this.directoryName = directoryName;
         return this;
     }
+
     public void save(Bitmap bitmapImage) {
         FileOutputStream fileOutputStream = null;
         try {
@@ -59,17 +79,36 @@ public class ImageSaver {
             }
         }
     }
+
+    public void saveJPEG(Bitmap bitmapImage) {
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(createFile());
+            bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fileOutputStream != null) {
+                    fileOutputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @NonNull
     private File createFile() {
         File directory;
-        if(external){
+        if (external) {
             directory = getAlbumStorageDir(directoryName);
-        }
-        else {
+        } else {
             directory = context.getDir(directoryName, Context.MODE_PRIVATE);
         }
-        if(!directory.exists() && !directory.mkdirs()){
-            Log.e("ImageSaver","Error creating directory " + directory);
+        if (!directory.exists() && !directory.mkdirs()) {
+            Log.e("ImageSaver", "Error creating directory " + directory);
         }
 
         return new File(directory, fileName);
@@ -112,7 +151,7 @@ public class ImageSaver {
         return null;
     }
 
-    public boolean deleteFile(){
+    public boolean deleteFile() {
         boolean deleted;
         File dir = context.getDir(directoryName, Context.MODE_PRIVATE);
         File f0 = new File(dir, fileName);
@@ -120,32 +159,8 @@ public class ImageSaver {
         return deleted;
     }
 
-    public Bitmap rotateImage(Bitmap bitmap){
-        ExifInterface exifInterface = null;
-        try{
-            save(bitmap);
-            File directory = context.getDir("images", Context.MODE_PRIVATE);
-            File file = new File(directory, "image.png");
-
-            exifInterface = new ExifInterface(file.getPath());
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_UNDEFINED);
-
-        Matrix matrix = new Matrix();
-        switch(orientation){
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                matrix.setRotate(90);
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                matrix.setRotate(180);
-                break;
-            default:
-        }
-        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0,0,bitmap.getWidth(), bitmap.getHeight(),matrix, true);
-
-        return rotatedBitmap;
-    }
-
 }
+
+
+
+

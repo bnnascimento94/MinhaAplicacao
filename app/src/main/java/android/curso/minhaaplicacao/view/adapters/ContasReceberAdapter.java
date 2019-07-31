@@ -85,7 +85,10 @@ public class ContasReceberAdapter extends RecyclerView.Adapter<ContasReceberAdap
                                                      final String cleanLiquidado = editLiquidado.getText().toString().replaceAll(replaceable, "").replaceAll(",",".");
                                                      final ControleContasReceber controleContasReceber = new ControleContasReceber(v.getContext());
                                                      double valor =Double.parseDouble(cleanLiquidado);
-                                                     if(valor != contasReceber.get(i).getValor()){
+                                                     if(valor > contasReceber.get(i).getValor()){
+                                                         Toast.makeText(v.getContext(), "O Valor a quitado é superior", Toast.LENGTH_SHORT).show();
+                                                     }
+                                                     else if(valor != contasReceber.get(i).getValor()){
                                                          AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                                                          builder.setTitle("Atenção");
                                                          builder.setMessage("O valor inserido não é o valor total da compra, deseja prosseguir?");

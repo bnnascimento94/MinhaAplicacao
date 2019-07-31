@@ -49,7 +49,6 @@ public class DetalheActivity extends AppCompatActivity {
         txtValorUnitario = findViewById(R.id.txtValorUnitario);
         txtValorVenda = findViewById(R.id.txtValorVenda);
         editQtde= findViewById(R.id.editQtde);
-        btnAdicionarCarrinho = findViewById(R.id.btnAdicionarCarrinho);
         imageViewProduto = findViewById(R.id.imageViewProduto);
 
         txtValorUnitario.setEnabled(false);
