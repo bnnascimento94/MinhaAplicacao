@@ -175,7 +175,7 @@ public class ContasReceberAdapter extends RecyclerView.Adapter<ContasReceberAdap
         public ContasReceberViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            txtCliente = itemView.findViewById(R.id.txtCliente);
+            txtCliente = itemView.findViewById(R.id.txtClienteContaReceber);
             txtValorConta = itemView.findViewById(R.id.txtValorConta);
             txtDataConta = itemView.findViewById(R.id.txtDataConta);
             btnQuitar = itemView.findViewById(R.id.btnQuitar);
