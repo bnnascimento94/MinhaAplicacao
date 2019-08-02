@@ -92,7 +92,7 @@ public class ClienteCadastroAdapter extends RecyclerView.Adapter<ClienteCadastro
                 builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         ControlePedidos controlePedidos = new ControlePedidos(v.getContext());
-                        if(!(controlePedidos.getAllClientesByName(clienteFiltrado.get(i).getNomeCliente()).size()>0)){
+                        if(!(controlePedidos.getPedidoByIdCliente(clienteFiltrado.get(i).getIdCliente()).size()>0)){
                             ControleClientes controller = new ControleClientes(clienteViewHolder.context);
                             if(controller.deletar(clienteFiltrado.get(i))){
                                 if(new ImageSaver(v.getContext(),clienteFiltrado.get(i).getDiretorioFoto(),clienteFiltrado.get(i).getNomeArquivo()).deleteFile()){}

@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 
 import android.curso.minhaaplicacao.R;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -68,8 +69,7 @@ public class ContasReceber extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contas_receber, container, false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Contas a Receber");
@@ -87,6 +87,18 @@ public class ContasReceber extends Fragment {
         String myFormat = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat,new Locale("pt","BR"));
         txtData.setText(sdf.format(myCalendar.getTime()));
+
+    }
+    private void updateLabel1(){
+        String myFormat = "dd/MM/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat,new Locale("pt","BR"));
+        txtData1.setText(sdf.format(myCalendar.getTime()));
+
+    }
+    private void updateLabel2(){
+        String myFormat = "dd/MM/yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat,new Locale("pt","BR"));
+        txtData2.setText(sdf.format(myCalendar.getTime()));
 
     }
 
@@ -140,7 +152,11 @@ public class ContasReceber extends Fragment {
         mes = dialog.findViewById(R.id.spnMes);
         txtData1 = dialog.findViewById(R.id.txtData1ContaReceber);
         txtData2 = dialog.findViewById(R.id.txtData2ContaReceber);
+        final boolean data = false,data1= false,data2= false;
 
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),R.array.meses,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mes.setAdapter(adapter);
 
 
         myCalendar = Calendar.getInstance();
@@ -150,7 +166,10 @@ public class ContasReceber extends Fragment {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, month);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    //
                 updateLabel();
+
+
             }
         };
 
@@ -179,14 +198,6 @@ public class ContasReceber extends Fragment {
                 return false;
             }
         });
-    /**    txtData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(getContext(),date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });**/
-
         txtCliente.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -266,12 +277,10 @@ public class ContasReceber extends Fragment {
                         ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberQuitadas());
                         rv.setAdapter(contasReceberAdapter);
                     }
-
-                }else{
-                    rv.setAdapter(getAdapter());
-
                 }
-
+                else{
+                    rv.setAdapter(getAdapter());
+                }
             }
         });
 
@@ -283,14 +292,12 @@ public class ContasReceber extends Fragment {
                     if(chkQuitado.isChecked()){
                         ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberQuitadasCurrentMonth());
                         rv.setAdapter(contasReceberAdapter);
-
                     }else if (chkAberto.isChecked()){
                         ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberAbertasCurrentMonth());
                         rv.setAdapter(contasReceberAdapter);
                     }else if (txtCliente.getText().length()>0){
                         ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberByClienteAndCurrentMonth(txtCliente.getText().toString()));
                         rv.setAdapter(contasReceberAdapter);
-
                     }else{
                         ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberCurrentMonth());
                         rv.setAdapter(contasReceberAdapter);
@@ -303,59 +310,53 @@ public class ContasReceber extends Fragment {
         });
 
 
-
         btnBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ControleContasReceber controleContasReceber = new ControleContasReceber(getContext());
-                if(chkQuitado.isChecked()){
-                    ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getContasAReceberByDataAndQuitadas(txtData.getText().toString()));
-                    rv.setAdapter(contasReceberAdapter);
-                }else if (chkAberto.isChecked()){
-                    ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getContasAReceberByDataAndAbertas(txtData.getText().toString()));
-                    rv.setAdapter(contasReceberAdapter);
-                }else if (txtCliente.getText().length()>0){
-                    ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberByClienteAndDate(txtCliente.getText().toString(),txtData.getText().toString()));
-                    rv.setAdapter(contasReceberAdapter);
-                }else{
-                    ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getContasAReceberByData(txtData.getText().toString()));
-                    rv.setAdapter(contasReceberAdapter);
+                if(txtData.getText().length()>0){
+                    if(chkQuitado.isChecked()){
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getContasAReceberByDataAndQuitadas(txtData.getText().toString()));
+                        rv.setAdapter(contasReceberAdapter);
+                    }else if (chkAberto.isChecked()){
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getContasAReceberByDataAndAbertas(txtData.getText().toString()));
+                        rv.setAdapter(contasReceberAdapter);
+                    }else if (txtCliente.getText().length()>0){
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getAllContasReceberByClienteAndDate(txtCliente.getText().toString(),txtData.getText().toString()));
+                        rv.setAdapter(contasReceberAdapter);
+                    }else{
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getContasAReceberByData(txtData.getText().toString()));
+                        rv.setAdapter(contasReceberAdapter);
+                    }
+                }else if(txtData1.getText().length()>0&& txtData2.getText().length()>0){
+                    if(chkQuitado.isChecked()){
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getContasAReceberEntreDatasAndQuitado(txtData1.getText().toString(),txtData2.getText().toString()));
+                        rv.setAdapter(contasReceberAdapter);
+                    }else if (chkAberto.isChecked()){
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getContasAReceberEntreDatasAndAReceber(txtData1.getText().toString(),txtData2.getText().toString()));
+                        rv.setAdapter(contasReceberAdapter);
+                    }else if (txtCliente.getText().length()>0){
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getContasAReceberEntreDatasAndCliente(txtData1.getText().toString(),txtData2.getText().toString(),txtCliente.getText().toString()));
+                        rv.setAdapter(contasReceberAdapter);
+                    }else{
+                        ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getContasAReceberEntreDatas(txtData1.getText().toString(),txtData2.getText().toString()));
+                        rv.setAdapter(contasReceberAdapter);
+                    }
+                }else if(txtCliente.getText().length() == 0 &&
+                        txtData.getText().length() == 0 &&
+                        txtData1.getText().length() == 0 &&
+                        txtData2.getText().length() ==0 &&
+                        chkAberto.isChecked() ==false &&
+                        chkQuitado.isChecked() == false &&
+                        chkMesAtual.isChecked() == false){
+
+                        rv.setAdapter(getAdapter());
+
                 }
-
                 dialog.dismiss();
             }
         });
-
-
-
-
-
-
-       /** FrameLayout mDialogNo = dialog.findViewById(R.id.frmNo);
-        mDialogNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Cancel" ,Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
-        });
-
-        FrameLayout mDialogOk = dialog.findViewById(R.id.frmOk);
-        mDialogOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Okay" ,Toast.LENGTH_SHORT).show();
-                dialog.cancel();
-            }
-        }); **/
-
         dialog.show();
-
-
-
-
-
-
     }
 
 

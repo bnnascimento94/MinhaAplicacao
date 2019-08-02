@@ -41,8 +41,6 @@ public class ControleContasReceber extends DataSource {
         sucesso = deletar(ContaAReceberDataModel.getTabela(),obj.getIdContaReceber());
         return sucesso;
     }
-
-
     public boolean alterar(ContasReceber obj){
             boolean sucesso = true;
             dados = new ContentValues();
@@ -55,6 +53,7 @@ public class ControleContasReceber extends DataSource {
             sucesso = alterar(ContaAReceberDataModel.getTabela(),dados);
             return true;
     }
+
 
 
 

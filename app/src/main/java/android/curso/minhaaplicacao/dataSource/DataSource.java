@@ -522,6 +522,49 @@ public class DataSource extends SQLiteOpenHelper {
         cursor.close();
         return lista;
     }
+    public List<Pedidos> getPedidoByIdCliente(int id){
+        Pedidos obj;
+
+        List<Pedidos> lista = new ArrayList<>();
+
+        String sql ="SELECT * FROM "+ PedidoDataModel.getTabela() + " where "+PedidoDataModel.getIdCliente()+ " = ?" ;
+
+        Cursor cursor = db.rawQuery(sql,new String[]{Integer.toString(id)});
+
+        if(cursor.moveToFirst()){
+            do{
+                obj = new Pedidos();
+
+                try{
+                    obj.setIdPedido(cursor.getInt(cursor.getColumnIndex(PedidoDataModel.getid())));
+                    obj.setValorTotal(cursor.getDouble(cursor.getColumnIndex(PedidoDataModel.getValorTotal())));
+                    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+
+                    obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(PedidoDataModel.getData()))));
+                    int idCliente = cursor.getInt(cursor.getColumnIndex(PedidoDataModel.getIdCliente()));
+                    int idPedido =cursor.getInt(cursor.getColumnIndex(PedidoDataModel.getid()));
+                    int idPrazoPagamento = cursor.getInt(cursor.getColumnIndex(PedidoDataModel.getIdNomePrazoPagamento()));
+                    int idCondicaoPagamento =cursor.getInt(cursor.getColumnIndex(PedidoDataModel.getIdCondicaoPagamento()));
+                    List<Cliente> cliente = getAllClientesById(idCliente);
+                    List<ItemPedido> itens = getAllItemPedidoByIdPedido(idPedido);
+                    List<PrazosPagamento> prazosPagamentos = getPrazosPagamentoById(idPrazoPagamento);
+                    List<CondicoesPagamento> condicoesPagamentos = getCondicoesPagamentoById(idCondicaoPagamento);
+
+                    if(cliente.size() >0) obj.setCliente(cliente.get(0));
+                    if(itens.size() >0) obj.setItensPedido((ArrayList<ItemPedido>) itens);
+                    if(prazosPagamentos.size() >0) obj.setPrazosPagamento(prazosPagamentos.get(0));
+                    if(condicoesPagamentos.size() >0) obj.setCondicoesPagamento(condicoesPagamentos.get(0));
+                    lista.add(obj);
+                }catch (ParseException p){
+                    String errp = p.getMessage();
+                }
+
+            }while(cursor.moveToNext());
+
+        }
+        cursor.close();
+        return lista;
+    }
     public List<Pedidos> getPedidoByIdCondicao(int id){
         Pedidos obj;
 
@@ -904,6 +947,7 @@ public class DataSource extends SQLiteOpenHelper {
         cursor.close();
         return lista;
     }
+
     public List<ContasReceber> getContasAReceberByData(String sdata){
         List<ContasReceber> lista = new ArrayList<>();
         ContasReceber obj;
@@ -1295,7 +1339,138 @@ public class DataSource extends SQLiteOpenHelper {
         cursor.close();
         return lista;
     }
+    public List<ContasReceber> getContasAReceberEntreDatas(String sdata1, String sdata2){
+        List<ContasReceber> lista = new ArrayList<>();
+        ContasReceber obj;
+        try{
 
+            String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " where "+ContaAReceberDataModel.getDataContaReceber()+ " between date(?) and date(?) ORDER BY id" ;
+            Cursor cursor = db.rawQuery(sql,new String[]{converterParaDataSqlite(sdata1),converterParaDataSqlite(sdata2)});
+            if(cursor.moveToFirst()){
+                do{
+                    try{
+                        obj = new ContasReceber();
+                        obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
+                        Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
+                        obj.setPedido(pedido);
+                        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+                        obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
+                        obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
+                        obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
+                        lista.add(obj);
+                    }
+                    catch(Exception e){
+                        Log.i("ERRO AO SETAR->"," "+e);
+                    }
+                }while(cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        catch(Exception e){
+            Log.i("Erro ao Setar ->"," "+e);
+        }
+
+        return lista;
+    }
+    public List<ContasReceber> getContasAReceberEntreDatasAndCliente(String sdata1, String sdata2, String cliente){
+        List<ContasReceber> lista = new ArrayList<>();
+        ContasReceber obj;
+        try{
+            String sql ="select * from tb_conta_receber a inner join tb_pedidos b on a.id_pedido = b.id inner join tb_cliente c on b.id_cliente = c.id where a."+ContaAReceberDataModel.getDataContaReceber()+
+                    " between date(?) and date(?) and c."+ClienteDataModel.getNomeCliente()+" = ? ORDER BY id" ;
+            Cursor cursor = db.rawQuery(sql,new String[]{converterParaDataSqlite(sdata1),converterParaDataSqlite(sdata2),cliente});
+            if(cursor.moveToFirst()){
+                do{
+                    try{
+                        obj = new ContasReceber();
+                        obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
+                        Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
+                        obj.setPedido(pedido);
+                        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+                        obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
+                        obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
+                        obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
+                        lista.add(obj);
+                    }
+                    catch(Exception e){
+                        Log.i("ERRO AO SETAR->"," "+e);
+                    }
+                }while(cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        catch(Exception e){
+            Log.i("Erro ao Setar ->"," "+e);
+        }
+
+        return lista;
+    }
+    public List<ContasReceber> getContasAReceberEntreDatasAndQuitado(String sdata1, String sdata2){
+        List<ContasReceber> lista = new ArrayList<>();
+        ContasReceber obj;
+        try{
+
+            String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " where "+ContaAReceberDataModel.getDataContaReceber()+ " between date(?) and date(?) and "+ContaAReceberDataModel.getValor() +" = "+ContaAReceberDataModel.getValorLiquidado() +"  ORDER BY id" ;
+            Cursor cursor = db.rawQuery(sql,new String[]{converterParaDataSqlite(sdata1),converterParaDataSqlite(sdata2)});
+            if(cursor.moveToFirst()){
+                do{
+                    try{
+                        obj = new ContasReceber();
+                        obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
+                        Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
+                        obj.setPedido(pedido);
+                        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+                        obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
+                        obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
+                        obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
+                        lista.add(obj);
+                    }
+                    catch(Exception e){
+                        Log.i("ERRO AO SETAR->"," "+e);
+                    }
+                }while(cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        catch(Exception e){
+            Log.i("Erro ao Setar ->"," "+e);
+        }
+
+        return lista;
+    }
+    public List<ContasReceber> getContasAReceberEntreDatasAndAReceber(String sdata1, String sdata2){
+        List<ContasReceber> lista = new ArrayList<>();
+        ContasReceber obj;
+        try{
+
+            String sql ="SELECT * FROM "+ContaAReceberDataModel.getTabela()+ " where "+ContaAReceberDataModel.getDataContaReceber()+ " between date(?) and date(?) and "+ContaAReceberDataModel.getValor() +" != "+ContaAReceberDataModel.getValorLiquidado() +"  ORDER BY id" ;
+            Cursor cursor = db.rawQuery(sql,new String[]{converterParaDataSqlite(sdata1),converterParaDataSqlite(sdata2)});
+            if(cursor.moveToFirst()){
+                do{
+                    try{
+                        obj = new ContasReceber();
+                        obj.setIdContaReceber(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdContaReceber())));
+                        Pedidos pedido = getPedidoById(cursor.getInt(cursor.getColumnIndex(ContaAReceberDataModel.getIdPedido()))).get(0);
+                        obj.setPedido(pedido);
+                        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+                        obj.setData(formato.parse(cursor.getString(cursor.getColumnIndex(ContaAReceberDataModel.getDataContaReceber()))));
+                        obj.setValor(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValor())));
+                        obj.setValorLiquidado(cursor.getDouble(cursor.getColumnIndex(ContaAReceberDataModel.getValorLiquidado())));
+                        lista.add(obj);
+                    }
+                    catch(Exception e){
+                        Log.i("ERRO AO SETAR->"," "+e);
+                    }
+                }while(cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        catch(Exception e){
+            Log.i("Erro ao Setar ->"," "+e);
+        }
+
+        return lista;
+    }
     public int getNumberProducts(){
         int qtdeProdutos = 0;
 
