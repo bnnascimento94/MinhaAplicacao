@@ -96,7 +96,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="882dp"
+        android:layout_height="wrap_content"
         android:padding="0dp">
 
         <android.support.v7.widget.RecyclerView
@@ -109,6 +109,7 @@
         android:layout_height="wrap_content"
         android:paddingVertical="0dp"
         android:elevation="30dp"
+        android:layout_gravity="bottom"
         android:layout_marginTop="10dp"
         android:background="@drawable/cardview_customized"
         >

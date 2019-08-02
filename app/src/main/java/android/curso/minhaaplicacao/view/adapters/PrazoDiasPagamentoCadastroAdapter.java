@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.curso.minhaaplicacao.R;
 import android.curso.minhaaplicacao.controller.ControleDiasPrazo;
+import android.curso.minhaaplicacao.controller.ControleItemCarrinho;
 import android.curso.minhaaplicacao.model.PrazosPagamento;
+import android.curso.minhaaplicacao.view.fragments.Graficos;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -79,12 +82,58 @@ public class PrazoDiasPagamentoCadastroAdapter extends RecyclerView.Adapter<Praz
                 View alertLayout = inflater.inflate(R.layout.financeiro_prazo_dias_pagamento, null);
                 final EditText txtDias = alertLayout.findViewById(R.id.txtDias);
                 final EditText txtPorcentagem = alertLayout.findViewById(R.id.txtPorcentagem);
+                final Button buttonQuestion1 = alertLayout.findViewById(R.id.buttonQuestion1);
+                final Button buttonQuestion2 = alertLayout.findViewById(R.id.buttonQuestion2);
                 txtDias.setText(String.valueOf(prazoFiltrado.get(i).getNumeroDias()));
                 txtPorcentagem.setText(String.valueOf(prazoFiltrado.get(i).getPorcentagem()));
                 AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
                 alert.setTitle("Cadastro Prazo Dias Pagamento");
                 // this is set the view from XML inside AlertDialog
                 alert.setView(alertLayout);
+
+                buttonQuestion1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                        builder.setTitle("Informação");
+                        builder.setMessage("Insira a porcentagem do total do pagamento deseja para esta data");
+                        builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+                        builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+                        alerta = builder.create();
+                        alerta.show();
+
+                    }
+                });
+
+                buttonQuestion2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                        builder.setTitle("Atenção");
+                        builder.setMessage("Insira a quantidade de dias a partir do pagamento que deseja para esta parcela");
+                        builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+                        builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+                        alerta = builder.create();
+                        alerta.show();
+                    }
+                });
                 // disallow cancel of AlertDialog on click of back button and outside touch
                 alert.setCancelable(false);
                 alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -93,6 +142,7 @@ public class PrazoDiasPagamentoCadastroAdapter extends RecyclerView.Adapter<Praz
 
                     }
                 });
+
                 alert.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -130,17 +180,12 @@ public class PrazoDiasPagamentoCadastroAdapter extends RecyclerView.Adapter<Praz
             }
         });
 
-
-
-
     }
 
     @Override
     public int getItemCount() {
         return prazoFiltrado.size();
     }
-
-
 
     public interface PrazoCadastroAdapterListener {
         void onContactSelected(PrazosPagamento prazo);

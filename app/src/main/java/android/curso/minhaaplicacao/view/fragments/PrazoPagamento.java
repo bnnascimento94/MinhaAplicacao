@@ -2,12 +2,14 @@ package android.curso.minhaaplicacao.view.fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.curso.minhaaplicacao.classes.OnBackPressed;
 import android.curso.minhaaplicacao.controller.ControlePrazo;
 import android.curso.minhaaplicacao.model.PrazosPagamento;
 import android.curso.minhaaplicacao.view.adapters.PrazoPagamentoCadastroAdapter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,7 +25,7 @@ import android.widget.Toast;
 import java.util.List;
 
 
-public class PrazoPagamento extends Fragment {
+public class PrazoPagamento extends Fragment implements OnBackPressed {
     View view;
     RecyclerView rv;
     public PrazoPagamento() {
@@ -128,6 +130,9 @@ public PrazoPagamentoCadastroAdapter getAdapter(){
 }
 
 
-
-
+    @Override
+    public void OnBackPressed() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_fragment, new Graficos()).commit();
+    }
 }

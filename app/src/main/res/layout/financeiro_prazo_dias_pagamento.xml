@@ -34,10 +34,10 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.568"
+                app:layout_constraintHorizontal_bias="0.327"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.202">
+                app:layout_constraintVertical_bias="0.189">
 
                 <EditText
                     android:id="@+id/txtDias"
@@ -57,10 +57,10 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.612"
+                app:layout_constraintHorizontal_bias="0.31"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.764">
+                app:layout_constraintVertical_bias="0.751">
 
                 <EditText
                     android:id="@+id/txtPorcentagem"
@@ -70,6 +70,36 @@
                     android:inputType="numberDecimal|textCapSentences"
                     android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/buttonQuestion1"
+                android:layout_width="31dp"
+                android:layout_height="33dp"
+                android:layout_marginTop="110dp"
+                android:layout_marginBottom="109dp"
+                android:drawableLeft="@drawable/question_mark"
+                android:text=""
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.914"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/buttonQuestion2"
+                android:layout_width="31dp"
+                android:layout_height="33dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginBottom="109dp"
+                android:drawableLeft="@drawable/question_mark"
+                android:text=""
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.914"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
 
         </android.support.constraint.ConstraintLayout>

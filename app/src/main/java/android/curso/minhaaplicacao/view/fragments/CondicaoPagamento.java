@@ -2,6 +2,7 @@ package android.curso.minhaaplicacao.view.fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.curso.minhaaplicacao.classes.OnBackPressed;
 import android.curso.minhaaplicacao.controller.ControleCondicaoPagamento;
 import android.curso.minhaaplicacao.controller.ControleContasReceber;
 import android.curso.minhaaplicacao.model.CondicoesPagamento;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,7 +30,7 @@ import android.widget.Toast;
 import java.util.List;
 
 
-public class CondicaoPagamento extends Fragment {
+public class CondicaoPagamento extends Fragment implements OnBackPressed {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     View view;
@@ -117,5 +119,9 @@ public class CondicaoPagamento extends Fragment {
     }
 
 
-
+    @Override
+    public void OnBackPressed() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_fragment, new Graficos()).commit();
+    }
 }

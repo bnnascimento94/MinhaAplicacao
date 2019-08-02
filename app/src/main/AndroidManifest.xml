@@ -37,7 +37,7 @@
             android:name=".view.GuiaGraficosActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".view.MainActivity" />
+
         <activity
             android:name=".view.TelaPrincipalActivity"
             android:screenOrientation="portrait"

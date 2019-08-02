@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 
 import android.curso.minhaaplicacao.classes.ImageSaver;
 import android.curso.minhaaplicacao.classes.MoneyTextWatcher;
+import android.curso.minhaaplicacao.classes.OnBackPressed;
 import android.curso.minhaaplicacao.controller.ControleProdutos;
 
 import android.curso.minhaaplicacao.model.Produto;
@@ -24,6 +25,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -56,7 +58,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 
-public class CadastroProduto extends Fragment {
+public class CadastroProduto extends Fragment implements OnBackPressed {
     private static final int SOLICITAR_PERMISSAO = 1;
     View view;
     Context context;
@@ -64,14 +66,11 @@ public class CadastroProduto extends Fragment {
     CircleImageView imagemProduto;
     FloatingActionButton camera;
     private String mImageFileLocation;
-
-    Bitmap raw;
     private AlertDialog alerta;
     EditText nomeProduto,custoProduto,valorVenda;
     Button btnSalvar;
     /** RESULT_CAMERA */
     private static final int RESULT_CAMERA = 111;
-
     /** RESULT_GALERIA */
     private static final int RESULT_GALERIA = 222;
     public CadastroProduto() {
@@ -144,6 +143,7 @@ public class CadastroProduto extends Fragment {
                     builder.setMessage("Deseja capturar a Imagem da galeria ou Tirar a Foto?");
                     builder.setPositiveButton("Tirar Foto", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
+                            checarPermissao();
                             Intent intent = new Intent();
                             intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
                             File photoFile = null;
@@ -320,6 +320,23 @@ public class CadastroProduto extends Fragment {
         return image;
     }
 
+    private void checarPermissao(){
+
+        // Verifica  o estado da permissão de WRITE_EXTERNAL_STORAGE
+        int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            // Se for diferente de PERMISSION_GRANTED, então vamos exibir a tela padrão
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, SOLICITAR_PERMISSAO);
+        } else {
+            // Senão vamos compartilhar a imagem
+
+        }
+    }
+
+
+
     private void rotateImage(Bitmap bitmap){
         ExifInterface exifInterface = null;
         try{
@@ -362,4 +379,9 @@ public class CadastroProduto extends Fragment {
     }
 
 
+    @Override
+    public void OnBackPressed() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_fragment, new Graficos()).commit();
+    }
 }

@@ -1,6 +1,7 @@
 package android.curso.minhaaplicacao.view.fragments;
 
 import android.content.Context;
+import android.curso.minhaaplicacao.classes.OnBackPressed;
 import android.curso.minhaaplicacao.controller.ControleClientes;
 import android.curso.minhaaplicacao.controller.ControleProdutos;
 import android.curso.minhaaplicacao.model.Produto;
@@ -10,6 +11,7 @@ import android.curso.minhaaplicacao.view.adapters.ProdutoCadastroAdapter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class CadastroProdutoListagem extends Fragment {
+public class CadastroProdutoListagem extends Fragment implements OnBackPressed {
     View view;
     RecyclerView rv;
     Context context;
@@ -112,4 +114,9 @@ public class CadastroProdutoListagem extends Fragment {
 
     }
 
+    @Override
+    public void OnBackPressed() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_fragment, new Graficos()).commit();
+    }
 }

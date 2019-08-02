@@ -2,6 +2,7 @@ package android.curso.minhaaplicacao.view.fragments;
 
 
 import android.content.Intent;
+import android.curso.minhaaplicacao.classes.OnBackPressed;
 import android.curso.minhaaplicacao.controller.ControleContasReceber;
 import android.curso.minhaaplicacao.controller.ControleItemCarrinho;
 import android.curso.minhaaplicacao.controller.ControlePedidos;
@@ -45,7 +46,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class FinalizarPedido extends Fragment {
+public class FinalizarPedido extends Fragment implements OnBackPressed {
     ArrayList<Cliente> cliente;
     CondicoesPagamento condicaoPagamentos;
     PrazosPagamento prazosPagamento;
@@ -207,4 +208,9 @@ public class FinalizarPedido extends Fragment {
     }
 
 
+    @Override
+    public void OnBackPressed() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_fragment, new Graficos()).commit();
+    }
 }

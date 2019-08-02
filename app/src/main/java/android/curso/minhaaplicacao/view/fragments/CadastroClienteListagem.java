@@ -1,22 +1,17 @@
 package android.curso.minhaaplicacao.view.fragments;
 
-import android.app.Activity;
-import android.app.SearchManager;
 import android.content.Context;
+import android.curso.minhaaplicacao.classes.OnBackPressed;
 import android.curso.minhaaplicacao.controller.ControleClientes;
-import android.curso.minhaaplicacao.model.Cliente;
-import android.curso.minhaaplicacao.view.MainActivity;
 import android.curso.minhaaplicacao.view.TelaPrincipalActivity;
 import android.curso.minhaaplicacao.view.adapters.ClienteCadastroAdapter;
-import android.curso.minhaaplicacao.view.adapters.ClientePedidoAdapter;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,12 +21,8 @@ import android.view.ViewGroup;
 
 import android.curso.minhaaplicacao.R;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.Inflater;
 
-
-public class CadastroClienteListagem extends Fragment {
+public class CadastroClienteListagem extends Fragment implements OnBackPressed {
     View view;
     RecyclerView rv;
     Context context;
@@ -113,9 +104,9 @@ public class CadastroClienteListagem extends Fragment {
     }
 
 
-
-
-
-
-
+    @Override
+    public void OnBackPressed() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_fragment, new Graficos()).commit();
+    }
 }

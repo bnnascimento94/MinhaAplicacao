@@ -5,18 +5,15 @@ import android.curso.minhaaplicacao.R;
 import android.curso.minhaaplicacao.classes.ImageSaver;
 import android.curso.minhaaplicacao.controller.ControleItemCarrinho;
 import android.curso.minhaaplicacao.model.ItemCarrinho;
-import android.curso.minhaaplicacao.view.fragments.Graficos;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.text.NumberFormat;
 import java.util.List;
 
@@ -29,6 +26,7 @@ public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<Produtos
 
     public ProdutosPedidoCarrinhoAdapter(List<ItemCarrinho> produtos, Boolean eCarrinho){
         this.produtos = produtos;
+        this.eCarrinho = eCarrinho;
 
     }
 
@@ -94,14 +92,9 @@ public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<Produtos
                                             produtos.remove(produtos.get(i));
                                             notifyItemRemoved(i); //seta o elemento que foi excluido
                                             notifyItemRangeChanged(i, produtos.size());
-
                                             ControleItemCarrinho controleItemCarrinho = new ControleItemCarrinho(v.getContext());
                                             controleItemCarrinho.deletarAllItemCarinho();
-
                                             Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
-                                            AppCompatActivity activity = (AppCompatActivity) v.getContext();
-
-                                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment, new Graficos()).addToBackStack(null).commit();
                                         }
                                         else{
                                             Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
@@ -121,7 +114,6 @@ public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<Produtos
                                     produtos.remove(produtos.get(i));
                                     notifyItemRemoved(i); //seta o elemento que foi excluido
                                     notifyItemRangeChanged(i, produtos.size());
-
                                     Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
                                 }else{
                                     Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
@@ -134,7 +126,6 @@ public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<Produtos
                                 produtos.remove(produtos.get(i));
                                 notifyItemRemoved(i); //seta o elemento que foi excluido
                                 notifyItemRangeChanged(i, produtos.size());
-
                                 Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
                             }else{
                                 Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
@@ -154,10 +145,6 @@ public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<Produtos
         });
 
         }
-
-
-
-
     @Override
     public int getItemCount() {
         return produtos.size();

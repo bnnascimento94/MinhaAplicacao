@@ -3,18 +3,21 @@ package android.curso.minhaaplicacao.view;
 import android.content.Intent;
 import android.curso.minhaaplicacao.R;
 import android.curso.minhaaplicacao.controller.ControleItemCarrinho;
+import android.curso.minhaaplicacao.model.PrazosPagamento;
 import android.curso.minhaaplicacao.view.adapters.ExpandableAdapter;
 import android.curso.minhaaplicacao.view.fragments.CadastroCliente;
 import android.curso.minhaaplicacao.view.fragments.CadastroClienteListagem;
 import android.curso.minhaaplicacao.view.fragments.CadastroProdutoListagem;
 import android.curso.minhaaplicacao.view.fragments.CondicaoPagamento;
 import android.curso.minhaaplicacao.view.fragments.ContasReceber;
+import android.curso.minhaaplicacao.view.fragments.FinalizarPedido;
 import android.curso.minhaaplicacao.view.fragments.Graficos;
 import android.curso.minhaaplicacao.view.fragments.PedidosListagem;
 import android.curso.minhaaplicacao.view.fragments.CadastroProduto;
 import android.curso.minhaaplicacao.view.fragments.ClientesPedidoListagem;
 import android.curso.minhaaplicacao.view.fragments.PrazoPagamento;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.v4.widget.DrawerLayout;
@@ -166,20 +169,8 @@ public class TelaPrincipalActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-       // DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-       // if (drawer.isDrawerOpen(GravityCompat.START)) {
-       //     drawer.closeDrawer(GravityCompat.START);
-      //  } else {
-       //     super.onBackPressed();
-       // }
-        if (getFragmentManager().getBackStackEntryCount() > 0 ){
-            getFragmentManager().popBackStack();
-        } else {
-           // setTitle("Vullpes");
-            super.onBackPressed();
-        }
-        //getFragmentManager().popBackStack();
 
+        tellFragments();
     }
 
 
@@ -247,6 +238,35 @@ public class TelaPrincipalActivity extends AppCompatActivity {
         auxList.add("Graficos");
         listData.put(listGroup.get(5), auxList);
 
+    }
+
+
+    private void tellFragments(){
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for(Fragment f : fragments){
+            if(f != null && f instanceof CadastroCliente){
+                ((CadastroCliente)f).OnBackPressed();
+            }else if(f != null && f instanceof CadastroClienteListagem){
+                ((CadastroClienteListagem)f).OnBackPressed();
+            }else if(f != null && f instanceof CadastroProduto){
+                ((CadastroProduto)f).OnBackPressed();
+            }else if(f != null && f instanceof CadastroProdutoListagem){
+                ((CadastroProdutoListagem)f).OnBackPressed();
+            }else if(f != null && f instanceof CondicaoPagamento){
+                ((CondicaoPagamento)f).OnBackPressed();
+            }else if(f != null && f instanceof ContasReceber){
+                ((ContasReceber)f).OnBackPressed();
+            }else if(f != null && f instanceof FinalizarPedido){
+                ((FinalizarPedido)f).OnBackPressed();
+            }else if(f != null && f instanceof PedidosListagem){
+                ((PedidosListagem)f).OnBackPressed();
+            }else if(f != null && f instanceof PrazoPagamento){
+                ((PrazoPagamento)f).OnBackPressed();
+            }else{
+                getFragmentManager().popBackStack();
+            }
+
+        }
     }
 
 

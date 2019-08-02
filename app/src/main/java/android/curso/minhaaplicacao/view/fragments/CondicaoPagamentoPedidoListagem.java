@@ -1,12 +1,14 @@
 package android.curso.minhaaplicacao.view.fragments;
 
 
+import android.curso.minhaaplicacao.classes.OnBackPressed;
 import android.curso.minhaaplicacao.controller.ControleCondicaoPagamento;
 import android.curso.minhaaplicacao.model.Cliente;
 import android.curso.minhaaplicacao.view.adapters.CondicaoPagamentoPedidoAdapter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -59,7 +61,6 @@ public class CondicaoPagamentoPedidoListagem extends Fragment {
 
         return view;
     }
-
 
 
 

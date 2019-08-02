@@ -2,6 +2,7 @@ package android.curso.minhaaplicacao.view.fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.curso.minhaaplicacao.classes.OnBackPressed;
 import android.curso.minhaaplicacao.controller.ControleDiasPrazo;
 import android.curso.minhaaplicacao.controller.ControleItemCarrinho;
 import android.curso.minhaaplicacao.controller.ControlePrazo;
@@ -29,7 +30,7 @@ import java.io.Serializable;
 import java.util.List;
 
 
-public class PrazoDiasPagamento extends Fragment {
+public class PrazoDiasPagamento extends Fragment  {
 Integer idprazo;
 List<android.curso.minhaaplicacao.model.PrazoDiasPagamento> diasPagamentos;
 View view;
@@ -77,8 +78,10 @@ private AlertDialog alerta;
                 View alertLayout = inflater.inflate(R.layout.financeiro_prazo_dias_pagamento, null);
                 final EditText txtDias = alertLayout.findViewById(R.id.txtDias);
                 final EditText txtPorcentagem = alertLayout.findViewById(R.id.txtPorcentagem);
+                final Button buttonQuestion1 = alertLayout.findViewById(R.id.buttonQuestion1);
+                final Button buttonQuestion2 = alertLayout.findViewById(R.id.buttonQuestion2);
                 AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
-                alert.setTitle("Cadastro Condição Pagamento");
+                alert.setTitle("Cadastro Prazo Dias Pagamento");
                 // this is set the view from XML inside AlertDialog
                 alert.setView(alertLayout);
                 // disallow cancel of AlertDialog on click of back button and outside touch
@@ -87,6 +90,50 @@ private AlertDialog alerta;
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
+                    }
+                });
+
+                buttonQuestion1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                        builder.setTitle("Informação");
+                        builder.setMessage("Insira a porcentagem do total do pagamento deseja para esta data");
+                        builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+                        builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+                        alerta = builder.create();
+                        alerta.show();
+
+                    }
+                });
+
+                buttonQuestion2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                        builder.setTitle("Atenção");
+                        builder.setMessage("Insira a quantidade de dias a partir do pagamento que deseja para esta parcela");
+                        builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+                        builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+                        alerta = builder.create();
+                        alerta.show();
                     }
                 });
                 alert.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {

@@ -30,7 +30,7 @@
                 android:id="@+id/txtNome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:ems="10"
                 android:inputType="textPersonName"
@@ -45,7 +45,7 @@
                 android:id="@+id/textView24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:text="Condição Pagamento:"
                 android:textSize="14sp"
@@ -67,7 +67,7 @@
                 android:id="@+id/textView26"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:text="Prazo Pagamento:"
                 android:textSize="14sp"
@@ -109,6 +109,7 @@
         android:layout_height="wrap_content"
         android:paddingVertical="0dp"
         android:elevation="30dp"
+        android:layout_gravity="bottom"
         android:layout_marginTop="10dp"
         android:background="@drawable/cardview_customized"
         >
@@ -126,7 +127,7 @@
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginBottom="22dp"
                 android:text="@string/valorTotalPedido"
                 android:textSize="24sp"
@@ -149,8 +150,10 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btnConfirmarPedido"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/textView13"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
 
 
             <Button
@@ -158,7 +161,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="4dp"
                 android:layout_marginBottom="17dp"
                 android:background="@drawable/btn_customizado"
                 android:text="@string/finalizarPedido"

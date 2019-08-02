@@ -1,17 +1,16 @@
 package android.curso.minhaaplicacao.view.fragments;
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ProviderInfo;
 import android.curso.minhaaplicacao.classes.CarregadorDeFoto;
 import android.curso.minhaaplicacao.classes.ImageSaver;
+import android.curso.minhaaplicacao.classes.Mask;
+import android.curso.minhaaplicacao.classes.OnBackPressed;
 import android.curso.minhaaplicacao.controller.ControleClientes;
 import android.curso.minhaaplicacao.model.Cliente;
-import android.curso.minhaaplicacao.view.MainActivity;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,7 +18,6 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -27,6 +25,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -37,8 +36,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.curso.minhaaplicacao.R;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +48,7 @@ import java.util.Date;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class CadastroCliente extends Fragment {
+public class CadastroCliente extends Fragment implements OnBackPressed {
     private static final int SOLICITAR_PERMISSAO = 1;
     private ProgressBar progressBar;
     Boolean concluido = false;
@@ -59,21 +58,19 @@ public class CadastroCliente extends Fragment {
     CircleImageView foto;
     FloatingActionButton camera;
     private AlertDialog alerta;
-    TextView nomeCliente, email, telefone, endereco;
+    EditText nomeCliente, email, telefone, endereco;
     Button btnSalvar;
     /** RESULT_CAMERA */
     private static final int RESULT_CAMERA = 111;
     /** RESULT_GALERIA */
     private static final int RESULT_GALERIA = 222;
     private String mImageFileLocation;
-    Integer count =1;//PROGRESS BAR
+
 
     public CadastroCliente() {
         // Required empty public constructor
         context  = getContext();
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,6 +81,7 @@ public class CadastroCliente extends Fragment {
             cliente =(ArrayList<Cliente>) bundle.getSerializable("cliente");
         }
 
+        // The callback can be enabled or disabled here or in handleOnBackPressed()
     }
 
     @Override
@@ -102,7 +100,7 @@ public class CadastroCliente extends Fragment {
         foto.setImageResource(R.drawable.user_no_pic);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Cadastro Cliente");
 
-
+        telefone.addTextChangedListener(Mask.insert("(##)#####-####", telefone));
 
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,18 +118,17 @@ public class CadastroCliente extends Fragment {
                     builder.setMessage("Deseja capturar a Imagem da galeria ou Tirar a Foto?");
                     builder.setPositiveButton("Tirar Foto", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface arg0, int arg1) {
-
+                            checarPermissao();
                             Intent intent = new Intent();
                             intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
                             File photoFile = null;
                             try{
+
                                 photoFile = createImageFile();
                             }catch(Exception e){
                                 e.printStackTrace();
                             }
-
-
-                            intent.putExtra(MediaStore.EXTRA_OUTPUT,FileProvider.getUriForFile( getActivity(),
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT,FileProvider.getUriForFile(getActivity(),
                                     getActivity().getApplicationContext().getPackageName() + ".provider",
                                     photoFile));
                             startActivityForResult(intent, RESULT_CAMERA);
@@ -145,9 +142,7 @@ public class CadastroCliente extends Fragment {
                     });
                     alerta = builder.create();
                     alerta.show();
-
                 }
-
             }
         });
 
@@ -192,7 +187,6 @@ public class CadastroCliente extends Fragment {
                     endereco.requestFocus();
                     dadosValidados = false;
                 }
-
 
                 if(dadosValidados){
                     if(cliente!=null){
@@ -338,6 +332,22 @@ public class CadastroCliente extends Fragment {
         new Thread(runnable).start();
     }
 
+
+    private void checarPermissao(){
+
+        // Verifica  o estado da permissão de WRITE_EXTERNAL_STORAGE
+        int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            // Se for diferente de PERMISSION_GRANTED, então vamos exibir a tela padrão
+            ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, SOLICITAR_PERMISSAO);
+        } else {
+            // Senão vamos compartilhar a imagem
+
+        }
+    }
+
     File createImageFile(){
         File image = null;
         try {
@@ -396,4 +406,9 @@ public class CadastroCliente extends Fragment {
 
     }
 
+    @Override
+    public void OnBackPressed() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_fragment, new Graficos()).commit();
+    }
 }

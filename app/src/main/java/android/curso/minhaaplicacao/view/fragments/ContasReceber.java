@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.curso.minhaaplicacao.classes.Mask;
+import android.curso.minhaaplicacao.classes.OnBackPressed;
 import android.curso.minhaaplicacao.controller.ControleContasReceber;
 import android.curso.minhaaplicacao.controller.ControleDiasPrazo;
 import android.curso.minhaaplicacao.controller.ControlePedidos;
@@ -15,7 +17,9 @@ import android.curso.minhaaplicacao.view.adapters.PedidosAdapter;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +27,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -48,7 +53,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 
-public class ContasReceber extends Fragment {
+public class ContasReceber extends Fragment implements OnBackPressed {
  RecyclerView rv;
  EditText txtData, txtCliente, txtData1,txtData2;
  CheckBox chkMesAtual, chkQuitado, chkAberto;
@@ -66,6 +71,7 @@ public class ContasReceber extends Fragment {
         if (getArguments() != null) {
 
         }
+
     }
 
     @Override
@@ -80,8 +86,8 @@ public class ContasReceber extends Fragment {
         rv.setLayoutManager(llm);
         setHasOptionsMenu(true);
         rv.setAdapter(getAdapter());
-
-       return view;
+        //startTimerThread();
+        return view;
     }
     private void updateLabel(){
         String myFormat = "dd/MM/yyyy";
@@ -89,18 +95,7 @@ public class ContasReceber extends Fragment {
         txtData.setText(sdf.format(myCalendar.getTime()));
 
     }
-    private void updateLabel1(){
-        String myFormat = "dd/MM/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat,new Locale("pt","BR"));
-        txtData1.setText(sdf.format(myCalendar.getTime()));
 
-    }
-    private void updateLabel2(){
-        String myFormat = "dd/MM/yyyy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat,new Locale("pt","BR"));
-        txtData2.setText(sdf.format(myCalendar.getTime()));
-
-    }
 
     public ContasReceberAdapter getAdapter(){
         ControleContasReceber controleContasReceber = new ControleContasReceber(getContext());
@@ -134,8 +129,6 @@ public class ContasReceber extends Fragment {
     }
 
 
-
-
     public void dialogBox(){
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -152,52 +145,15 @@ public class ContasReceber extends Fragment {
         mes = dialog.findViewById(R.id.spnMes);
         txtData1 = dialog.findViewById(R.id.txtData1ContaReceber);
         txtData2 = dialog.findViewById(R.id.txtData2ContaReceber);
-        final boolean data = false,data1= false,data2= false;
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),R.array.meses,android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mes.setAdapter(adapter);
 
+        txtData.addTextChangedListener(Mask.insert("##/##/####", txtData));
+        txtData1.addTextChangedListener(Mask.insert("##/##/####", txtData1));
+        txtData2.addTextChangedListener(Mask.insert("##/##/####", txtData2));
 
-        myCalendar = Calendar.getInstance();
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, month);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                    //
-                updateLabel();
-
-
-            }
-        };
-
-        txtData.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                new DatePickerDialog(getContext(),date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-                return false;
-            }
-        });
-
-        txtData1.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                new DatePickerDialog(getContext(),date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-                return false;
-            }
-        });
-        txtData2.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                new DatePickerDialog(getContext(),date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-                return false;
-            }
-        });
         txtCliente.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -313,8 +269,9 @@ public class ContasReceber extends Fragment {
         btnBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ControleContasReceber controleContasReceber = new ControleContasReceber(getContext());
-                if(txtData.getText().length()>0){
+
+              if(txtData.getText().length()>0){
+                    ControleContasReceber controleContasReceber = new ControleContasReceber(getContext());
                     if(chkQuitado.isChecked()){
                         ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getContasAReceberByDataAndQuitadas(txtData.getText().toString()));
                         rv.setAdapter(contasReceberAdapter);
@@ -329,6 +286,7 @@ public class ContasReceber extends Fragment {
                         rv.setAdapter(contasReceberAdapter);
                     }
                 }else if(txtData1.getText().length()>0&& txtData2.getText().length()>0){
+                    ControleContasReceber controleContasReceber = new ControleContasReceber(getContext());
                     if(chkQuitado.isChecked()){
                         ContasReceberAdapter contasReceberAdapter = new ContasReceberAdapter (controleContasReceber.getContasAReceberEntreDatasAndQuitado(txtData1.getText().toString(),txtData2.getText().toString()));
                         rv.setAdapter(contasReceberAdapter);
@@ -349,9 +307,7 @@ public class ContasReceber extends Fragment {
                         chkAberto.isChecked() ==false &&
                         chkQuitado.isChecked() == false &&
                         chkMesAtual.isChecked() == false){
-
                         rv.setAdapter(getAdapter());
-
                 }
                 dialog.dismiss();
             }
@@ -359,11 +315,36 @@ public class ContasReceber extends Fragment {
         dialog.show();
     }
 
+    private void startTimerThread() {
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            public void run() {
+                while(true) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    handler.post(new Runnable() {
+                        public void run() {
+                            try{
+                                rv.setAdapter(getAdapter());
+                            }
+                            catch(Exception e){
+                                Log.e("Erro total carrinho=>",""+e);
+                            }
+                        }
+                    });
+                }
+            }
+        };
+        new Thread(runnable).start();
+    }
 
 
-
-
-
-
-
+    @Override
+    public void OnBackPressed() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_fragment, new Graficos()).commit();
+    }
 }

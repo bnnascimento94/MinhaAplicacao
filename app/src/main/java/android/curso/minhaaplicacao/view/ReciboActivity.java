@@ -35,7 +35,7 @@ public class ReciboActivity extends AppCompatActivity {
         pedidos = (Pedidos) intent.getSerializableExtra("pedido");
         imgRecibo = findViewById(R.id.imgRecibo);
         compartilhar = findViewById(R.id.btnCompartilhar);
-        escrever = new EscreverRecibo(pedidos,getApplicationContext());
+        escrever = new EscreverRecibo(pedidos,getApplicationContext(),imgRecibo.getHeight(),imgRecibo.getWidth());
         imgRecibo.setImageBitmap(escrever.imagemRecibo());
 
 

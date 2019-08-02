@@ -2,6 +2,7 @@ package android.curso.minhaaplicacao.view.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.curso.minhaaplicacao.classes.OnBackPressed;
 import android.curso.minhaaplicacao.controller.ControlePedidos;
 import android.curso.minhaaplicacao.model.Cliente;
 import android.curso.minhaaplicacao.model.ItemPedido;
@@ -34,7 +35,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class PedidosListagem extends Fragment {
+public class PedidosListagem extends Fragment implements OnBackPressed {
     Context context;
     View view;
     RecyclerView rv;
@@ -117,4 +118,9 @@ public class PedidosListagem extends Fragment {
     }
 
 
+    @Override
+    public void OnBackPressed() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_fragment, new Graficos()).commit();
+    }
 }

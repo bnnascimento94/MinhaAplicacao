@@ -20,13 +20,11 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent telaPrincipal = new Intent(SplashActivity.this, MainActivity.class);
+                Intent telaPrincipal = new Intent(SplashActivity.this, TelaPrincipalActivity.class);
                 startActivity(telaPrincipal);
                 finish();
             }
         },SPLASH_TIME_OUT);
-
-
 
     }
 }

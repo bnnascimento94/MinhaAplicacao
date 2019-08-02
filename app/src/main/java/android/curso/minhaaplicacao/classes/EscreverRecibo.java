@@ -24,10 +24,14 @@ public class EscreverRecibo {
     Pedidos pedidos;
     ControlePedidos cp;
     Context context;
+    int imageTargetViewWidth;
+    int imageTargetViewHeight;
     private static final float GESTURE_THRESHOLD_DIP = 10.0f;
-    public EscreverRecibo(Pedidos pedidos,Context context){
+    public EscreverRecibo(Pedidos pedidos,Context context, int imageTargetViewHeight, int imageTargetViewWidth){
         this.context = context;
         this.pedidos = pedidos;
+        this.imageTargetViewHeight = imageTargetViewHeight;
+        this.imageTargetViewWidth = imageTargetViewWidth;
         cp = new ControlePedidos(context);
     }
 
@@ -35,12 +39,13 @@ public class EscreverRecibo {
         ;
        // Bitmap bitmap = .. // Load your bitmap here
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.recibo).copy(Bitmap.Config.ARGB_8888, true);;
+
+
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint();
         int altura = bitmap.getHeight();
         int comprimento = bitmap.getWidth();
         paint.setColor(Color.BLACK);
-
 
 // Convert the dips to pixels
         final float scale = context.getResources().getDisplayMetrics().density;
@@ -65,10 +70,12 @@ public class EscreverRecibo {
         }
 
 
-
         Drawable drawable = new BitmapDrawable(context.getResources(), bitmap);
 
         return bitmap;
     }
+
+
+
 
 }
