@@ -98,6 +98,7 @@ public class PrazoPagamentoCadastroAdapter extends RecyclerView.Adapter<PrazoPag
                 LayoutInflater inflater = (LayoutInflater) v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View alertLayout = inflater.inflate(R.layout.financeiro_prazo_pagamento, null);
                 final EditText nomePrazoPagamento = alertLayout.findViewById(R.id.txtDias);
+                final Button buttonQuestion1 = alertLayout.findViewById(R.id.buttonQuestion1);
                 nomePrazoPagamento.setText(prazoFiltrado.get(i).getNomePrazoPagamento());
                 AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
                 alert.setTitle("Cadastro Nome Prazo de Pagamento");
@@ -106,6 +107,24 @@ public class PrazoPagamentoCadastroAdapter extends RecyclerView.Adapter<PrazoPag
                 alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                buttonQuestion1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                        builder.setTitle("Informação");
+                        builder.setMessage("Insira um título para as parcelas. Ex: Parcela em 10 vezes, À vista e etc. Obs: Para a parcela ser válida deve inserir as datas.");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+                        alerta = builder.create();
+                        alerta.show();
 
                     }
                 });

@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.curso.minhaaplicacao.R;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import java.util.List;
 public class PrazoPagamento extends Fragment implements OnBackPressed {
     View view;
     RecyclerView rv;
+    private AlertDialog alerta;
     public PrazoPagamento() {
         // Required empty public constructor
     }
@@ -70,6 +72,7 @@ public class PrazoPagamento extends Fragment implements OnBackPressed {
                 LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View alertLayout = inflater.inflate(R.layout.financeiro_prazo_pagamento, null);
                 final EditText txtNomePrazo = alertLayout.findViewById(R.id.txtDias);
+                final Button buttonQuestion1 = alertLayout.findViewById(R.id.buttonQuestion1);
                 AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
                 alert.setTitle("Cadastro Prazo de Pagamento");
                 // this is set the view from XML inside AlertDialog
@@ -82,6 +85,25 @@ public class PrazoPagamento extends Fragment implements OnBackPressed {
 
                     }
                 });
+
+                buttonQuestion1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                        builder.setTitle("Informação");
+                        builder.setMessage("Insira um título para as parcelas. Ex: Parcela em 10 vezes, À vista e etc. Obs: Para a parcela ser válida deve inserir as datas.");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+                        alerta = builder.create();
+                        alerta.show();
+
+                    }
+                });
+
                 alert.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

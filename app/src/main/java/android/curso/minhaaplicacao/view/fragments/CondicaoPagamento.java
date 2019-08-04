@@ -35,6 +35,7 @@ public class CondicaoPagamento extends Fragment implements OnBackPressed {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     View view;
     RecyclerView rv;
+    private AlertDialog alerta;
 
     Button btnConfirmarCondicao;
 
@@ -69,6 +70,7 @@ public class CondicaoPagamento extends Fragment implements OnBackPressed {
                 LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View alertLayout = inflater.inflate(R.layout.financeiro_condicao_pagamento, null);
                 final EditText condicaoPagamento = alertLayout.findViewById(R.id.txtNomeCondicaoPagamento);
+                final Button buttonQuestion1 = alertLayout.findViewById(R.id.buttonQuestion1);
                 AlertDialog.Builder alert = new AlertDialog.Builder(view.getContext());
                 alert.setTitle("Cadastro Condição Pagamento");
                 // this is set the view from XML inside AlertDialog
@@ -81,6 +83,27 @@ public class CondicaoPagamento extends Fragment implements OnBackPressed {
 
                     }
                 });
+
+                buttonQuestion1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                        builder.setTitle("Informação");
+                        builder.setMessage("Insira a condição de pagamento em que trabalha. Ex: Boleto, Cartão de crédito, Cheque.");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+
+
+                        alerta = builder.create();
+                        alerta.show();
+
+                    }
+                });
+
                 alert.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

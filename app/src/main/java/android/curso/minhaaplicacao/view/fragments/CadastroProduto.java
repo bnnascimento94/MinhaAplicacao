@@ -217,7 +217,7 @@ public class CadastroProduto extends Fragment implements OnBackPressed {
                             prod.setNomeArquivo(nomeProduto.getText().toString()+".png");
 
                             Bitmap bitmap = ((BitmapDrawable)imagemProduto.getDrawable()).getBitmap();
-                            if(new ImageSaver(getContext(),"produtos",nomeProduto.getText().toString()+".png").deleteFile()){
+                            if(new ImageSaver(getContext(),"produtos",produto.get(0).getNomeProduto().toString()+".png").deleteFile()){
                                 new ImageSaver(getContext()).
                                         setFileName(nomeProduto.getText().toString()+".png").
                                         setDirectoryName("produtos").

@@ -35,7 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/contaReceberData"
-                    android:inputType="date|textCapSentences"
+                    android:inputType="number|textCapSentences"
                     android:maxLines="1"
                     android:textSize="14sp" />
             </android.support.design.widget.TextInputLayout>
@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/contaReceberData"
-                    android:inputType="date|textCapSentences"
+                    android:inputType="number|textCapSentences"
                     android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
 
@@ -98,7 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/contaReceberData"
-                    android:inputType="date|textCapSentences"
+                    android:inputType="number|textCapSentences"
                     android:maxLines="1"
                     android:textSize="14sp" />
             </android.support.design.widget.TextInputLayout>

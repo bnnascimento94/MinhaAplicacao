@@ -3,6 +3,7 @@ package android.curso.minhaaplicacao.view.adapters;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.curso.minhaaplicacao.R;
+import android.curso.minhaaplicacao.controller.ControleDiasPrazo;
 import android.curso.minhaaplicacao.controller.ControlePrazo;
 import android.curso.minhaaplicacao.model.Cliente;
 import android.curso.minhaaplicacao.model.CondicoesPagamento;
@@ -58,14 +59,19 @@ public class PrazoPagamentoPedidoAdapter extends RecyclerView.Adapter<PrazoPagam
         prazoViewHolder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FinalizarPedido finalizarPedido = new FinalizarPedido ();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("cliente",cliente);
-                bundle.putSerializable("condicaoPagamento",condicaoPagamentos);
-                bundle.putSerializable("prazoPagamento",prazoFiltrado.get(i));
-                finalizarPedido.setArguments(bundle);
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment, finalizarPedido).addToBackStack(null).commit();
+                ControleDiasPrazo controleDiasPrazo = new ControleDiasPrazo(v.getContext());
+                if(prazoFiltrado.get(i).getPrazosDiasPagamento().size()>0) {
+                    FinalizarPedido finalizarPedido = new FinalizarPedido();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("cliente", cliente);
+                    bundle.putSerializable("condicaoPagamento", condicaoPagamentos);
+                    bundle.putSerializable("prazoPagamento", prazoFiltrado.get(i));
+                    finalizarPedido.setArguments(bundle);
+                    AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment, finalizarPedido).addToBackStack(null).commit();
+                }else{
+                    Toast.makeText(v.getContext(),"Não é possível prosseguir com a venda, pois não foram cadastradas as datas",Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

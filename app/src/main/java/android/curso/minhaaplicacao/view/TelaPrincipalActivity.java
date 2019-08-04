@@ -16,9 +16,13 @@ import android.curso.minhaaplicacao.view.fragments.PedidosListagem;
 import android.curso.minhaaplicacao.view.fragments.CadastroProduto;
 import android.curso.minhaaplicacao.view.fragments.ClientesPedidoListagem;
 import android.curso.minhaaplicacao.view.fragments.PrazoPagamento;
+import android.curso.minhaaplicacao.view.fragments.ProdutosPedidoSelecionado;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -166,11 +170,31 @@ public class TelaPrincipalActivity extends AppCompatActivity {
 
 
     }
-
+    boolean twice;
     @Override
     public void onBackPressed() {
+        if(twice == true){
 
-        tellFragments();
+            Log.d("teste","CLICK");
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+            System.exit(0);
+        }else{
+            tellFragments();
+        }
+
+        Toast.makeText(TelaPrincipalActivity.this, "Please press back again to exit", Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                twice = false;
+                Log.d("teste", "twice" +twice);
+            }
+        },3000);
+        twice = true;
     }
 
 
@@ -262,17 +286,13 @@ public class TelaPrincipalActivity extends AppCompatActivity {
                 ((PedidosListagem)f).OnBackPressed();
             }else if(f != null && f instanceof PrazoPagamento){
                 ((PrazoPagamento)f).OnBackPressed();
+            }else if(f != null && f instanceof ProdutosPedidoSelecionado){
+                ((ProdutosPedidoSelecionado)f).OnBackPressed();
             }else{
                 getFragmentManager().popBackStack();
             }
 
         }
     }
-
-
-
-
-
-
 
 }

@@ -57,14 +57,16 @@
     <string name="title_activity_guia_graficos">GuiaGraficosActivity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
-    <string name="visaoGeralTitulo">Vendas do mês</string>
+    <string name="visaoGeralTitulo">Caixa do mês</string>
     <string name="visaoGeralValoresTotaisUltimoMes">Valores Totais</string>
     <string name="visaoGeralValoresQuitados">Quitado</string>
     <string name="visaoGeralValoresAReceber">A Receber</string>
     <string name="visaoGeralProdutoMaisVendido">Produto Mais Vendido</string>
     <string name="visaoGeralProdutoMenosVendido">Produto Menos Vendido</string>
     <string name="visaoGeral">Gráficos</string>
-    <string name="visaoGeralTituloAno">Vendas Anual</string>
+    <string name="visaoGeralTituloAno">Caixa Anual</string>
+    <string name="prazoDiasTituloNome">Vencimento em dias</string>
+    <string name="prazoDiasTituloPorcentagem">Porcentagem</string>
 
     <string-array name="meses">
         <item>Janeiro</item>

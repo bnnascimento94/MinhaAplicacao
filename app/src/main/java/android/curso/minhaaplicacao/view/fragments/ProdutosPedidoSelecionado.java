@@ -2,11 +2,13 @@ package android.curso.minhaaplicacao.view.fragments;
 
 import android.content.Context;
 import android.curso.minhaaplicacao.R;
+import android.curso.minhaaplicacao.classes.OnBackPressed;
 import android.curso.minhaaplicacao.model.Cliente;
 import android.curso.minhaaplicacao.model.ItemPedido;
 import android.curso.minhaaplicacao.view.adapters.ProdutosPedidoSelecionadoAdapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +19,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 
-public class ProdutosPedidoSelecionado extends Fragment {
+public class ProdutosPedidoSelecionado extends Fragment implements OnBackPressed {
     ArrayList<ItemPedido> itensPedido;
     View view;
     RecyclerView rv;
@@ -65,4 +67,9 @@ public class ProdutosPedidoSelecionado extends Fragment {
 
     }
 
+    @Override
+    public void OnBackPressed() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_fragment, new PedidosListagem()).commit();
+    }
 }

@@ -23,7 +23,7 @@
                 android:id="@+id/imageProdutoSelecionado"
                 android:layout_width="79dp"
                 android:layout_height="79dp"
-                android:layout_marginStart="28dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="7dp"
                 android:src="@drawable/produto"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -1,6 +1,7 @@
 package android.curso.minhaaplicacao.view;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.curso.minhaaplicacao.R;
 import android.curso.minhaaplicacao.view.adapters.ViewPagerAdapter;
 import android.curso.minhaaplicacao.view.fragments.GraficoCliente;
@@ -48,5 +49,12 @@ public class GuiaGraficosActivity extends AppCompatActivity {
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        Intent telaPrincipal = new Intent(GuiaGraficosActivity.this,TelaPrincipalActivity.class );
+        startActivity(telaPrincipal);
     }
 }

@@ -98,19 +98,12 @@ public class PrazoDiasPagamentoCadastroAdapter extends RecyclerView.Adapter<Praz
                         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                         builder.setTitle("Informação");
                         builder.setMessage("Insira a porcentagem do total do pagamento deseja para esta data");
-                        builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
-
-                            }
-                        });
-                        builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
-
                             }
                         });
                         alerta = builder.create();
                         alerta.show();
-
                     }
                 });
 
@@ -120,16 +113,12 @@ public class PrazoDiasPagamentoCadastroAdapter extends RecyclerView.Adapter<Praz
                         AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                         builder.setTitle("Atenção");
                         builder.setMessage("Insira a quantidade de dias a partir do pagamento que deseja para esta parcela");
-                        builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface arg0, int arg1) {
 
                             }
                         });
-                        builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface arg0, int arg1) {
 
-                            }
-                        });
                         alerta = builder.create();
                         alerta.show();
                     }

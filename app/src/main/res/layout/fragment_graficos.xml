@@ -15,8 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,7 +25,6 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="290dp">
-
 
                 <TextView
                     android:id="@+id/textView3"
@@ -109,22 +106,22 @@
 
                 <Button
                     android:id="@+id/button"
-                    android:layout_width="83dp"
-                    android:layout_height="40dp"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
                     android:layout_marginStart="250dp"
                     android:layout_marginTop="250dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/btn_customizado"
-                    android:gravity="end|bottom"
+                    android:background="@drawable/btn_customizado_lista"
                     android:text="@string/visaoGeral"
-                    android:textAlignment="center"
+
+                    android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintVertical_bias="0.69" />
 
                 <TextView
                     android:id="@+id/txtValorTotalMes"
@@ -216,7 +213,6 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="24dp"
                     android:text="@string/visaoGeralTituloAno"
-
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -289,22 +285,23 @@
 
                 <Button
                     android:id="@+id/buttonAno"
-                    android:layout_width="83dp"
-                    android:layout_height="40dp"
+                    android:layout_width="66dp"
+                    android:layout_height="66dp"
                     android:layout_marginStart="250dp"
-                    android:layout_marginTop="236dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="250dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_marginBottom="16dp"
-                    android:background="@drawable/btn_customizado"
-                    android:gravity="end|bottom"
+                    android:background="@drawable/btn_customizado_lista"
+
                     android:text="@string/visaoGeral"
                     android:textAlignment="center"
+                    android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintVertical_bias="0.857" />
 
                 <TextView
                     android:id="@+id/txtValorTotalAno"

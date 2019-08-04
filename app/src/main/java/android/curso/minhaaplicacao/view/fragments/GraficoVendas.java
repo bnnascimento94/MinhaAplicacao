@@ -39,7 +39,6 @@ public class GraficoVendas extends Fragment {
         List yAxisValues = new ArrayList();
         List axisValues = new ArrayList();
 
-        Line line = new Line(yAxisValues).setColor(Color.parseColor("#9C27B0"));
         int i =0;
         for (String mes  : valoresVendas.keySet()) {
             float valor =  valoresVendas.get (mes).floatValue();
@@ -47,6 +46,8 @@ public class GraficoVendas extends Fragment {
             yAxisValues.add(new PointValue(i, valor));
             i +=1;
         }
+
+        Line line = new Line(yAxisValues).setColor(Color.parseColor("#9C27B0"));
 
         List lines = new ArrayList();
         lines.add(line);
@@ -61,16 +62,17 @@ public class GraficoVendas extends Fragment {
         data.setAxisXBottom(axis);
 
         Axis yAxis = new Axis();
+        //yAxis.setValues(yAxisValues);
         yAxis.setName("Valores Vendas");
         yAxis.setTextColor(Color.parseColor("#03A9F4"));
         yAxis.setTextSize(16);
         data.setAxisYLeft(yAxis);
 
         lineChartView.setLineChartData(data);
-        Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
-        viewport.top = 110;
-        lineChartView.setMaximumViewport(viewport);
-        lineChartView.setCurrentViewport(viewport);
+       //Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
+       // viewport.top = 110;
+       // lineChartView.setMaximumViewport(viewport);
+       // lineChartView.setCurrentViewport(viewport);
 
 
         return view;

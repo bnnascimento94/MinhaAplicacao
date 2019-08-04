@@ -125,6 +125,7 @@ public class CondicaoPagamentoCadastroAdapter extends RecyclerView.Adapter<Condi
                 LayoutInflater inflater = (LayoutInflater) v.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View alertLayout = inflater.inflate(R.layout.financeiro_condicao_pagamento, null);
                 final EditText condicaoPagamento = alertLayout.findViewById(R.id.txtNomeCondicaoPagamento);
+                final Button buttonQuestion1 = alertLayout.findViewById(R.id.buttonQuestion1);
                 condicaoPagamento.setText(condicaoPagamentos.get(i).getNomeCondiçãoPagamento());
                 AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
                 alert.setTitle("Cadastro Condição Pagamento");
@@ -133,6 +134,26 @@ public class CondicaoPagamentoCadastroAdapter extends RecyclerView.Adapter<Condi
                 alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                buttonQuestion1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                        builder.setTitle("Informação");
+                        builder.setMessage("Insira a condição de pagamento em que trabalha. Ex: Boleto, Cartão de crédito, Cheque.");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+
+
+                        alerta = builder.create();
+                        alerta.show();
 
                     }
                 });

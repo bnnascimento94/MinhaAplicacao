@@ -201,7 +201,7 @@ public class CadastroCliente extends Fragment implements OnBackPressed {
                             client.setNomeArquivo(nomeCliente.getText().toString()+".png");
 
                             Bitmap bitmap = ((BitmapDrawable)foto.getDrawable()).getBitmap();
-                            if(new ImageSaver(getContext(),"clientes",nomeCliente.getText().toString()+".png").deleteFile()){
+                            if(new ImageSaver(getContext(),"clientes",cliente.get(0).getNomeCliente()+".png").deleteFile()){
                                 new ImageSaver(getContext()).
                                         setFileName(nomeCliente.getText().toString()+".png").
                                         setDirectoryName("clientes").
