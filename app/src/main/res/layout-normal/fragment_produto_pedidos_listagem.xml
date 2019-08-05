@@ -24,8 +24,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="580dp"
-        android:minHeight="@android:dimen/thumbnail_height"
+        android:layout_height="wrap_content"
+        android:minHeight="450dp"
         android:padding="0dp">
 
         <androidx.recyclerview.widget.RecyclerView
