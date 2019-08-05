@@ -5,9 +5,20 @@
     android:orientation="vertical"
     android:padding="0dp">
 
-    <android.support.v7.widget.RecyclerView
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-7701967456536563/8153250248"/>
+    <!--  ads:adUnitId="ca-app-pub-7701967456536563/8153250248" -->
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>
