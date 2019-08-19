@@ -10,7 +10,8 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cli_cv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:elevation="30dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/relativeLayout"
@@ -18,41 +19,6 @@
             android:layout_height="match_parent"
             android:background="@drawable/itemview_customizado"
             android:padding="2dp">
-
-            <Button
-                android:id="@+id/btnExcluirCondicao"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="283dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="7dp"
-                android:background="@drawable/btn_customizado_lista"
-                android:text="@string/cancelarPedidos"
-                android:textSize="7sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.869"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/btnListarProdutos"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="270dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="150dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/btn_customizado_lista"
-                android:text="@string/pedidoListagem"
-                android:textSize="7sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.391"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.333" />
 
             <TextView
                 android:id="@+id/txtCondicaoPagamento"

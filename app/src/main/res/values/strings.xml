@@ -67,6 +67,7 @@
     <string name="visaoGeralTituloAno">Caixa Anual</string>
     <string name="prazoDiasTituloNome">Vencimento em dias</string>
     <string name="prazoDiasTituloPorcentagem">Porcentagem</string>
+    <string name="menu_delete">Deletar</string>
 
     <string-array name="meses">
         <item>Janeiro</item>

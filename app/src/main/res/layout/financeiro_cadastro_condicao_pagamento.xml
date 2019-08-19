@@ -19,30 +19,14 @@
             android:background="@drawable/itemview_customizado"
             android:padding="2dp">
 
-            <Button
-                android:id="@+id/btnExcluirCondicao"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="283dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="7dp"
-                android:background="@drawable/btn_customizado_lista"
-                android:text="@string/prazoPagamentoCancelar"
-                android:textSize="7sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.869"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
 
             <TextView
                 android:id="@+id/txtCondicaoPagamento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="14dp"
                 android:text="TextView"
                 android:textSize="18sp"
                 android:textStyle="normal"

@@ -10,7 +10,8 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cli_cv"
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:layout_height="70dp"
+        android:elevation="30dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/relativeLayout"

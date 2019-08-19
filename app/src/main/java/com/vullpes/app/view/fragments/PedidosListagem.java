@@ -62,7 +62,7 @@ public class PedidosListagem extends Fragment implements OnBackPressed {
 
         ControlePedidos cp = new ControlePedidos(getContext());
 
-        pedidosAdapter = new PedidosAdapter(cp.getAllPedidos());
+        pedidosAdapter = new PedidosAdapter(cp.getAllPedidos(), getContext());
         rv.setAdapter(pedidosAdapter);
         return view;
     }

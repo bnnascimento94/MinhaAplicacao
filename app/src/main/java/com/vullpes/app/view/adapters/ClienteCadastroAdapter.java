@@ -1,5 +1,6 @@
 package com.vullpes.app.view.adapters;
 
+import android.app.Activity;
 import android.content.Intent;
 import com.vullpes.app.classes.ImageSaver;
 import com.vullpes.app.controller.ControlePedidos;
@@ -14,34 +15,37 @@ import com.vullpes.app.model.Cliente;
 import com.vullpes.app.view.fragments.CadastroCliente;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ClienteCadastroAdapter extends RecyclerView.Adapter<ClienteCadastroAdapter.ClienteViewHolder> implements Filterable {
     List<Cliente> cliente;
     List<Cliente> clienteFiltrado;
-    byte[] fotoArray;
-    Bitmap raw;
+    private ActionMode mActionMode;
     View v;
+    private int posicao; //posição do elemento i no array
+    Context context;
     private AlertDialog alerta;
     boolean excluir = false;
-    public ClienteCadastroAdapter(List<Cliente> cliente){
+    public ClienteCadastroAdapter(List<Cliente> cliente, Context context){
         this.cliente = cliente;
+        this.context = context;
         this.clienteFiltrado = cliente;
     }
 
@@ -80,45 +84,6 @@ public class ClienteCadastroAdapter extends RecyclerView.Adapter<ClienteCadastro
             }
         });
 
-        clienteViewHolder.btnDeletar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle("Atenção");
-                builder.setMessage("Deseja Realmente Excluir este Registro?");
-                builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        ControlePedidos controlePedidos = new ControlePedidos(v.getContext());
-                        if(!(controlePedidos.getPedidoByIdCliente(clienteFiltrado.get(i).getIdCliente()).size()>0)){
-                            ControleClientes controller = new ControleClientes(clienteViewHolder.context);
-                            if(controller.deletar(clienteFiltrado.get(i))){
-                                if(new ImageSaver(v.getContext(),clienteFiltrado.get(i).getDiretorioFoto(),clienteFiltrado.get(i).getNomeArquivo()).deleteFile()){}
-                                clienteFiltrado.remove(clienteFiltrado.get(i));
-                                notifyItemRemoved(i); //seta o elemento que foi excluido
-                                notifyItemRangeChanged(i, clienteFiltrado.size()); //muda em tela a quantidade de elementos exibidos
-                                cliente = clienteFiltrado; // seta os dados para não aparecer os elementos já excluidos
-                                Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
-                            }else{
-                                Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
-                            }
-
-                        }else{
-                            Toast.makeText(v.getContext(),"Não foi possível deletar, cliente com vínculos",Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                });
-                builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-
-                    }
-                });
-                alerta = builder.create();
-                alerta.show();
-            }
-        });
-
-
 
         clienteViewHolder.view.setOnClickListener(new View.OnClickListener() {  // <--- here
             @Override
@@ -136,6 +101,23 @@ public class ClienteCadastroAdapter extends RecyclerView.Adapter<ClienteCadastro
                 Fragment myFragment = new Fragment();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment, cadastroCliente).addToBackStack(null).commit();
 
+            }
+        });
+
+
+
+        clienteViewHolder.view.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                if(mActionMode != null){
+                    return false;
+                }
+                //clienteViewHolder.view.setOnClickListener(null);
+                Activity activity = (Activity) context;
+                posicao = i; //setando numa variavel global o item da listview
+                mActionMode =  activity.startActionMode(mActionModeCallBack);
+                return true;
             }
         });
 
@@ -183,6 +165,76 @@ public class ClienteCadastroAdapter extends RecyclerView.Adapter<ClienteCadastro
 
     }
 
+    private ActionMode.Callback mActionModeCallBack = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.delete_menu, menu);
+            mode.setTitle("Deletar Item");
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()){
+                case R.id.menu_delete:
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                    builder.setTitle("Atenção");
+                    builder.setMessage("Deseja Realmente Excluir este Registro?");
+                    builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            ControlePedidos controlePedidos = new ControlePedidos(v.getContext());
+                            if(!(controlePedidos.getPedidoByIdCliente(clienteFiltrado.get(posicao).getIdCliente()).size()>0)){
+                                ControleClientes controller = new ControleClientes(context);
+                                if(controller.deletar(clienteFiltrado.get(posicao))){
+                                    if(new ImageSaver(v.getContext(),clienteFiltrado.get(posicao).getDiretorioFoto(),clienteFiltrado.get(posicao).getNomeArquivo()).deleteFile()){}
+                                    clienteFiltrado.remove(clienteFiltrado.get(posicao));
+                                    notifyItemRemoved(posicao); //seta o elemento que foi excluido
+                                    notifyItemRangeChanged(posicao, clienteFiltrado.size()); //muda em tela a quantidade de elementos exibidos
+                                    cliente = clienteFiltrado; // seta os dados para não aparecer os elementos já excluidos
+                                    Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
+                                }else{
+                                    Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
+                                }
+
+                            }else{
+                                Toast.makeText(v.getContext(),"Não foi possível deletar, cliente com vínculos",Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    });
+                    builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                        }
+                    });
+                    alerta = builder.create();
+                    alerta.show();
+
+
+
+
+                    Toast.makeText(context,"teste", Toast.LENGTH_LONG).show();
+                    break;
+
+            }
+
+
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+                mActionMode = null;
+        }
+
+    };
+
     public interface ClienteCadastroAdapterListener {
         void onContactSelected(Cliente cliente);
     }
@@ -193,7 +245,6 @@ public class ClienteCadastroAdapter extends RecyclerView.Adapter<ClienteCadastro
         TextView nomeCliente;
         TextView telefoneCliente;
         CardView cli_cv;
-        Button btnDeletar;
         public View view;
         Context context;
         private AlertDialog alerta;
@@ -204,7 +255,6 @@ public class ClienteCadastroAdapter extends RecyclerView.Adapter<ClienteCadastro
             nomeCliente =  itemView.findViewById(R.id.cliente_nome);
             telefoneCliente = itemView.findViewById(R.id.cliente_telefone);
             fotoCliente = itemView.findViewById(R.id.cliente_foto);
-            btnDeletar = itemView.findViewById(R.id.btnDeletar);
             context = itemView.getContext();
 
         }

@@ -19,6 +19,9 @@ import com.vullpes.app.view.fragments.ProdutosPedidoSelecionado;
 
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.appcompat.view.ActionMode;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import android.util.Log;
@@ -40,6 +43,8 @@ public class TelaPrincipalActivity extends AppCompatActivity {
     public List<String> listGroup;
     public HashMap<String, List<String>> listData;
     FragmentManager fragmentManager;
+    private NotificationManagerCompat notificationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +53,22 @@ public class TelaPrincipalActivity extends AppCompatActivity {
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        String menuFragment = getIntent().getStringExtra("menuFragment");
 
-        fragmentManager = getSupportFragmentManager(); //chama o fragment Principal
-        fragmentManager.beginTransaction().replace(R.id.content_fragment, new Graficos()).commit();
+        if (menuFragment != null) {
+
+            // Here we can decide what do to -- perhaps load other parameters from the intent extras such as IDs, etc
+            if (menuFragment.equals("favoritesMenuItem")) {
+                fragmentManager = getSupportFragmentManager(); //chama o fragment Principal
+                fragmentManager.beginTransaction().replace(R.id.content_fragment, new PedidosListagem()).commit();
+            }
+        } else {
+            // Activity was not launched with a menuFragment selected -- continue as if this activity was opened from a launcher (for example)
+            fragmentManager = getSupportFragmentManager(); //chama o fragment Principal
+            fragmentManager.beginTransaction().replace(R.id.content_fragment, new Graficos()).commit();
+        }
+
+
         buildList();
         View listHeaderView = getLayoutInflater().inflate(R.layout.nav_header_tela_principal, null,false);
         ExpandableListView expandableListView =  findViewById(R.id.expandableListView);
@@ -167,7 +185,6 @@ public class TelaPrincipalActivity extends AppCompatActivity {
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
 
     }
     boolean twice;

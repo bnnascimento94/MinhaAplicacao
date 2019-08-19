@@ -1,5 +1,7 @@
 package com.vullpes.app.view.adapters;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.curso.minhaaplicacao.R;
 import com.vullpes.app.controller.ControlePedidos;
@@ -11,7 +13,11 @@ import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -29,9 +35,13 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
     List<Pedidos> pedidos;
     List<Pedidos> pedidosFiltrados;
     private AlertDialog alerta;
-    public PedidosAdapter(List<Pedidos> pedidos){
+    private int posicao; //variavel global que seta a posição do elemento para excluir
+    Context context;
+    private ActionMode mActionMode;
+    public PedidosAdapter(List<Pedidos> pedidos, Context context){
         this.pedidos = pedidos;
         this.pedidosFiltrados = pedidos;
+        this.context = context;
     }
 
     @Override
@@ -75,15 +85,14 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
         TextView nomeCliente;
         TextView valorTotal;
         TextView data;
-        Button btnListarProdutos, btnExcluirPedidos;
+        View itemview;
+
         PedidoViewHolder(final View itemView) {
             super(itemView);
+            this.itemview = itemView;
             nomeCliente = itemView.findViewById(R.id.txtCondicaoPagamento);
             valorTotal = itemView.findViewById(R.id.txtValorPedido);
             data = itemView.findViewById(R.id.txtDataPedido);
-            btnListarProdutos = itemView.findViewById(R.id.btnListarProdutos);
-            btnExcluirPedidos = itemView.findViewById(R.id.btnExcluirCondicao);
-
         }
     }
     @Override
@@ -101,51 +110,84 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
         SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
         produtoViewHolder.data.setText(dataFormatada.format(pedidosFiltrados.get(i).getData()));
 
-        produtoViewHolder.btnListarProdutos.setOnClickListener(new View.OnClickListener() {
+        produtoViewHolder.itemview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProdutosPedidoSelecionado pps = new ProdutosPedidoSelecionado();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("itensPedido",pedidosFiltrados.get(i).getItensPedido());
-                pps.setArguments(bundle);
+                if(mActionMode != null){
 
-
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                Fragment myFragment = new Fragment();
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment, pps).addToBackStack(null).commit();
+                }
+                //clienteViewHolder.view.setOnClickListener(null);
+                Activity activity = (Activity) context;
+                posicao = i; //setando numa variavel global o item da listview
+                mActionMode =  activity.startActionMode(mActionModeCallBack);
             }
         });
-
-        produtoViewHolder.btnExcluirPedidos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle("Atenção");
-                builder.setMessage("Deseja Realmente Excluir este Registro?");
-                builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-
-                        ControlePedidos cp = new ControlePedidos(v.getContext());
-                        if(cp.deletar(pedidosFiltrados.get(i))){
-                            pedidosFiltrados.remove(pedidosFiltrados.get(i));
-                            notifyItemRemoved(i); //seta o elemento que foi excluido
-                            notifyItemRangeChanged(i, pedidosFiltrados.size()); //muda em tela a quantidade de elementos exibidos
-                            pedidos = pedidosFiltrados; // seta os dados para não aparecer os elementos já excluidos
-                            Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-                builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-
-                    }
-                });
-                alerta = builder.create();
-                alerta.show();
-            }
-        });
-
     }
+
+    private ActionMode.Callback mActionModeCallBack = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.menu_pedido_listagem, menu);
+            mode.setTitle("Selecione a Ação");
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()){
+                case R.id.menu_delete:
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Atenção");
+                    builder.setMessage("Deseja Realmente Excluir este Registro?");
+                    builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                            ControlePedidos cp = new ControlePedidos(context);
+                            if(cp.deletar(pedidosFiltrados.get(posicao))){
+                                pedidosFiltrados.remove(pedidosFiltrados.get(posicao));
+                                notifyItemRemoved(posicao); //seta o elemento que foi excluido
+                                notifyItemRangeChanged(posicao, pedidosFiltrados.size()); //muda em tela a quantidade de elementos exibidos
+                                pedidos = pedidosFiltrados; // seta os dados para não aparecer os elementos já excluidos
+                                Toast.makeText(context,"Deletado com Êxito",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                    builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                        }
+                    });
+                    alerta = builder.create();
+                    alerta.show();
+                    break;
+
+                case R.id.produtos_pedido:
+                    ProdutosPedidoSelecionado pps = new ProdutosPedidoSelecionado();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("itensPedido",pedidosFiltrados.get(posicao).getItensPedido());
+                    pps.setArguments(bundle);
+
+                    AppCompatActivity activity = (AppCompatActivity) context;
+                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment, pps).addToBackStack(null).commit();
+
+                    break;
+            }
+
+
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+        }
+
+    };
 
     @Override
     public int getItemCount() {

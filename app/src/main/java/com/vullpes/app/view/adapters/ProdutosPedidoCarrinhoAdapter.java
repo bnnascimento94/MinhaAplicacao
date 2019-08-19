@@ -1,5 +1,7 @@
 package com.vullpes.app.view.adapters;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.curso.minhaaplicacao.R;
 import com.vullpes.app.classes.ImageSaver;
@@ -9,7 +11,11 @@ import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -23,11 +29,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<ProdutosPedidoCarrinhoAdapter.ProdutoViewHolder>{
     List<ItemCarrinho> produtos;
     private AlertDialog alerta;
-    Boolean eCarrinho = false;
+    Boolean eCarrinho;
+    private int posicao; //variavel global que seta a posição do elemento para excluir
+    Context context;
+    private ActionMode mActionMode;
 
-    public ProdutosPedidoCarrinhoAdapter(List<ItemCarrinho> produtos, Boolean eCarrinho){
+    public ProdutosPedidoCarrinhoAdapter(List<ItemCarrinho> produtos, Boolean eCarrinho,Context context){
         this.produtos = produtos;
         this.eCarrinho = eCarrinho;
+        this.context = context;
 
     }
 
@@ -73,79 +83,128 @@ public class ProdutosPedidoCarrinhoAdapter extends RecyclerView.Adapter<Produtos
             produtoViewHolder.fotoID.setImageResource(R.drawable.produto);
         }
 
-        produtoViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        produtoViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(final View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle("Atenção");
-                builder.setMessage("Deseja Realmente Excluir este Produto?");
-                builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        if(produtos.size() == 1){
-                            if(!eCarrinho){
-                                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                                builder.setTitle("Atenção");
-                                builder.setMessage("Este é o único item ao deletar estará excluindo o pedido, deseja confirmar?");
-                                builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface arg0, int arg1) {
-                                        ControleItemCarrinho controller = new ControleItemCarrinho(v.getContext());
-                                        if(controller.deletarItemCarinho(produtos.get(i))){
-                                            produtos.remove(produtos.get(i));
-                                            notifyItemRemoved(i); //seta o elemento que foi excluido
-                                            notifyItemRangeChanged(i, produtos.size());
-                                            ControleItemCarrinho controleItemCarrinho = new ControleItemCarrinho(v.getContext());
-                                            controleItemCarrinho.deletarAllItemCarinho();
-                                            Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
-                                        }
-                                        else{
-                                            Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-                                });
-                                builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface arg0, int arg1) {
+            public boolean onLongClick(View v) {
+                return false;
+            }
+        });
 
-                                    }
-                                });
-                                alerta = builder.create();
-                                alerta.show();
-                            }else{
-                                ControleItemCarrinho controller = new ControleItemCarrinho(v.getContext());
-                                if(controller.deletarItemCarinho(produtos.get(i))){
-                                    produtos.remove(produtos.get(i));
-                                    notifyItemRemoved(i); //seta o elemento que foi excluido
-                                    notifyItemRangeChanged(i, produtos.size());
-                                    Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
-                                }else{
-                                    Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
-                                }
-                            }
-
-                        }else{
-                            ControleItemCarrinho controller = new ControleItemCarrinho(v.getContext());
-                            if(controller.deletarItemCarinho(produtos.get(i))){
-                                produtos.remove(produtos.get(i));
-                                notifyItemRemoved(i); //seta o elemento que foi excluido
-                                notifyItemRangeChanged(i, produtos.size());
-                                Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
-                            }else{
-                                Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
-                            }
-                        }
-
-                    }
-                });
-                builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-
-                    }
-                });
-                alerta = builder.create();
-                alerta.show();
+        produtoViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(mActionMode != null){
+                    return false;
+                }
+                Activity activity = (Activity) context;
+                posicao = i; //setando numa variavel global o item da listview
+                mActionMode =  activity.startActionMode(mActionModeCallBack);
+                return true;
             }
         });
 
         }
+
+    private ActionMode.Callback mActionModeCallBack = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.delete_menu, menu);
+            mode.setTitle("Deletar Item");
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()){
+                case R.id.menu_delete:
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Atenção");
+                    builder.setMessage("Deseja Realmente Excluir este Produto?");
+                    builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            if(produtos.size() == 1){
+                                if(!eCarrinho){
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                    builder.setTitle("Atenção");
+                                    builder.setMessage("Este é o único item ao deletar estará excluindo o pedido, deseja confirmar?");
+                                    builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface arg0, int arg1) {
+                                            ControleItemCarrinho controller = new ControleItemCarrinho(context);
+                                            if(controller.deletarItemCarinho(produtos.get(posicao))){
+                                                produtos.remove(produtos.get(posicao));
+                                                notifyItemRemoved(posicao); //seta o elemento que foi excluido
+                                                notifyItemRangeChanged(posicao, produtos.size());
+                                                ControleItemCarrinho controleItemCarrinho = new ControleItemCarrinho(context);
+                                                controleItemCarrinho.deletarAllItemCarinho();
+                                                Toast.makeText(context,"Deletado com Êxito",Toast.LENGTH_LONG).show();
+                                            }
+                                            else{
+                                                Toast.makeText(context,"Não foi possível deletar",Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+                                    builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface arg0, int arg1) {
+
+                                        }
+                                    });
+                                    alerta = builder.create();
+                                    alerta.show();
+                                }else{
+                                    ControleItemCarrinho controller = new ControleItemCarrinho(context);
+                                    if(controller.deletarItemCarinho(produtos.get(posicao))){
+                                        produtos.remove(produtos.get(posicao));
+                                        notifyItemRemoved(posicao); //seta o elemento que foi excluido
+                                        notifyItemRangeChanged(posicao, produtos.size());
+                                        Toast.makeText(context,"Deletado com Êxito",Toast.LENGTH_LONG).show();
+                                    }else{
+                                        Toast.makeText(context,"Não foi possível deletar",Toast.LENGTH_LONG).show();
+                                    }
+                                }
+
+                            }else{
+                                ControleItemCarrinho controller = new ControleItemCarrinho(context);
+                                if(controller.deletarItemCarinho(produtos.get(posicao))){
+                                    produtos.remove(produtos.get(posicao));
+                                    notifyItemRemoved(posicao); //seta o elemento que foi excluido
+                                    notifyItemRangeChanged(posicao, produtos.size());
+                                    Toast.makeText(context,"Deletado com Êxito",Toast.LENGTH_LONG).show();
+                                }else{
+                                    Toast.makeText(context,"Não foi possível deletar",Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                        }
+                    });
+                    builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                        }
+                    });
+                    alerta = builder.create();
+                    alerta.show();
+                    break;
+
+            }
+
+
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+        }
+
+    };
+
+
+
     @Override
     public int getItemCount() {
         return produtos.size();

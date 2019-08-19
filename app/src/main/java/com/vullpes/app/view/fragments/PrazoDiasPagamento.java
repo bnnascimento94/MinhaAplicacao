@@ -169,7 +169,7 @@ private AlertDialog alerta;
     public PrazoDiasPagamentoCadastroAdapter getAdapter(){
         ControleDiasPrazo controlePrazo = new ControleDiasPrazo(getContext());
         List<com.vullpes.app.model.PrazoDiasPagamento> prazosPagamentoList = controlePrazo.getPrazoDiasPagamento(idprazo);
-        PrazoDiasPagamentoCadastroAdapter prazosPagamentoAdapter = new PrazoDiasPagamentoCadastroAdapter(prazosPagamentoList);
+        PrazoDiasPagamentoCadastroAdapter prazosPagamentoAdapter = new PrazoDiasPagamentoCadastroAdapter(prazosPagamentoList,getContext());
         return prazosPagamentoAdapter;
     }
 

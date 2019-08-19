@@ -1,5 +1,7 @@
 package com.vullpes.app.view.adapters;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.curso.minhaaplicacao.R;
@@ -17,7 +19,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,11 +43,14 @@ public class ProdutoCadastroAdapter extends RecyclerView.Adapter<ProdutoCadastro
     List<Produto> produto;
     List<Produto> produtoFiltrado;
     private AlertDialog alerta;
-    byte[] fotoArray;
-    Bitmap raw;
-    public ProdutoCadastroAdapter(List<Produto> produto){
+    private int posicao; //variavel global que seta a posição do elemento para excluir
+    Context context;
+    private ActionMode mActionMode;
+
+    public ProdutoCadastroAdapter(List<Produto> produto, Context context){
         this.produto = produto;
         this.produtoFiltrado = produto;
+        this.context = context;
     }
 
     @Override
@@ -86,14 +95,14 @@ public class ProdutoCadastroAdapter extends RecyclerView.Adapter<ProdutoCadastro
         TextView price;
         CircleImageView fotoView;
         CardView cv;
-        Button btnDeletar;
+
         ProdutoViewHolder(final View itemView) {
             super(itemView);
             cv = itemView.findViewById(R.id.cv);
             nomeView =  itemView.findViewById(R.id.txtNomeProduto);
             price = itemView.findViewById(R.id.txtValor);
             fotoView =  itemView.findViewById(R.id.imageProdutoSelecionado);
-            btnDeletar = itemView.findViewById(R.id.btnDeletarProduto);
+
 
         }
 
@@ -151,44 +160,86 @@ public class ProdutoCadastroAdapter extends RecyclerView.Adapter<ProdutoCadastro
             }
         });
 
-        produtoViewHolder.btnDeletar.setOnClickListener(new View.OnClickListener() {
+        produtoViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(final View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle("Atenção");
-                builder.setMessage("Deseja Realmente Excluir este Registro?");
-                builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        ControlePedidos controlePedidos = new ControlePedidos(v.getContext());
-                        if(!(controlePedidos.getAllItemPedidoByIdProduto(produtoFiltrado.get(i).getIdProduto()).size()>0)){
-                            ControleProdutos controller = new ControleProdutos(v.getContext());
-                            if(controller.deletar(produtoFiltrado.get(i))){
-                                if(new ImageSaver(v.getContext(),produtoFiltrado.get(i).getDiretorioFoto(),produtoFiltrado.get(i).getNomeArquivo()).deleteFile()){
-                                    produtoFiltrado.remove(produtoFiltrado.get(i));
-                                    notifyItemRemoved(i); //seta o elemento que foi excluido
-                                    notifyItemRangeChanged(i, produtoFiltrado.size()); //muda em tela a quantidade de elementos exibidos
-                                    produto = produtoFiltrado; // seta os dados para não aparecer os elementos já excluidos
-                                    Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
-                                }
-                            }else{
-                                Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        else{
-                            Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-                builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-
-                    }
-                });
-                alerta = builder.create();
-                alerta.show();
+            public boolean onLongClick(View v) {
+                if(mActionMode != null){
+                    return false;
+                }
+                Activity activity = (Activity) context;
+                posicao = i; //setando numa variavel global o item da listview
+                mActionMode =  activity.startActionMode(mActionModeCallBack);
+                return true;
             }
         });
+
+
     }
+
+    private ActionMode.Callback mActionModeCallBack = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.delete_menu, menu);
+            mode.setTitle("Deletar Item");
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()){
+                case R.id.menu_delete:
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Atenção");
+                    builder.setMessage("Deseja Realmente Excluir este Registro?");
+                    builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            ControlePedidos controlePedidos = new ControlePedidos(context);
+                            if(!(controlePedidos.getAllItemPedidoByIdProduto(produtoFiltrado.get(posicao).getIdProduto()).size()>0)){
+                                ControleProdutos controller = new ControleProdutos(context);
+                                if(controller.deletar(produtoFiltrado.get(posicao))){
+                                    if(new ImageSaver(context,produtoFiltrado.get(posicao).getDiretorioFoto(),produtoFiltrado.get(posicao).getNomeArquivo()).deleteFile()){
+                                        produtoFiltrado.remove(produtoFiltrado.get(posicao));
+                                        notifyItemRemoved(posicao); //seta o elemento que foi excluido
+                                        notifyItemRangeChanged(posicao, produtoFiltrado.size()); //muda em tela a quantidade de elementos exibidos
+                                        produto = produtoFiltrado; // seta os dados para não aparecer os elementos já excluidos
+                                        Toast.makeText(context,"Deletado com Êxito",Toast.LENGTH_LONG).show();
+                                    }
+                                }else{
+                                    Toast.makeText(context,"Não foi possível deletar",Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            else{
+                                Toast.makeText(context,"Não foi possível deletar",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                    builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                        }
+                    });
+                    alerta = builder.create();
+                    alerta.show();
+                    break;
+
+            }
+
+
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+        }
+
+    };
 
     @Override
     public int getItemCount() {

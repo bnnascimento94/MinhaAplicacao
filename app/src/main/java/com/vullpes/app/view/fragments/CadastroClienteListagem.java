@@ -9,6 +9,9 @@ import com.vullpes.app.controller.ControleClientes;
 import com.vullpes.app.view.TelaPrincipalActivity;
 import com.vullpes.app.view.adapters.ClienteCadastroAdapter;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.view.ActionMode;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.core.view.MenuItemCompat;
@@ -19,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -31,6 +35,7 @@ public class CadastroClienteListagem extends Fragment implements OnBackPressed {
     Context context;
     private AdView mAdView;
     ClienteCadastroAdapter adapter;
+
 
     public CadastroClienteListagem() {
         // Required empty public constructor
@@ -62,8 +67,12 @@ public class CadastroClienteListagem extends Fragment implements OnBackPressed {
         mAdView.loadAd(adRequest);
 
         ControleClientes controle = new ControleClientes(this.getContext());
-        adapter = new ClienteCadastroAdapter(controle.listar());
+        adapter = new ClienteCadastroAdapter(controle.listar(), getContext());
         rv.setAdapter(adapter);
+
+
+
+
 
         return view;
     }

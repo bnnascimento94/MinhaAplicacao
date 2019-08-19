@@ -34,7 +34,6 @@ public class PrazoPagamento extends Fragment implements OnBackPressed {
         // Required empty public constructor
     }
 
-
     // TODO: Rename and change types and number of parameters
     public static PrazoPagamento newInstance(String param1, String param2) {
         PrazoPagamento fragment = new PrazoPagamento();
@@ -145,7 +144,7 @@ public class PrazoPagamento extends Fragment implements OnBackPressed {
 public PrazoPagamentoCadastroAdapter getAdapter(){
     ControlePrazo controlePrazo = new ControlePrazo(getContext());
     List<PrazosPagamento> prazosPagamentoList = controlePrazo.getAllPrazosPagamento();
-    PrazoPagamentoCadastroAdapter prazosPagamentoAdapter = new PrazoPagamentoCadastroAdapter(prazosPagamentoList);
+    PrazoPagamentoCadastroAdapter prazosPagamentoAdapter = new PrazoPagamentoCadastroAdapter(prazosPagamentoList, getContext());
 
     return prazosPagamentoAdapter;
 

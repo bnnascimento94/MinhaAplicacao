@@ -1,7 +1,11 @@
 package com.vullpes.app.view.fragments;
 
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Intent;
+
+import com.vullpes.app.classes.App;
 import com.vullpes.app.classes.OnBackPressed;
 import com.vullpes.app.controller.ControleContasReceber;
 import com.vullpes.app.controller.ControleItemCarrinho;
@@ -14,11 +18,16 @@ import com.vullpes.app.model.ItemPedido;
 import com.vullpes.app.model.Pedidos;
 
 import com.vullpes.app.model.PrazosPagamento;
+import com.vullpes.app.view.CarrinhoActivity;
 import com.vullpes.app.view.ReciboActivity;
+import com.vullpes.app.view.TelaPrincipalActivity;
 import com.vullpes.app.view.adapters.ProdutosPedidoCarrinhoAdapter;
 
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +57,7 @@ import java.util.Locale;
 
 public class FinalizarPedido extends Fragment implements OnBackPressed {
     ArrayList<Cliente> cliente;
+    private NotificationManagerCompat notificationManager;
     CondicoesPagamento condicaoPagamentos;
     PrazosPagamento prazosPagamento;
     View view;
@@ -82,6 +92,7 @@ public class FinalizarPedido extends Fragment implements OnBackPressed {
         z = NumberFormat.getCurrencyInstance();
         itens  = controleItemCarrinho.getAllItens();
         startTimerThread();
+        notificationManager = NotificationManagerCompat.from(getContext());
     }
 
     @Override
@@ -101,8 +112,10 @@ public class FinalizarPedido extends Fragment implements OnBackPressed {
             rv.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             rv.setLayoutManager(llm);
-            adapter = new ProdutosPedidoCarrinhoAdapter(itens,false);
+            adapter = new ProdutosPedidoCarrinhoAdapter(itens,false,getContext());
             rv.setAdapter(adapter);
+
+
 
             txtCondicaoPagamento.setText(condicaoPagamentos.getNomeCondiçãoPagamento());
             txtPrazoPagamento.setText(prazosPagamento.getNomePrazoPagamento());
@@ -142,6 +155,9 @@ public class FinalizarPedido extends Fragment implements OnBackPressed {
 
                         ControleItemCarrinho controleItemCarrinho = new ControleItemCarrinho(getContext());
                         controleItemCarrinho.deletarAllItemCarinho();
+
+                        showNotification(v);
+
                         Toast.makeText(getActivity().getApplicationContext(),"Salvo com sucesso", Toast.LENGTH_LONG).show();
 
                         Intent intentVaiProFormulario = new Intent(getContext(), ReciboActivity.class );
@@ -167,6 +183,21 @@ public class FinalizarPedido extends Fragment implements OnBackPressed {
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);//Salva Activity
+    }
+
+    public void showNotification(View v){
+        Intent intent = new Intent(getContext(), TelaPrincipalActivity.class);
+        intent.putExtra("menuFragment", "produtos");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
+
+        Notification notification = new NotificationCompat.Builder(getContext(), App.CHANNEL_ID)
+                .setSmallIcon(R.drawable.checked)
+                .setContentTitle("Pedido Realizado")
+                .setContentText("Pedido Realizado com sucesso!")
+                .setContentIntent(pendingIntent)
+                .build();
+        notificationManager.notify(1,notification);
     }
 
 

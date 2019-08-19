@@ -133,7 +133,7 @@ public class CondicaoPagamento extends Fragment implements OnBackPressed {
     public CondicaoPagamentoCadastroAdapter getAdapter(){
         ControleCondicaoPagamento controlePrazo = new ControleCondicaoPagamento(getContext());
         List<CondicoesPagamento> prazosPagamentoList = controlePrazo.getAllCondicaoPagamento();
-        CondicaoPagamentoCadastroAdapter condicaoPagamentoAdapter = new CondicaoPagamentoCadastroAdapter(prazosPagamentoList);
+        CondicaoPagamentoCadastroAdapter condicaoPagamentoAdapter = new CondicaoPagamentoCadastroAdapter(prazosPagamentoList,getContext());
         return condicaoPagamentoAdapter;
     }
 

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_delete"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:orderInCategory="100"
+        android:title="@string/menu_delete"
+        app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/produtos_pedido"
+        android:icon="@drawable/ic_cart_white_24dp"
+        android:orderInCategory="99"
+        android:title="chart"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom|withText" />
+</menu>

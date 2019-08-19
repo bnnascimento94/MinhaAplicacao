@@ -1,17 +1,22 @@
 package com.vullpes.app.view.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.curso.minhaaplicacao.R;
 
+import com.vullpes.app.classes.ImageSaver;
 import com.vullpes.app.controller.ControleCondicaoPagamento;
 import com.vullpes.app.model.CondicoesPagamento;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,20 +29,24 @@ import java.util.List;
 public class CondicaoPagamentoCadastroAdapter extends RecyclerView.Adapter<CondicaoPagamentoCadastroAdapter.ProdutoViewHolder>{
     List<CondicoesPagamento> condicaoPagamentos;
     private AlertDialog alerta;
+    private int posicao;
+    private ActionMode mActionMode;
     public String valorTotal = "";
+    Context context;
 
-    public CondicaoPagamentoCadastroAdapter(List<CondicoesPagamento> condicao){
+    public CondicaoPagamentoCadastroAdapter(List<CondicoesPagamento> condicao, Context context){
         this.condicaoPagamentos = condicao;
+        this.context = context;
 
     }
 
     public static class ProdutoViewHolder extends RecyclerView.ViewHolder {
         TextView condicaoPagamento;
-        Button excluirCondicaoPagamento;
+
         ProdutoViewHolder(final View itemView) {
             super(itemView);
             condicaoPagamento = itemView.findViewById(R.id.txtCondicaoPagamento);
-            excluirCondicaoPagamento = itemView.findViewById(R.id.btnExcluirCondicao);
+
         }
     }
 
@@ -51,66 +60,7 @@ public class CondicaoPagamentoCadastroAdapter extends RecyclerView.Adapter<Condi
     public void onBindViewHolder(@NonNull final ProdutoViewHolder produtoViewHolder,final int i) {
         produtoViewHolder.condicaoPagamento.setText(condicaoPagamentos.get(i).getNomeCondiçãoPagamento());
 
-        produtoViewHolder.excluirCondicaoPagamento.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setTitle("Atenção");
-                builder.setMessage("Deseja Realmente Excluir este Produto?");
-                builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        if(condicaoPagamentos.size() == 1){
-                            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                            builder.setTitle("Atenção");
-                            builder.setMessage("Esta é a ultima condição de Pagamento cadastrada, deseja confirmar?");
-                            builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface arg0, int arg1) {
-                                    ControleCondicaoPagamento controller = new ControleCondicaoPagamento(v.getContext());
-                                    if(controller.deletar(condicaoPagamentos.get(i))){
-                                        condicaoPagamentos.remove(condicaoPagamentos.get(i));
-                                        notifyItemRemoved(i); //seta o elemento que foi excluido
-                                        notifyItemRangeChanged(i, condicaoPagamentos.size());
-                                        Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
-                                        AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                                    }
-                                    else{
-                                        Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            });
-                            builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface arg0, int arg1) {
 
-                                }
-                            });
-                            alerta = builder.create();
-                            alerta.show();
-
-                        }else{
-                            ControleCondicaoPagamento controller = new ControleCondicaoPagamento(v.getContext());
-                            if(controller.deletar(condicaoPagamentos.get(i))){
-                                condicaoPagamentos.remove(condicaoPagamentos.get(i));
-                                notifyItemRemoved(i); //seta o elemento que foi excluido
-                                notifyItemRangeChanged(i, condicaoPagamentos.size());
-                                Toast.makeText(v.getContext(),"Deletado com Êxito",Toast.LENGTH_LONG).show();
-                                AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                            }
-                            else{
-                                Toast.makeText(v.getContext(),"Não foi possível deletar",Toast.LENGTH_LONG).show();
-                            }
-                        }
-
-                    }
-                });
-                builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-
-                    }
-                });
-                alerta = builder.create();
-                alerta.show();
-            }
-        });
         produtoViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -128,6 +78,19 @@ public class CondicaoPagamentoCadastroAdapter extends RecyclerView.Adapter<Condi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
+                    }
+                });
+                produtoViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if(mActionMode != null){
+                            return false;
+                        }
+                        //clienteViewHolder.view.setOnClickListener(null);
+                        Activity activity = (Activity) context;
+                        posicao = i; //setando numa variavel global o item da listview
+                        mActionMode =  activity.startActionMode(mActionModeCallBack);
+                        return true;
                     }
                 });
 
@@ -182,7 +145,94 @@ public class CondicaoPagamentoCadastroAdapter extends RecyclerView.Adapter<Condi
 
     }
 
+    private ActionMode.Callback mActionModeCallBack = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.delete_menu, menu);
+            mode.setTitle("Deletar Item");
+            return true;
+        }
 
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()){
+                case R.id.menu_delete:
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Atenção");
+                    builder.setMessage("Deseja Realmente Excluir este Produto?");
+                    builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            if(condicaoPagamentos.size() == 1){
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                builder.setTitle("Atenção");
+                                builder.setMessage("Esta é a ultima condição de Pagamento cadastrada, deseja confirmar?");
+                                builder.setPositiveButton("Positivo", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        ControleCondicaoPagamento controller = new ControleCondicaoPagamento(context);
+                                        if(controller.deletar(condicaoPagamentos.get(posicao))){
+                                            condicaoPagamentos.remove(condicaoPagamentos.get(posicao));
+                                            notifyItemRemoved(posicao); //seta o elemento que foi excluido
+                                            notifyItemRangeChanged(posicao, condicaoPagamentos.size());
+                                            Toast.makeText(context,"Deletado com Êxito",Toast.LENGTH_LONG).show();
+                                            AppCompatActivity activity = (AppCompatActivity) context;
+                                        }
+                                        else{
+                                            Toast.makeText(context,"Não foi possível deletar",Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+                                builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface arg0, int arg1) {
+
+                                    }
+                                });
+                                alerta = builder.create();
+                                alerta.show();
+
+                            }else{
+                                ControleCondicaoPagamento controller = new ControleCondicaoPagamento(context);
+                                if(controller.deletar(condicaoPagamentos.get(posicao))){
+                                    condicaoPagamentos.remove(condicaoPagamentos.get(posicao));
+                                    notifyItemRemoved(posicao); //seta o elemento que foi excluido
+                                    notifyItemRangeChanged(posicao, condicaoPagamentos.size());
+                                    Toast.makeText(context,"Deletado com Êxito",Toast.LENGTH_LONG).show();
+                                    AppCompatActivity activity = (AppCompatActivity) context;
+                                }
+                                else{
+                                    Toast.makeText(context,"Não foi possível deletar",Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                        }
+                    });
+                    builder.setNegativeButton("Negativo", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                        }
+                    });
+                    alerta = builder.create();
+                    alerta.show();
+
+
+                    break;
+
+            }
+
+
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+        }
+
+    };
 
 
     @Override

@@ -67,7 +67,7 @@ public class CadastroProdutoListagem extends Fragment implements OnBackPressed {
         mAdView.loadAd(adRequest);
 
         ControleProdutos controle = new ControleProdutos(this.getContext());
-        pca = new ProdutoCadastroAdapter(controle.listar());
+        pca = new ProdutoCadastroAdapter(controle.listar(), getContext());
         rv.setAdapter(pca);
 
         return view;
