@@ -55,14 +55,12 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
                 } else {
                     List<Pedidos> filteredList = new ArrayList<>();
                     for (Pedidos row : pedidos) {
-
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
                         if (row.getCliente().getNomeCliente().toLowerCase().contains(charString.toLowerCase()) ||String.valueOf(row.getCliente().getNomeCliente()).contains(constraint)) {
                             filteredList.add(row);
                         }
                     }
-
                     pedidosFiltrados = filteredList;
                 }
 
@@ -85,6 +83,7 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
         TextView nomeCliente;
         TextView valorTotal;
         TextView data;
+        TextView numeroPedido;
         View itemview;
 
         PedidoViewHolder(final View itemView) {
@@ -93,6 +92,7 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
             nomeCliente = itemView.findViewById(R.id.txtCondicaoPagamento);
             valorTotal = itemView.findViewById(R.id.txtValorPedido);
             data = itemView.findViewById(R.id.txtDataPedido);
+            numeroPedido = itemView.findViewById(R.id.numeroPedido);
         }
     }
     @Override
@@ -101,7 +101,6 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
         PedidoViewHolder pvh = new PedidoViewHolder(v);
         return pvh;
     }
-
     @Override
     public void onBindViewHolder(@NonNull final PedidoViewHolder produtoViewHolder,final int i) {
         NumberFormat z = NumberFormat.getCurrencyInstance();
@@ -109,17 +108,31 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
         produtoViewHolder.valorTotal.setText(z.format(pedidosFiltrados.get(i).getValorTotal()));
         SimpleDateFormat dataFormatada = new SimpleDateFormat("dd/MM/yyyy");
         produtoViewHolder.data.setText(dataFormatada.format(pedidosFiltrados.get(i).getData()));
+        produtoViewHolder.numeroPedido.setText("Nº Pedido: "+String.valueOf(pedidosFiltrados.get(i).getIdPedido()));
 
-        produtoViewHolder.itemview.setOnClickListener(new View.OnClickListener() {
+
+        produtoViewHolder.itemview.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
-                if(mActionMode != null){
-
-                }
+            public boolean onLongClick(View v) {
+                if(mActionMode != null){ }
                 //clienteViewHolder.view.setOnClickListener(null);
                 Activity activity = (Activity) context;
                 posicao = i; //setando numa variavel global o item da listview
                 mActionMode =  activity.startActionMode(mActionModeCallBack);
+                return true;
+            }
+        });
+
+        produtoViewHolder.itemview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProdutosPedidoSelecionado pps = new ProdutosPedidoSelecionado();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("itensPedido",pedidosFiltrados.get(posicao).getItensPedido());
+                pps.setArguments(bundle);
+
+                AppCompatActivity activity = (AppCompatActivity) context;
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment, pps).addToBackStack(null).commit();
             }
         });
     }
@@ -127,8 +140,8 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
     private ActionMode.Callback mActionModeCallBack = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            mode.getMenuInflater().inflate(R.menu.menu_pedido_listagem, menu);
-            mode.setTitle("Selecione a Ação");
+            mode.getMenuInflater().inflate(R.menu.delete_menu, menu);
+            mode.setTitle("Deletar Item");
             return true;
         }
 
@@ -165,19 +178,7 @@ public class PedidosAdapter extends RecyclerView.Adapter<PedidosAdapter.PedidoVi
                     alerta = builder.create();
                     alerta.show();
                     break;
-
-                case R.id.produtos_pedido:
-                    ProdutosPedidoSelecionado pps = new ProdutosPedidoSelecionado();
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("itensPedido",pedidosFiltrados.get(posicao).getItensPedido());
-                    pps.setArguments(bundle);
-
-                    AppCompatActivity activity = (AppCompatActivity) context;
-                    activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment, pps).addToBackStack(null).commit();
-
-                    break;
             }
-
 
             return false;
         }

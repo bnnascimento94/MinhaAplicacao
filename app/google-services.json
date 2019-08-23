@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "845416130187",
+    "firebase_url": "https://vullpes-o-app-do-revendedor.firebaseio.com",
+    "project_id": "vullpes-o-app-do-revendedor",
+    "storage_bucket": "vullpes-o-app-do-revendedor.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845416130187:android:4d44d45d215d7add",
+        "android_client_info": {
+          "package_name": "com.vullpes.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "845416130187-gm896havvhom6nt13mro7ao80oun7349.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv_INScwaRUDuGwwDp5LLUgmlvahfaS2Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "845416130187-gm896havvhom6nt13mro7ao80oun7349.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

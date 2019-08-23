@@ -1,7 +1,13 @@
 package com.vullpes.app.view;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.curso.minhaaplicacao.R;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.vullpes.app.controller.ControleItemCarrinho;
 import com.vullpes.app.view.adapters.ExpandableAdapter;
 import com.vullpes.app.view.fragments.CadastroCliente;
@@ -24,6 +30,8 @@ import androidx.appcompat.view.ActionMode;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import android.os.SharedMemory;
 import android.util.Log;
 import android.view.View;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -43,22 +51,29 @@ public class TelaPrincipalActivity extends AppCompatActivity {
     public List<String> listGroup;
     public HashMap<String, List<String>> listData;
     FragmentManager fragmentManager;
-    private NotificationManagerCompat notificationManager;
+    SharedPreferences sharedPreferences;
+    String tokenApp;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_tela_principal);
         Toolbar toolbar =  findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        sharedPreferences = getSharedPreferences("PushPref",MODE_PRIVATE);
+
+        getTokenFCM();
+
 
         String menuFragment = getIntent().getStringExtra("menuFragment");
 
         if (menuFragment != null) {
 
             // Here we can decide what do to -- perhaps load other parameters from the intent extras such as IDs, etc
-            if (menuFragment.equals("favoritesMenuItem")) {
+            if (menuFragment.equals("produtos")) {
                 fragmentManager = getSupportFragmentManager(); //chama o fragment Principal
                 fragmentManager.beginTransaction().replace(R.id.content_fragment, new PedidosListagem()).commit();
             }
@@ -187,6 +202,25 @@ public class TelaPrincipalActivity extends AppCompatActivity {
         toggle.syncState();
 
     }
+
+    private void getTokenFCM() {
+        //solicitar o token
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnSuccessListener(TelaPrincipalActivity.this, new OnSuccessListener<InstanceIdResult>() {
+                    @Override
+                    public void onSuccess(InstanceIdResult instanceIdResult) {
+                        tokenApp = instanceIdResult.getToken();
+                        salvarTokenFCM();//salvar o token no sharedPreferences
+                    }
+                });
+    }
+
+    private void salvarTokenFCM() {
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putString("tokenAPP",tokenApp);
+        edit.apply();
+    }
+
     boolean twice;
     @Override
     public void onBackPressed() {

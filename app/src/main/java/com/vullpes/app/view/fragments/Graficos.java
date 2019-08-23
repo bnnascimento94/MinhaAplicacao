@@ -64,8 +64,7 @@ ControleVendas controleVendas;
         mAdView = view.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-        button = view.findViewById(R.id.button);
-        buttonAno = view.findViewById(R.id.buttonAno);
+
 
         txtValorTotalMes = view.findViewById(R.id.txtValorTotalMes);
         txtQuitadoMes = view.findViewById(R.id.txtQuitadoMes);
@@ -90,24 +89,6 @@ ControleVendas controleVendas;
         txtAReceberAno.setText(z.format(controleVendas.getValorTotalVendasAReceberAnuais()));
         txtProdutoMaisVendidoAno.setText(controleVendas.getProdutoMaisVendidoAnuais());
         txtMenosVendidoAno.setText(controleVendas.getProdutoMenosVendidoAnuais());
-
-        buttonAno.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentVaiProFormulario = new Intent(getContext(), GuiaGraficosActivity.class);
-                startActivity(intentVaiProFormulario);
-            }
-        });
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentVaiProFormulario = new Intent(getContext(), GuiaGraficosActivity.class);
-                startActivity(intentVaiProFormulario);
-            }
-        });
-
-
 
         return view;
     }

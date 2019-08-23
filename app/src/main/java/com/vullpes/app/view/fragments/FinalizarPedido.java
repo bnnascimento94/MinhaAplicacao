@@ -4,7 +4,23 @@ package com.vullpes.app.view.fragments;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
-
+import android.curso.minhaaplicacao.R;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.vullpes.app.classes.App;
 import com.vullpes.app.classes.OnBackPressed;
 import com.vullpes.app.controller.ControleContasReceber;
@@ -16,37 +32,11 @@ import com.vullpes.app.model.ContasReceber;
 import com.vullpes.app.model.ItemCarrinho;
 import com.vullpes.app.model.ItemPedido;
 import com.vullpes.app.model.Pedidos;
-
+import com.vullpes.app.model.PrazoDiasPagamento;
 import com.vullpes.app.model.PrazosPagamento;
-import com.vullpes.app.view.CarrinhoActivity;
 import com.vullpes.app.view.ReciboActivity;
 import com.vullpes.app.view.TelaPrincipalActivity;
 import com.vullpes.app.view.adapters.ProdutosPedidoCarrinhoAdapter;
-
-import android.os.Bundle;
-import android.os.Handler;
-
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import android.curso.minhaaplicacao.R;
-import android.widget.Button;
-
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.vullpes.app.model.PrazoDiasPagamento;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;

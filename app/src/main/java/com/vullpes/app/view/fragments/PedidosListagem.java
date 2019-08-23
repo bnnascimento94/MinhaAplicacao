@@ -30,7 +30,6 @@ public class PedidosListagem extends Fragment implements OnBackPressed {
     View view;
     RecyclerView rv;
     FragmentManager fragmentManager;
-    Button btnListar;
     PedidosAdapter pedidosAdapter;
 
     public PedidosListagem() {

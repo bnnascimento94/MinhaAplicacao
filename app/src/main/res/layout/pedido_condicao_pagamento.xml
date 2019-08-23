@@ -13,25 +13,30 @@
         android:layout_height="60dp"
         android:elevation="30dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/relativeLayout"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="64dp"
             android:background="@drawable/itemview_customizado"
-            android:padding="5dp">
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:layout_width="39dp"
+                android:layout_height="35dp"
+                android:background="#ADD8E6"
+
+                android:src="@drawable/ic_list_black_24dp" />
 
             <TextView
                 android:id="@+id/txtPedidoCondicaoPagamento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="5dp"
+                android:maxLength="16"
                 android:text="Condição Pagamento"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:textSize="20sp" />
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 

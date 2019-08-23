@@ -68,6 +68,9 @@
     <string name="prazoDiasTituloNome">Vencimento em dias</string>
     <string name="prazoDiasTituloPorcentagem">Porcentagem</string>
     <string name="menu_delete">Deletar</string>
+    <string name="nomeCliente">Nome Cliente</string>
+    <string name="telefoneCliente">Telefone Cliente</string>
+    <string name="fcm_message">Notification</string>
 
     <string-array name="meses">
         <item>Janeiro</item>

@@ -12,30 +12,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/relativeLayout"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="64dp"
             android:background="@drawable/itemview_customizado"
-            android:padding="2dp">
+            android:orientation="horizontal">
 
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#ADD8E6"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_payment_black_24dp" />
 
             <TextView
                 android:id="@+id/txtCondicaoPagamento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="14dp"
-                android:layout_marginBottom="14dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="8dp"
                 android:text="TextView"
-                android:textSize="18sp"
-                android:textStyle="normal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                android:maxLength="16"
+                android:textSize="20sp"
+                android:textStyle="normal" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 

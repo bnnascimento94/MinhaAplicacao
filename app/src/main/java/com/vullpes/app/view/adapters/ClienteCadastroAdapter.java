@@ -98,7 +98,6 @@ public class ClienteCadastroAdapter extends RecyclerView.Adapter<ClienteCadastro
                 cadastroCliente.setArguments(bundle);
 
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
-                Fragment myFragment = new Fragment();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.content_fragment, cadastroCliente).addToBackStack(null).commit();
 
             }
